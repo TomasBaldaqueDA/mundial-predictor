@@ -1,0 +1,57 @@
+-- Seed group_actual_standings for testing (fake results: 1st/2nd/3rd/4th = order in group_teams)
+-- Run after 017_group_actual_standings.sql. Delete or truncate if you need to reset.
+INSERT INTO public.group_actual_standings (group_code, position, team_name) VALUES
+  ('A', 1, 'Mexico'),
+  ('A', 2, 'South Africa'),
+  ('A', 3, 'Korea Republic'),
+  ('A', 4, 'Czechia'),
+  ('B', 1, 'Canada'),
+  ('B', 2, 'Bosnia and Herzegovina'),
+  ('B', 3, 'Qatar'),
+  ('B', 4, 'Switzerland'),
+  ('C', 1, 'Brazil'),
+  ('C', 2, 'Morocco'),
+  ('C', 3, 'Haiti'),
+  ('C', 4, 'Scotland'),
+  ('D', 1, 'USA'),
+  ('D', 2, 'Paraguay'),
+  ('D', 3, 'Australia'),
+  ('D', 4, 'Türkiye'),
+  ('E', 1, 'Germany'),
+  ('E', 2, 'Curaçao'),
+  ('E', 3, 'Côte d''Ivoire'),
+  ('E', 4, 'Ecuador'),
+  ('F', 1, 'Netherlands'),
+  ('F', 2, 'Japan'),
+  ('F', 3, 'Sweden'),
+  ('F', 4, 'Tunisia'),
+  ('G', 1, 'Belgium'),
+  ('G', 2, 'Egypt'),
+  ('G', 3, 'IR Iran'),
+  ('G', 4, 'New Zealand'),
+  ('H', 1, 'Spain'),
+  ('H', 2, 'Cabo Verde'),
+  ('H', 3, 'Saudi Arabia'),
+  ('H', 4, 'Uruguay'),
+  ('I', 1, 'France'),
+  ('I', 2, 'Senegal'),
+  ('I', 3, 'Iraq'),
+  ('I', 4, 'Norway'),
+  ('J', 1, 'Argentina'),
+  ('J', 2, 'Algeria'),
+  ('J', 3, 'Austria'),
+  ('J', 4, 'Jordan'),
+  ('K', 1, 'Portugal'),
+  ('K', 2, 'Congo DR'),
+  ('K', 3, 'Uzbekistan'),
+  ('K', 4, 'Colombia'),
+  ('L', 1, 'England'),
+  ('L', 2, 'Croatia'),
+  ('L', 3, 'Ghana'),
+  ('L', 4, 'Panama')
+ON CONFLICT (group_code, position) DO UPDATE SET team_name = EXCLUDED.team_name;
+
+-- Optional: seed the 8 third-place qualifiers for testing (e.g. groups A–H advance)
+INSERT INTO public.group_actual_third_place (group_code) VALUES
+  ('A'), ('B'), ('C'), ('D'), ('E'), ('F'), ('G'), ('H')
+ON CONFLICT (group_code) DO NOTHING;
