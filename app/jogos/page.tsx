@@ -11,10 +11,10 @@ export default async function JogosPage() {
   const allMatches = matches ?? []
   const now = new Date()
 
-  // Show all future matches (any stage) so knockout stages are visible for testing
-  const upcoming = allMatches.filter((m) => new Date(m.kickoff_time) >= now)
+  // Keep live matches in the active list even after kickoff time has passed.
+  const upcoming = allMatches.filter((m) => m.status === "started" || new Date(m.kickoff_time) >= now)
   const past = allMatches
-    .filter((m) => new Date(m.kickoff_time) < now)
+    .filter((m) => m.status !== "started" && new Date(m.kickoff_time) < now)
     .reverse()
 
   return (
