@@ -54,7 +54,7 @@ const LINEUP_SLOTS: { slot: SlotKey; badge: string }[] = [
   { slot: "st", badge: "ST" },
 ]
 
-function pickIdForSlot(picks: Picks | null, slot: SlotKey): string | null {
+export function pickIdForSlot(picks: Picks | null, slot: SlotKey): string | null {
   if (!picks) return null
   switch (slot) {
     case "gk":
@@ -73,7 +73,7 @@ function pickIdForSlot(picks: Picks | null, slot: SlotKey): string | null {
 }
 
 /** National teams already chosen in other slots (current slot excluded so you can re-pick the same nation there). */
-function teamsUsedExceptSlot(exclude: SlotKey, picks: Picks | null, players: Player[]): Set<string> {
+export function teamsUsedExceptSlot(exclude: SlotKey, picks: Picks | null, players: Player[]): Set<string> {
   const out = new Set<string>()
   if (!picks) return out
   for (const s of SLOT_KEYS) {

@@ -518,6 +518,10 @@ function MatchCard({
   }, [hasUserPrediction])
 
   const hasResult = match.score1 != null && match.score2 != null
+  const isLive = match.status === "started"
+  const showLiveOrResultBoard = isLive || hasResult
+  const score1Display = match.score1 ?? 0
+  const score2Display = match.score2 ?? 0
   const predictClosed = new Date(match.kickoff_time) <= new Date()
   const canEditPrediction = showPredict && signedIn && !predictClosed && !hasResult
   const showPowerStrip = canEditPrediction
@@ -554,8 +558,9 @@ function MatchCard({
       <div className="px-4 sm:px-5 pt-3.5 pb-2.5 flex items-center justify-between border-b border-white/10 gap-2">
         <span className="text-xs text-slate-400 font-medium inline-flex items-center gap-2 flex-wrap">
           {formatKickoffDisplay(match.kickoff_time)}
-          {match.status === "started" && !hasResult && (
-            <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full animate-pulse">
+          {isLive && (
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" aria-hidden />
               Live
             </span>
           )}
@@ -568,7 +573,7 @@ function MatchCard({
       </div>
 
       <div className="px-4 sm:px-5 py-4">
-        {hasResult ? (
+        {showLiveOrResultBoard ? (
           <>
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="flex-1 flex justify-end min-w-0">
@@ -580,7 +585,7 @@ function MatchCard({
               </div>
               <div className="flex flex-col items-center justify-center shrink-0 px-1">
                 <span className="text-xl sm:text-2xl font-black text-white tracking-tight tabular-nums">
-                  {match.score1}–{match.score2}
+                  {score1Display}–{score2Display}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
@@ -965,7 +970,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
   useEffect(() => {
     const t = window.setInterval(() => {
       if (document.visibilityState === "visible") router.refresh()
-    }, 90_000)
+    }, 60_000)
     return () => window.clearInterval(t)
   }, [router])
 
