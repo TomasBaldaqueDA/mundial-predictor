@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/cron/live-scores",
-      "schedule": "* * * * *"
+      "schedule": "0 12 * * *"
     },
     {
       "path": "/api/cron/advance-matches",
-      "schedule": "* * * * *"
+      "schedule": "10 12 * * *"
     }
   ]
 }
