@@ -22,6 +22,15 @@ type MatchRow = {
   mvp: string | null
 }
 
+type SyncDecision = {
+  run: boolean
+  reason: string
+  pollMinutes: number
+  startHourUtc: number
+  endHourUtc: number
+  activeDaysUtc: number[]
+}
+
 function normalizeTeam(value: string): string {
   const raw = value
     .normalize("NFD")
@@ -38,6 +47,76 @@ function normalizeTeam(value: string): string {
     intermiami: "intermiami",
   }
   return aliases[raw] ?? raw
+}
+
+function parseIntEnv(value: string | undefined, fallback: number): number {
+  if (!value) return fallback
+  const n = Number.parseInt(value, 10)
+  return Number.isFinite(n) ? n : fallback
+}
+
+function parseActiveDays(value: string | undefined): number[] {
+  const raw = (value ?? "0,1,2,3,4,5,6")
+    .split(",")
+    .map((x) => Number.parseInt(x.trim(), 10))
+    .filter((n) => Number.isInteger(n) && n >= 0 && n <= 6)
+  return raw.length ? [...new Set(raw)] : [0, 1, 2, 3, 4, 5, 6]
+}
+
+function shouldRunExternalSync(now: Date): SyncDecision {
+  const pollMinutes = Math.max(1, parseIntEnv(process.env.LIVE_SCORES_POLL_MINUTES, 30))
+  const startHourUtc = Math.min(23, Math.max(0, parseIntEnv(process.env.LIVE_SCORES_ACTIVE_START_HOUR_UTC, 10)))
+  const endHourUtc = Math.min(24, Math.max(1, parseIntEnv(process.env.LIVE_SCORES_ACTIVE_END_HOUR_UTC, 24)))
+  const activeDaysUtc = parseActiveDays(process.env.LIVE_SCORES_ACTIVE_DAYS_UTC)
+
+  const day = now.getUTCDay()
+  if (!activeDaysUtc.includes(day)) {
+    return {
+      run: false,
+      reason: `Outside active days (UTC day ${day})`,
+      pollMinutes,
+      startHourUtc,
+      endHourUtc,
+      activeDaysUtc,
+    }
+  }
+
+  const hour = now.getUTCHours()
+  const inWindow =
+    startHourUtc < endHourUtc
+      ? hour >= startHourUtc && hour < endHourUtc
+      : hour >= startHourUtc || hour < endHourUtc // supports overnight windows
+  if (!inWindow) {
+    return {
+      run: false,
+      reason: `Outside active window (${startHourUtc}:00-${endHourUtc}:00 UTC)`,
+      pollMinutes,
+      startHourUtc,
+      endHourUtc,
+      activeDaysUtc,
+    }
+  }
+
+  const minute = now.getUTCMinutes()
+  if (minute % pollMinutes !== 0) {
+    return {
+      run: false,
+      reason: `Minute ${minute} not aligned with poll interval ${pollMinutes}`,
+      pollMinutes,
+      startHourUtc,
+      endHourUtc,
+      activeDaysUtc,
+    }
+  }
+
+  return {
+    run: true,
+    reason: "Within configured live sync schedule",
+    pollMinutes,
+    startHourUtc,
+    endHourUtc,
+    activeDaysUtc,
+  }
 }
 
 function toInt(value: unknown): number | null {
@@ -100,14 +179,29 @@ async function fetchFromApiFootball(): Promise<LiveFixture[]> {
   const key = process.env.FOOTBALL_API_KEY
   if (!key) return []
   const base = (process.env.FOOTBALL_API_BASE_URL ?? "https://v3.football.api-sports.io").replace(/\/$/, "")
+  const leagueId = process.env.FOOTBALL_API_LEAGUE_ID ?? "1" // FIFA World Cup
+  const season = process.env.FOOTBALL_API_SEASON ?? "2026"
+  const liveStatus =
+    process.env.FOOTBALL_API_LIVE_STATUS ?? "1H-HT-2H-ET-P-BT-LIVE"
   const today = new Date().toISOString().slice(0, 10)
 
+  const liveParams = new URLSearchParams({
+    league: leagueId,
+    season,
+    status: liveStatus,
+  })
+  const todayParams = new URLSearchParams({
+    league: leagueId,
+    season,
+    date: today,
+  })
+
   const [liveRes, todayRes] = await Promise.all([
-    fetch(`${base}/fixtures?live=all`, {
+    fetch(`${base}/fixtures?${liveParams.toString()}`, {
       headers: { "x-apisports-key": key },
       cache: "no-store",
     }),
-    fetch(`${base}/fixtures?date=${today}`, {
+    fetch(`${base}/fixtures?${todayParams.toString()}`, {
       headers: { "x-apisports-key": key },
       cache: "no-store",
     }),
@@ -181,6 +275,26 @@ export async function POST(request: NextRequest) {
   const db = supabaseAdmin
   if (!db) return NextResponse.json({ error: "Server misconfigured" }, { status: 503 })
 
+  const forceRun =
+    request.nextUrl.searchParams.get("force") === "1" ||
+    request.headers.get("x-force-live-sync") === "1"
+  const now = new Date()
+  const decision = shouldRunExternalSync(now)
+  if (!forceRun && !decision.run) {
+    return NextResponse.json({
+      ok: true,
+      skipped: true,
+      reason: decision.reason,
+      schedule: {
+        poll_minutes: decision.pollMinutes,
+        active_start_hour_utc: decision.startHourUtc,
+        active_end_hour_utc: decision.endHourUtc,
+        active_days_utc: decision.activeDaysUtc,
+      },
+      now_utc: now.toISOString(),
+    })
+  }
+
   let fixtures: LiveFixture[] = []
   const customUrl = process.env.LIVE_SCORES_API_URL
   try {
@@ -246,6 +360,8 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     ok: true,
+    skipped: false,
+    forced: forceRun,
     source: customUrl ? "custom" : "api-football",
     fixtures_received: fixtures.length,
     matched,
