@@ -305,7 +305,7 @@ export default function FiveASidePage() {
   return (
     <div className="max-w-6xl mx-auto px-3 sm:px-4">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-2">5-A-SIDE</h1>
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-2">5-A-SIDE</h1>
         <p className="page-intro-on-stadium text-sm max-w-md mx-auto leading-relaxed">
           Pick 1 GK, 1 DF, 2 MD, 1 ST — max one player per nation. Locked at first match or when you submit.
         </p>
@@ -398,10 +398,11 @@ export default function FiveASidePage() {
             )
           })}
         </div>
+        <p className="pb-4 text-center text-[11px] text-slate-400 md:hidden">Swipe horizontally to view all 5 cards.</p>
       </div>
 
       {user && !tournamentStarted && (
-        <div className="flex justify-center gap-3 mb-6">
+        <div className="mb-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           {!isEditing ? (
             <button type="button" onClick={() => setIsEditing(true)} className="btn-primary">
               Edit team
@@ -419,7 +420,7 @@ export default function FiveASidePage() {
         </div>
       )}
 
-      <div className="text-center text-sm text-stone-500">
+      <div className="text-center text-xs sm:text-sm text-stone-500 px-1">
         Scoring: Goals {PTS_GOAL} | Assists {PTS_ASSIST} | MVP {PTS_MVP} | Win {PTS_WIN} | Clean sheet (GK/DF) {PTS_CLEAN_SHEET}. Card stats: G/A/CS/W/MVP from player rows; GP = finished World Cup matches for that nation. Lineup: each slot must be a different national team.
       </div>
 
@@ -475,8 +476,8 @@ export default function FiveASidePage() {
                       {shirtNumberByPlayerId.get(p.id) ?? "—"}
                     </span>
                     <img src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
-                    <span className="font-medium">{p.name}</span>
-                    <span className="text-stone-500 text-sm ml-auto">{p.team}</span>
+                    <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
+                    <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
                   </button>
                 </li>
                 )

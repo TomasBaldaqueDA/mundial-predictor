@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/lib/supabase-server"
  * Runs advance_match_statuses() in Supabase (scheduled → started → finished).
  */
 export async function POST(request: NextRequest) {
+  const startedAt = Date.now()
   const secret = process.env.CRON_SECRET
   const auth = request.headers.get("authorization")
   const q = request.nextUrl.searchParams.get("secret")
@@ -27,5 +28,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ ok: true, result: data })
+  const durationMs = Date.now() - startedAt
+  console.info(`[advance-matches] ok duration_ms=${durationMs}`)
+  return NextResponse.json({ ok: true, result: data, duration_ms: durationMs })
+}
+
+/**
+ * GET is supported for quick manual checks in browser/tools.
+ * Security stays the same: CRON_SECRET required.
+ */
+export async function GET(request: NextRequest) {
+  return POST(request)
 }

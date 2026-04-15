@@ -19,7 +19,7 @@ export default async function JogosPage() {
 
   return (
     <main>
-      <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-8">Games</h1>
+      <h1 className="mb-6 sm:mb-8 text-2xl sm:text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">Games</h1>
       <Suspense fallback={<p className="text-white/50 text-sm">Loading games…</p>}>
         <GamesList upcoming={upcoming} past={past} />
       </Suspense>

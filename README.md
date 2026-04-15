@@ -26,10 +26,11 @@ For World Cup scope with API-Football (recommended):
 - `FOOTBALL_API_LEAGUE_ID=1`
 - `FOOTBALL_API_SEASON=2026`
 - `FOOTBALL_API_LIVE_STATUS=1H-HT-2H-ET-P-BT-LIVE`
+- Optional: `FOOTBALL_TEAM_ALIASES` (format `alias=canonical;alias2=canonical2`)
 
-### Scheduler (every minute)
+### Scheduler
 
-`vercel.json` is already configured with minute cron jobs:
+`vercel.json` contains Hobby-compatible daily cron jobs (safe defaults):
 
 - `/api/cron/live-scores`
 - `/api/cron/advance-matches`
@@ -38,7 +39,16 @@ After deployment on Vercel:
 
 1. Add env vars in Project Settings.
 2. Redeploy.
-3. Verify in Vercel Logs that cron calls are running every minute.
+3. Verify in Vercel Logs that cron calls are running.
+4. (Optional) use cron-job.org for higher frequency on Hobby plans.
+
+### High-frequency cron on Vercel Hobby (free)
+
+If you need updates more than once/day on Hobby, use an external scheduler
+such as cron-job.org and call these URLs with HTTP POST:
+
+- `https://<your-domain>/api/cron/live-scores?secret=CRON_SECRET`
+- `https://<your-domain>/api/cron/advance-matches?secret=CRON_SECRET`
 
 ### Smart request budgeting (free plan friendly)
 
@@ -59,7 +69,7 @@ For API-Football free tier (100 req/day), a safe baseline is:
 
 With this setup, requests are scoped to `league=1` and `season=2026` only.
 
-You can manually bypass the schedule for testing:
+You can manually bypass the schedule for testing (`POST` or `GET`):
 
 ```bash
 curl -X POST "http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET&force=1"
@@ -67,12 +77,36 @@ curl -X POST "http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET
 
 ### Local manual trigger
 
-Call endpoints with `CRON_SECRET`:
+Call endpoints with `CRON_SECRET` (recommended: `POST`):
 
 ```bash
 curl -X POST "http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET"
 curl -X POST "http://localhost:3000/api/cron/advance-matches?secret=YOUR_CRON_SECRET"
 ```
+
+Browser-only checks are also supported with `GET`:
+
+```text
+http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET&force=1
+http://localhost:3000/api/cron/advance-matches?secret=YOUR_CRON_SECRET
+```
+
+### Observability notes
+
+`/api/cron/live-scores` response includes:
+
+- `fixtures_received`
+- `matched`
+- `unmatched`
+- `unmatched_examples`
+- `updated`
+- `duration_ms`
+
+If unmatched fixtures appear, add normalization mappings via `FOOTBALL_TEAM_ALIASES`.
+
+### QA runbook
+
+Use `QA_CHECKLIST.md` before release/deploy.
 
 ## Getting Started
 

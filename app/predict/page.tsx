@@ -321,13 +321,13 @@ function PredictPageInner() {
 
   return (
     <main>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
           {hasExistingPrediction ? "Edit prediction" : "Make prediction"}
         </h1>
         <Link
           href={backToJogosUrl}
-          className="rounded-xl px-4 py-2.5 text-slate-300 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
+          className="inline-flex w-fit rounded-xl px-4 py-2.5 text-slate-300 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
         >
           ← Back to match list
         </Link>

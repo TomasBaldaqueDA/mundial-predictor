@@ -45,8 +45,35 @@ function normalizeTeam(value: string): string {
     manunited: "manchesterunited",
     manutd: "manchesterunited",
     intermiami: "intermiami",
+    mancity: "manchestercity",
+    mancityfc: "manchestercity",
+    athletico: "atletico",
+  }
+  for (const [from, to] of parseAliasMapEnv()) {
+    aliases[from] = to
   }
   return aliases[raw] ?? raw
+}
+
+function parseAliasMapEnv(): Array<[string, string]> {
+  const raw = process.env.FOOTBALL_TEAM_ALIASES
+  if (!raw) return []
+  // Format: "atlmadrid=atleticomadrid;man city=manchestercity"
+  const out: Array<[string, string]> = []
+  for (const part of raw.split(";")) {
+    const [left, right] = part.split("=").map((x) => x?.trim() ?? "")
+    if (!left || !right) continue
+    out.push([normalizeAliasToken(left), normalizeAliasToken(right)])
+  }
+  return out
+}
+
+function normalizeAliasToken(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .toLowerCase()
 }
 
 function parseIntEnv(value: string | undefined, fallback: number): number {
@@ -266,6 +293,7 @@ function pickBestMatch(feed: LiveFixture, matches: MatchRow[]): MatchRow | null 
  * - Maps fixtures by team names (+ nearest kickoff) and updates matches score/status/mvp.
  */
 export async function POST(request: NextRequest) {
+  const startedAt = Date.now()
   const secret = process.env.CRON_SECRET
   const auth = request.headers.get("authorization")
   const q = request.nextUrl.searchParams.get("secret")
@@ -292,6 +320,7 @@ export async function POST(request: NextRequest) {
         active_days_utc: decision.activeDaysUtc,
       },
       now_utc: now.toISOString(),
+      duration_ms: Date.now() - startedAt,
     })
   }
 
@@ -328,11 +357,13 @@ export async function POST(request: NextRequest) {
   let updated = 0
   let matched = 0
   let unmatched = 0
+  const unmatchedExamples: string[] = []
 
   for (const f of fixtures) {
     const match = pickBestMatch(f, candidates)
     if (!match) {
       unmatched++
+      if (unmatchedExamples.length < 10) unmatchedExamples.push(`${f.homeTeam} vs ${f.awayTeam}`)
       continue
     }
     matched++
@@ -358,6 +389,11 @@ export async function POST(request: NextRequest) {
 
   const { data: advanceResult, error: advanceErr } = await db.rpc("advance_match_statuses")
 
+  const durationMs = Date.now() - startedAt
+  console.info(
+    `[live-scores] source=${customUrl ? "custom" : "api-football"} fixtures=${fixtures.length} matched=${matched} unmatched=${unmatched} updated=${updated} duration_ms=${durationMs}`
+  )
+
   return NextResponse.json({
     ok: true,
     skipped: false,
@@ -366,7 +402,17 @@ export async function POST(request: NextRequest) {
     fixtures_received: fixtures.length,
     matched,
     unmatched,
+    unmatched_examples: unmatchedExamples,
     updated,
     advanced: advanceErr ? { error: advanceErr.message } : advanceResult,
+    duration_ms: durationMs,
   })
+}
+
+/**
+ * GET is supported for quick manual checks in browser/tools.
+ * Security stays the same: CRON_SECRET required.
+ */
+export async function GET(request: NextRequest) {
+  return POST(request)
 }
