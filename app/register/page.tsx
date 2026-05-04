@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 
+// Escape `_` and `%` so display-name uniqueness checks don't accept literal
+// wildcard characters as a regex-like match.
+function escapeIlike(value: string): string {
+  return value.replace(/[\\%_]/g, "\\$&")
+}
+
 export default function RegisterPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -13,6 +19,7 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [needsEmailConfirm, setNeedsEmailConfirm] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -36,7 +43,7 @@ export default function RegisterPage() {
     const { data: existingNameRows, error: nameCheckError } = await supabase
       .from("profiles")
       .select("id")
-      .ilike("display_name", trimmedName)
+      .ilike("display_name", escapeIlike(trimmedName))
       .limit(1)
     if (nameCheckError) {
       setLoading(false)
@@ -48,7 +55,7 @@ export default function RegisterPage() {
       setError("This display name is already taken. Please choose another one.")
       return
     }
-    const { error: err } = await supabase.auth.signUp({
+    const { data, error: err } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -62,8 +69,31 @@ export default function RegisterPage() {
       setError(err.message)
       return
     }
+    // Supabase returns user but no session when email confirmation is required.
+    if (data?.user && !data.session) {
+      setNeedsEmailConfirm(email)
+      return
+    }
     router.push("/")
     router.refresh()
+  }
+
+  if (needsEmailConfirm) {
+    return (
+      <div className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl text-center space-y-5">
+        <h1 className="text-2xl font-bold text-emerald-300">Check your email</h1>
+        <p className="text-slate-400">
+          We sent a confirmation link to <strong className="text-slate-200">{needsEmailConfirm}</strong>. Click it to
+          activate your account, then log in.
+        </p>
+        <Link
+          href="/login"
+          className="inline-block rounded-xl px-4 py-2 text-wc-gold font-medium hover:bg-white/10 transition-colors"
+        >
+          Go to log in
+        </Link>
+      </div>
+    )
   }
 
   return (

@@ -63,9 +63,9 @@ export default async function RankingPage() {
   for (const a of specialAnswers ?? []) {
     const row = a as { user_id: string; question_id: string; answer: string }
     const correctAnswer = (specialQuestions ?? []).find((q: { id: string }) => q.id === row.question_id) as { correct_answer?: string } | undefined
-    const correct = (correctAnswer?.correct_answer ?? "").trim()
+    const correct = (correctAnswer?.correct_answer ?? "").trim().toLowerCase()
     if (correct === "") continue
-    const userAnswer = (row.answer ?? "").trim()
+    const userAnswer = (row.answer ?? "").trim().toLowerCase()
     if (userAnswer !== correct) continue
     const pts = pointsByQuestionId.get(row.question_id) ?? 0
     const current = specialPointsByUserId.get(row.user_id) ?? 0

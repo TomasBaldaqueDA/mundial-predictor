@@ -102,7 +102,7 @@ export default function GroupsPage() {
         .select("kickoff_time")
         .order("kickoff_time", { ascending: true })
         .limit(1)
-        .single()
+        .maybeSingle()
       if (firstMatch?.kickoff_time) {
         setFirstMatchKickoff(firstMatch.kickoff_time as string)
       }
@@ -232,19 +232,14 @@ export default function GroupsPage() {
       return
     }
 
-    await supabase
-      .from("group_predictions")
-      .delete()
-      .eq("user_id", user.id)
-      .eq("group_code", groupCode)
-    const rows = positions.map((position) => ({
-      user_id: user.id,
-      group_code: groupCode,
-      team_name: pred[position]!,
-      position,
-      qualifies: position <= 2 ? true : position === 4 ? false : thirdPlaceQualifiers.includes(groupCode),
-    }))
-    const { error } = await supabase.from("group_predictions").insert(rows)
+    const { error } = await supabase.rpc("save_group_predictions", {
+      p_group_code: groupCode,
+      p_pos1: pred[1]!,
+      p_pos2: pred[2]!,
+      p_pos3: pred[3]!,
+      p_pos4: pred[4]!,
+      p_third_qualifies: thirdPlaceQualifiers.includes(groupCode),
+    })
     setSavingGroup(null)
     if (error) {
       setMessage({ type: "error", text: error.message })
@@ -329,7 +324,14 @@ export default function GroupsPage() {
       </p>
 
       {message && (
-        <p className={message.type === "ok" ? "text-wc-green text-sm" : "text-red-600 text-sm"}>
+        <p
+          role="alert"
+          className={`text-sm rounded-lg px-3 py-2 border max-w-md ${
+            message.type === "ok"
+              ? "text-emerald-200 bg-emerald-500/15 border-emerald-400/30"
+              : "text-red-200 bg-red-500/15 border-red-400/30"
+          }`}
+        >
           {message.text}
         </p>
       )}

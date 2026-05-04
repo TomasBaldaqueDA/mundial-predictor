@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
@@ -19,21 +20,25 @@ export default async function MatchPage({
   if (subFilter) backSearch.set("subFilter", subFilter)
   const backHref = backSearch.toString() ? `/jogos?${backSearch.toString()}` : "/jogos"
 
-  const matchId = id
-
-  if (!matchId) {
-    throw new Error("Match ID missing.")
+  // Reject non-numeric ids before hitting Supabase so a typo or probe maps to 404.
+  const matchIdNum = Number(id)
+  if (!id || !Number.isInteger(matchIdNum) || matchIdNum <= 0) {
+    notFound()
   }
+  const matchId = matchIdNum
 
   const supabase = await createClient()
   const { data: match, error: matchError } = await supabase
     .from("matches")
     .select("*")
     .eq("id", matchId)
-    .single()
+    .maybeSingle()
 
-  if (matchError || !match) {
-    throw new Error(matchError?.message || "Match not found")
+  if (matchError) {
+    throw new Error(matchError.message)
+  }
+  if (!match) {
+    notFound()
   }
 
   const kickoff = new Date(match.kickoff_time)

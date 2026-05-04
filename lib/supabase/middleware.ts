@@ -27,16 +27,14 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
-  const isLogin = pathname === "/login"
-  const isRegister = pathname === "/register"
-  const isAuthCallback = pathname.startsWith("/auth/")
-  const isHome = pathname === "/"
+  const PUBLIC_ROUTES = new Set<string>(["/", "/login", "/register", "/rules"])
+  const isPublic =
+    PUBLIC_ROUTES.has(pathname) ||
+    pathname.startsWith("/auth/") ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml"
 
-  // Allow unauthenticated users to access:
-  // - home page ("/")
-  // - login and register
-  // - auth callbacks
-  if (!user && !isHome && !isLogin && !isRegister && !isAuthCallback) {
+  if (!user && !isPublic) {
     const url = new URL("/login", request.url)
     url.searchParams.set("next", pathname)
     return NextResponse.redirect(url)

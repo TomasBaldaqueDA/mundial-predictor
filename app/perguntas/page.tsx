@@ -45,7 +45,7 @@ export default function PerguntasPage() {
           .select("id, question, type, points, sort_order, options, correct_answer")
           .order("sort_order", { ascending: true }),
         supabase.auth.getUser(),
-        supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).single(),
+        supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
       ])
       setQuestions(
         (qRows ?? []).map((q: Question & { options?: unknown }) => ({
@@ -62,7 +62,7 @@ export default function PerguntasPage() {
           { data: profile },
         ] = await Promise.all([
           supabase.from("special_answers").select("question_id, answer").eq("user_id", u.id),
-          supabase.from("profiles").select("special_answers_submitted_at").eq("id", u.id).single(),
+          supabase.from("profiles").select("special_answers_submitted_at").eq("id", u.id).maybeSingle(),
         ])
         const byQ: Record<string, string> = {}
         for (const row of aRows ?? []) {

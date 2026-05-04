@@ -296,8 +296,7 @@ export async function POST(request: NextRequest) {
   const startedAt = Date.now()
   const secret = process.env.CRON_SECRET
   const auth = request.headers.get("authorization")
-  const q = request.nextUrl.searchParams.get("secret")
-  const ok = secret && (auth === `Bearer ${secret}` || q === secret)
+  const ok = !!secret && auth === `Bearer ${secret}`
   if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const db = supabaseAdmin
