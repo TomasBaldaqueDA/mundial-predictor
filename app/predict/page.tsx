@@ -228,9 +228,14 @@ function PredictPageInner() {
 
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      alert("You must be logged in to save a prediction.")
+      router.push("/login?next=/predict?match=" + encodeURIComponent(String(matchId ?? "")))
+      return
+    }
 
-    const mult = user && usePowerUp ? 2 : 1
-    if (user && mult === 2) {
+    const mult = usePowerUp ? 2 : 1
+    if (mult === 2) {
       const phaseCheck = await validatePowerUpPhase(supabase, {
         userId: user.id,
         targetMatch: {
@@ -261,7 +266,7 @@ function PredictPageInner() {
     const returnUrl = `/jogos?filter=${encodeURIComponent(filter)}${subFilter ? `&subFilter=${encodeURIComponent(subFilter)}` : ""}`
     const matchIdNum = Number(matchId)
 
-    if (user && existingPredictionId != null) {
+    if (existingPredictionId != null) {
       const id = Number(existingPredictionId)
       const { data: updated, error } = await supabase
         .from("predictions")
@@ -284,7 +289,7 @@ function PredictPageInner() {
         return
       }
       router.push(returnUrl)
-    } else if (user) {
+    } else {
       const { error } = await supabase.from("predictions").insert({
         user_name: name,
         user_id: user.id,
@@ -300,23 +305,8 @@ function PredictPageInner() {
       } else {
         router.push(returnUrl)
       }
-    } else {
-      const { error } = await supabase.from("predictions").insert({
-        user_name: name,
-        user_id: null,
-        match_id: matchIdNum,
-        pred_score1: s1,
-        pred_score2: s2,
-        pred_mvp: mvp,
-        pred_qualifier: effectiveQualifier,
-      })
-      if (error) {
-        alert("Error saving prediction")
-      } else {
-        router.push(returnUrl)
-      }
     }
-  
+
   }
 
   return (
@@ -395,6 +385,7 @@ function PredictPageInner() {
             className="w-full px-4 py-2.5 border border-white/12 rounded-xl bg-slate-900/50 cursor-not-allowed text-slate-300 font-medium"
             value={name}
             readOnly
+            aria-readonly="true"
             aria-label="Your name (from your account)"
           />
         </div>

@@ -80,6 +80,10 @@ class QueryBuilder {
     return this.execute().then((res) => ({ data: res.data[0] ?? null, error: res.error }))
   }
 
+  maybeSingle() {
+    return this.execute().then((res) => ({ data: res.data[0] ?? null, error: res.error }))
+  }
+
   then<TResult1 = { data: Row[]; error: null }, TResult2 = never>(
     onfulfilled?: ((value: { data: Row[]; error: null }) => TResult1 | PromiseLike<TResult1>) | null,
     onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null

@@ -123,7 +123,7 @@ export default function FiveASidePage() {
       ] = await Promise.all([
         supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp").order("team").order("name"),
         supabase.auth.getUser(),
-        supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).single(),
+        supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
         supabase.from("matches").select("team1, team2").eq("status", "finished"),
       ])
       const gp: Record<string, number> = {}
@@ -155,7 +155,7 @@ export default function FiveASidePage() {
           .from("five_a_side_picks")
           .select("gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at")
           .eq("user_id", u.id)
-          .single()
+          .maybeSingle()
         const initialPicks = (picksRow as Picks | null) ?? null
         setPicks(initialPicks)
         // If user has no saved team yet, start directly in edit mode.
@@ -171,9 +171,10 @@ export default function FiveASidePage() {
 
   const firstKickoffDate = firstMatchKickoff ? new Date(firstMatchKickoff) : null
   const lockedByTime = firstKickoffDate ? new Date() >= firstKickoffDate : false
+  // The Rules page documents that the team locks at the first match kickoff,
+  // not at first submit, so users can keep editing until then.
   const submittedAt = picks?.submitted_at ?? null
-  const lockedBySubmit = !!submittedAt
-  const locked = lockedByTime || lockedBySubmit
+  const locked = lockedByTime
 
   const getPlayerId = (slot: SlotKey): string | null => {
     if (!picks) return null
@@ -326,7 +327,7 @@ export default function FiveASidePage() {
           <span className="text-stone-600 ml-1">(World Cup started)</span>
         </div>
       )}
-      {lockedBySubmit && !lockedByTime && (
+      {!!submittedAt && !lockedByTime && (
         <div className="glass rounded-xl px-4 py-2 mb-4 border border-wc-green/30 text-center">
           <span className="font-medium text-wc-green-dark">Team submitted</span>
           <span className="text-stone-600 ml-1">— you can still edit until the first match</span>

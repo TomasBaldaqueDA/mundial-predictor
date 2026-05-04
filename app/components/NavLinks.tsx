@@ -48,6 +48,7 @@ export function NavLinks() {
             key={href}
             href={href}
             title={label}
+            aria-label={label}
             className={`rounded-xl px-2.5 py-1.5 text-[12.5px] font-medium transition-all duration-200 whitespace-nowrap ${
               active
                 ? "bg-wc-gold/15 text-wc-gold border border-wc-gold/25 shadow-[0_0_12px_rgba(240,180,41,0.15)]"
@@ -55,7 +56,7 @@ export function NavLinks() {
             }`}
           >
             {isProfile ? (
-              <span className="inline-flex items-center justify-center" aria-label="Profile">
+              <span className="inline-flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

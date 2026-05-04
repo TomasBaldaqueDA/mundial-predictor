@@ -255,6 +255,7 @@ function InlinePredictForm({
           <input
             type="number"
             min={0}
+            max={30}
             value={score1}
             onChange={(e) => setScore1(e.target.value)}
             disabled={closed || saving}
@@ -275,6 +276,7 @@ function InlinePredictForm({
           <input
             type="number"
             min={0}
+            max={30}
             value={score2}
             onChange={(e) => setScore2(e.target.value)}
             disabled={closed || saving}
@@ -378,10 +380,11 @@ function SavedPredictionPanel({
   match: Match
   pred: UserPrediction
   kickoffTime: string
-  onEdit: () => void
+  onEdit?: () => void
 }) {
   const isKnockout = (match.stage ?? "") !== "First Stage"
   const x2 = Number(pred.points_multiplier) === 2
+  const editable = typeof onEdit === "function"
 
   return (
     <div className="relative rounded-2xl overflow-hidden border border-wc-gold/35 bg-gradient-to-br from-[#0c1220] via-slate-900/90 to-[#070d18] shadow-[0_0_36px_rgba(240,180,41,0.14),inset_0_1px_0_rgba(255,255,255,0.07)]">
@@ -406,9 +409,15 @@ function SavedPredictionPanel({
             </span>
             Prediction saved
           </span>
-          <span className="text-[10px] text-slate-500 font-medium tabular-nums leading-snug">
-            Editable until {formatKickoffDisplay(kickoffTime)}
-          </span>
+          {editable ? (
+            <span className="text-[10px] text-slate-500 font-medium tabular-nums leading-snug">
+              Editable until {formatKickoffDisplay(kickoffTime)}
+            </span>
+          ) : (
+            <span className="text-[10px] text-slate-500 font-medium tabular-nums leading-snug">
+              Locked at kickoff ({formatKickoffDisplay(kickoffTime)})
+            </span>
+          )}
         </div>
 
         {/* Single row: fits narrow grid columns; team names truncate */}
@@ -459,19 +468,21 @@ function SavedPredictionPanel({
           </div>
         )}
 
-        <div className="pt-1 border-t border-white/[0.07]">
-          <button
-            type="button"
-            onClick={onEdit}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-wc-gold/55 bg-wc-gold/10 px-3 py-2 text-xs sm:text-sm font-semibold text-wc-gold hover:bg-wc-gold/20 hover:border-wc-gold/80 transition-all duration-200 w-full"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5 shrink-0" aria-hidden>
-              <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
-              <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7A.75.75 0 0 1 7 3.5H4.75Z" />
-            </svg>
-            Edit prediction
-          </button>
-        </div>
+        {editable && (
+          <div className="pt-1 border-t border-white/[0.07]">
+            <button
+              type="button"
+              onClick={onEdit}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-wc-gold/55 bg-wc-gold/10 px-3 py-2 text-xs sm:text-sm font-semibold text-wc-gold hover:bg-wc-gold/20 hover:border-wc-gold/80 transition-all duration-200 w-full"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5 shrink-0" aria-hidden>
+                <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+                <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7A.75.75 0 0 1 7 3.5H4.75Z" />
+              </svg>
+              Edit prediction
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -514,8 +525,9 @@ function MatchCard({
   const [showPredictionEditor, setShowPredictionEditor] = useState(!hasUserPrediction)
 
   useEffect(() => {
-    if (!hasUserPrediction) setShowPredictionEditor(true)
-  }, [hasUserPrediction])
+    // Keep saved predictions collapsed by default; open editor only when user taps Edit.
+    setShowPredictionEditor(!hasUserPrediction)
+  }, [hasUserPrediction, predictionRowId])
 
   const hasResult = match.score1 != null && match.score2 != null
   const isLive = match.status === "started"
@@ -559,8 +571,8 @@ function MatchCard({
         <span className="text-xs text-slate-400 font-medium inline-flex items-center gap-2 flex-wrap">
           {formatKickoffDisplay(match.kickoff_time)}
           {isLive && (
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" aria-hidden />
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-100 bg-red-500/20 border border-red-400/40 px-2 py-0.5 rounded-full">
+              <span className="h-2 w-2 rounded-full bg-red-400 animate-pulse" aria-hidden />
               Live
             </span>
           )}
@@ -663,32 +675,42 @@ function MatchCard({
           </>
         ) : (
           <>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="flex-1 flex justify-end min-w-0">
-                <TeamWithFlag
-                  name={match.team1}
-                  size="lg"
-                  className="flex-row-reverse text-right max-w-full"
-                />
-              </div>
-              <div className="flex flex-col items-center justify-center w-14 sm:w-16 shrink-0">
-                <span className="text-[11px] font-bold text-slate-400 bg-white/10 rounded-lg px-2.5 py-1 tracking-wider ring-1 ring-white/10">
-                  VS
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <TeamWithFlag name={match.team2} size="lg" className="max-w-full" />
-              </div>
-            </div>
-            {showPredict && !signedIn && (
-              <p className="mt-3 text-xs text-slate-500 text-center sm:text-left">
-                Sign in to predict the score and MVP for this match.
-              </p>
-            )}
-            {predictClosed && showPredict && (
-              <p className="mt-3 text-xs text-slate-500 text-center sm:text-left">
-                Predictions are closed for this match.
-              </p>
+            {hasUserPrediction && userPrediction ? (
+              <SavedPredictionPanel
+                match={match}
+                pred={userPrediction}
+                kickoffTime={match.kickoff_time}
+              />
+            ) : (
+              <>
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex-1 flex justify-end min-w-0">
+                    <TeamWithFlag
+                      name={match.team1}
+                      size="lg"
+                      className="flex-row-reverse text-right max-w-full"
+                    />
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-14 sm:w-16 shrink-0">
+                    <span className="text-[11px] font-bold text-slate-400 bg-white/10 rounded-lg px-2.5 py-1 tracking-wider ring-1 ring-white/10">
+                      VS
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <TeamWithFlag name={match.team2} size="lg" className="max-w-full" />
+                  </div>
+                </div>
+                {showPredict && !signedIn && (
+                  <p className="mt-3 text-xs text-slate-500 text-center sm:text-left">
+                    Sign in to predict the score and MVP for this match.
+                  </p>
+                )}
+                {predictClosed && showPredict && (
+                  <p className="mt-3 text-xs text-slate-500 text-center sm:text-left">
+                    Predictions are closed for this match.
+                  </p>
+                )}
+              </>
             )}
           </>
         )}
@@ -781,17 +803,11 @@ type Filter = "all" | "today" | "upcoming" | "past"
 const SUB_ALL = "All"
 
 function getTodayWindow(): { start: Date; end: Date } {
+  // Use the user's local calendar day (00:00 → 24:00) so "Today" matches what
+  // the user sees on their device clock, regardless of server timezone.
   const now = new Date()
-  const fiveOhOneToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 5, 1, 0, 0)
-  const fiveAmTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 5, 0, 0, 0)
-  let start: Date, end: Date
-  if (now < fiveOhOneToday) {
-    start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 5, 1, 0, 0)
-    end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 5, 0, 0, 0)
-  } else {
-    start = fiveOhOneToday
-    end = fiveAmTomorrow
-  }
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0)
   return { start, end }
 }
 
