@@ -9,7 +9,7 @@ export default async function SpecialAnswersPage() {
     { data: answers },
     { data: profiles },
   ] = await Promise.all([
-    supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).single(),
+    supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
     supabase.from("special_questions").select("id, question, type, points, sort_order, correct_answer").order("sort_order", { ascending: true }),
     supabase.from("special_answers").select("question_id, user_id, answer").not("answer", "eq", ""),
     supabase.from("profiles").select("id, display_name"),
@@ -41,7 +41,7 @@ export default async function SpecialAnswersPage() {
         </h1>
         <Link
           href="/perguntas"
-          className="rounded-xl px-3 py-2 text-stone-600 hover:text-wc-gold hover:bg-wc-gold-light/30 text-sm font-medium transition-all"
+          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
         >
           ← Back to special questions
         </Link>
@@ -49,13 +49,13 @@ export default async function SpecialAnswersPage() {
 
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600 font-medium">Other players&apos; answers are hidden until the start of the World Cup.</p>
+          <p className="text-slate-200 font-medium">Other players&apos; answers are hidden until the start of the World Cup.</p>
         </div>
       )}
 
       {tournamentStarted && otherQuestions.length === 0 && (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600">No other special questions.</p>
+          <p className="text-slate-400">No other special questions.</p>
         </div>
       )}
 
@@ -63,9 +63,10 @@ export default async function SpecialAnswersPage() {
         <div className="space-y-8">
           {otherQuestions.map((q: { id: string; question: string; type: string; points: number; correct_answer?: string | null }) => {
             const correctAnswer = (q.correct_answer ?? "").trim()
+            const correctNorm = correctAnswer.toLowerCase()
             const rows = (byQuestion.get(q.id) ?? [])
               .map((r) => {
-                const correct = correctAnswer !== "" && r.answer === correctAnswer
+                const correct = correctNorm !== "" && r.answer.toLowerCase() === correctNorm
                 return {
                   name: profileNames.get(r.userId) ?? "Anonymous",
                   answer: r.answer,
@@ -76,43 +77,47 @@ export default async function SpecialAnswersPage() {
               .filter((r) => r.answer)
               .sort((a, b) => a.name.localeCompare(b.name))
             return (
-              <section key={q.id} id={`q-${q.id}`} className="glass rounded-2xl overflow-hidden shadow-lg shadow-stone-900/5">
-                <div className="bg-stone-100/95 border-b-2 border-stone-200 px-5 py-3">
-                  <h2 className="text-lg font-semibold text-wc-green-dark">
+              <section key={q.id} id={`q-${q.id}`} className="glass rounded-2xl overflow-hidden border border-white/10">
+                <div className="bg-white/5 border-b border-white/10 px-5 py-3">
+                  <h2 className="text-lg font-semibold text-emerald-300">
                     {q.question}
                     {q.points > 0 && (
-                      <span className="text-stone-500 font-normal ml-1">({q.points} pts)</span>
+                      <span className="text-slate-400 font-normal ml-1">({q.points} pts)</span>
                     )}
                   </h2>
                 </div>
                 {correctAnswer !== "" && (
-                  <div className="px-5 py-3 border-b border-stone-100 bg-stone-50/90 accent-bar-green">
-                    <span className="text-stone-600 font-medium">Correct answer: </span>
-                    <span className="font-semibold text-stone-800">{correctAnswer}</span>
+                  <div className="px-5 py-3 border-b border-white/10 bg-emerald-500/10">
+                    <span className="text-slate-300 font-medium">Correct answer: </span>
+                    <span className="font-semibold text-emerald-200">{correctAnswer}</span>
                   </div>
                 )}
                 {rows.length === 0 ? (
-                  <p className="px-5 py-4 text-stone-500 text-sm">No answers yet.</p>
+                  <p className="px-5 py-4 text-slate-500 text-sm">No answers yet.</p>
                 ) : (
-                  <table className="min-w-full text-sm table-modern">
-                    <thead className="bg-stone-50/95 border-b-2 border-stone-200">
+                  <table className="min-w-full text-sm">
+                    <thead className="bg-white/5 border-b border-white/10">
                       <tr>
-                        <th className="px-5 py-3 text-left font-semibold text-stone-700">Player</th>
-                        <th className="px-5 py-3 text-left font-semibold text-stone-700">Answer</th>
-                        <th className="px-5 py-3 text-right font-semibold text-stone-700">Points</th>
+                        <th className="px-5 py-3 text-left font-semibold text-slate-300">Player</th>
+                        <th className="px-5 py-3 text-left font-semibold text-slate-300">Answer</th>
+                        <th className="px-5 py-3 text-right font-semibold text-wc-gold/85">Points</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-white/5">
                       {rows.map((row, idx) => (
                         <tr
                           key={idx}
-                          className={`border-b border-stone-100 last:border-0 transition-colors ${
-                            row.correct ? "bg-wc-green-light/50 text-wc-green-dark hover:bg-wc-green-light/60" : correctAnswer !== "" ? "bg-red-50/80 text-red-800 hover:bg-red-50" : "hover:bg-wc-gold-light/20"
+                          className={`transition-colors ${
+                            row.correct
+                              ? "bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-100"
+                              : correctAnswer !== ""
+                                ? "bg-red-500/10 hover:bg-red-500/15 text-red-100/90"
+                                : "hover:bg-white/5 text-slate-100"
                           }`}
                         >
                           <td className="px-5 py-3 font-medium">{row.name}</td>
                           <td className="px-5 py-3">{row.answer}</td>
-                          <td className="px-5 py-3 text-right font-medium">{row.points}</td>
+                          <td className="px-5 py-3 text-right font-bold tabular-nums text-wc-gold">{row.points}</td>
                         </tr>
                       ))}
                     </tbody>

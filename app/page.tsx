@@ -1,8 +1,10 @@
 import Link from "next/link"
+import { GuestNotice } from "./components/GuestNotice"
 
 export default function HomePage() {
   return (
     <main className="max-w-3xl mx-auto">
+      <GuestNotice />
 
       {/* ─── Hero ─── */}
       <section className="text-center pt-6 sm:pt-10 pb-10 sm:pb-14">

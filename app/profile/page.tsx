@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
+import { friendlyAuthError } from "@/lib/auth-errors"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -23,6 +24,10 @@ export default function ProfilePage() {
   const [confirmPwd, setConfirmPwd] = useState("")
   const [savingPwd, setSavingPwd] = useState(false)
   const [pwdMsg, setPwdMsg] = useState<{ type: "ok" | "error"; text: string } | null>(null)
+
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteErr, setDeleteErr] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -82,7 +87,7 @@ export default function ProfilePage() {
       .eq("id", user.id)
     setSavingName(false)
     if (error) {
-      setNameMsg({ type: "error", text: error.message })
+      setNameMsg({ type: "error", text: friendlyAuthError(error.message) })
     } else {
       setNameMsg({ type: "ok", text: "Profile updated." })
     }
@@ -104,7 +109,7 @@ export default function ProfilePage() {
     const { error } = await supabase.auth.updateUser({ password: newPwd })
     setSavingPwd(false)
     if (error) {
-      setPwdMsg({ type: "error", text: error.message })
+      setPwdMsg({ type: "error", text: friendlyAuthError(error.message) })
       return
     }
     setNewPwd("")
@@ -117,6 +122,25 @@ export default function ProfilePage() {
     await supabase.auth.signOut()
     router.push("/")
     router.refresh()
+  }
+
+  async function handleDeleteAccount() {
+    setDeleteErr(null)
+    setDeleting(true)
+    try {
+      const res = await fetch("/api/account/delete", { method: "POST" })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setDeleting(false)
+        setDeleteErr(friendlyAuthError(body?.error ?? "Could not delete account."))
+        return
+      }
+      // The session cookie is now invalid; force a hard reload to clear state.
+      window.location.href = "/"
+    } catch {
+      setDeleting(false)
+      setDeleteErr("Network problem. Please try again.")
+    }
   }
 
   if (loading) {
@@ -252,6 +276,57 @@ export default function ProfilePage() {
         >
           Log out
         </button>
+      </div>
+
+      <div className="max-w-md glass rounded-2xl p-6 border border-red-500/25 space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold text-red-200">Delete account</h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Permanently removes your profile, predictions, group picks, special answers and 5-A-SIDE
+            team. This cannot be undone.
+          </p>
+        </div>
+        {deleteErr && (
+          <p
+            role="alert"
+            className="text-sm text-red-200 rounded-lg bg-red-500/15 border border-red-400/30 px-3 py-2"
+          >
+            {deleteErr}
+          </p>
+        )}
+        {!confirmDelete ? (
+          <button
+            type="button"
+            onClick={() => setConfirmDelete(true)}
+            className="w-full py-2.5 px-4 rounded-xl border border-red-400/40 text-red-200 hover:bg-red-500/10 font-medium text-sm transition-all"
+          >
+            Delete my account
+          </button>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-red-200">
+              Are you sure? This is permanent.
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={deleting}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-red-500/85 hover:bg-red-500 text-white font-semibold text-sm transition-all disabled:opacity-50"
+              >
+                {deleting ? "Deleting…" : "Yes, delete forever"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(false)}
+                disabled={deleting}
+                className="py-2.5 px-4 rounded-xl border border-white/15 text-slate-300 hover:bg-white/8 font-medium text-sm transition-all disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   )

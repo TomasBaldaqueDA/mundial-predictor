@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  async redirects() {
+    return [
+      // Legacy standalone predict page lives in /jogos via inline editor.
+      { source: "/predict", destination: "/jogos", permanent: true },
+    ]
+  },
 }
 
 export default nextConfig

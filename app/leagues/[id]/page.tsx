@@ -25,8 +25,12 @@ export default function LeagueDetailPage({ params }: { params: Promise<{ id: str
         return
       }
 
-      const { data: league, error: e1 } = await supabase.from("private_leagues").select("name, invite_code").eq("id", leagueId).single()
-      if (e1 || !league) {
+      const { data: league } = await supabase
+        .from("private_leagues")
+        .select("name, invite_code")
+        .eq("id", leagueId)
+        .maybeSingle()
+      if (!league) {
         setLoading(false)
         return
       }
@@ -103,30 +107,30 @@ export default function LeagueDetailPage({ params }: { params: Promise<{ id: str
       </div>
 
       <section className="glass rounded-2xl overflow-hidden border border-white/10">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-stone-500 px-4 pt-4 pb-2">Standings (match points)</h2>
-        <table className="w-full text-sm table-modern">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 px-4 pt-4 pb-2">Standings (match points)</h2>
+        <table className="w-full text-sm">
           <thead>
-            <tr className="bg-stone-100/90 text-stone-600 text-left">
+            <tr className="bg-white/5 text-slate-300 text-left">
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Player</th>
               <th className="px-4 py-2 text-right">Pts</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-white/5">
             {rows.map((r, i) => (
-              <tr key={r.user_id} className="border-t border-stone-100 hover:bg-wc-gold-light/20">
-                <td className="px-4 py-2 text-stone-400">{i + 1}</td>
-                <td className="px-4 py-2 font-medium text-stone-800">
-                  <Link href={`/leagues/${leagueId}/member/${r.user_id}`} className="hover:text-wc-gold-dark hover:underline">
+              <tr key={r.user_id} className="hover:bg-white/5 transition-colors">
+                <td className="px-4 py-2 text-slate-500 tabular-nums">{i + 1}</td>
+                <td className="px-4 py-2 font-medium text-slate-100">
+                  <Link href={`/leagues/${leagueId}/member/${r.user_id}`} className="hover:text-wc-gold hover:underline">
                     {r.display_name}
                   </Link>
                 </td>
-                <td className="px-4 py-2 text-right font-semibold tabular-nums text-wc-green-dark">{r.points}</td>
+                <td className="px-4 py-2 text-right font-bold tabular-nums text-wc-gold">{r.points}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        {rows.length === 0 && <p className="px-4 py-6 text-stone-500 text-center text-sm">No points yet — predictions will appear after matches finish.</p>}
+        {rows.length === 0 && <p className="px-4 py-6 text-slate-500 text-center text-sm">No points yet — predictions will appear after matches finish.</p>}
       </section>
 
       <section>

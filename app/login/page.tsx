@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { friendlyAuthError } from "@/lib/auth-errors"
 import Link from "next/link"
 
 function LoginForm() {
@@ -24,7 +25,7 @@ function LoginForm() {
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
     setLoading(false)
     if (err) {
-      setError(err.message)
+      setError(friendlyAuthError(err.message))
       return
     }
     router.push(next || "/")
@@ -41,11 +42,11 @@ function LoginForm() {
     setLoading(true)
     const supabase = createClient()
     const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,
     })
     setLoading(false)
     if (err) {
-      setError(err.message)
+      setError(friendlyAuthError(err.message))
       return
     }
     setForgotSent(true)

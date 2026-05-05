@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { KickoffCountdown } from "@/app/components/KickoffCountdown"
 import { useState, useMemo, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
@@ -146,8 +147,10 @@ function InlinePredictForm({
   }, [match.team1, match.team2])
 
   useEffect(() => {
-    if (knockoutWinner && qualifier !== knockoutWinner) setQualifier(knockoutWinner)
-  }, [knockoutWinner, match.team1, match.team2])
+    if (!knockoutWinner || qualifier === knockoutWinner) return
+    const t = window.setTimeout(() => setQualifier(knockoutWinner), 0)
+    return () => window.clearTimeout(t)
+  }, [knockoutWinner, qualifier, match.team1, match.team2])
 
   async function handleSave() {
     if (closed) { setError("Predictions are closed for this match."); return }
@@ -526,7 +529,8 @@ function MatchCard({
 
   useEffect(() => {
     // Keep saved predictions collapsed by default; open editor only when user taps Edit.
-    setShowPredictionEditor(!hasUserPrediction)
+    const t = window.setTimeout(() => setShowPredictionEditor(!hasUserPrediction), 0)
+    return () => window.clearTimeout(t)
   }, [hasUserPrediction, predictionRowId])
 
   const hasResult = match.score1 != null && match.score2 != null
@@ -576,6 +580,7 @@ function MatchCard({
               Live
             </span>
           )}
+          {!isLive && !hasResult && <KickoffCountdown kickoff={match.kickoff_time} />}
         </span>
         {finishedWithPoints && ptsBadge && (
           <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${ptsBadge}`}>
@@ -922,8 +927,11 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
   useEffect(() => {
     const f = searchParams.get("filter")
     const sub = searchParams.get("subFilter")
-    if (f && (f === "all" || f === "today" || f === "upcoming" || f === "past")) setFilter(f as Filter)
-    if (sub !== null && sub !== undefined) setSubFilter(sub || null)
+    const t = window.setTimeout(() => {
+      if (f && (f === "all" || f === "today" || f === "upcoming" || f === "past")) setFilter(f as Filter)
+      if (sub !== null && sub !== undefined) setSubFilter(sub || null)
+    }, 0)
+    return () => window.clearTimeout(t)
   }, [searchParams])
 
   const setFilterAndUrl = (f: Filter, sub: string | null) => {

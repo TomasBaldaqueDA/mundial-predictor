@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { friendlyAuthError } from "@/lib/auth-errors"
 import Link from "next/link"
 
 // Escape `_` and `%` so display-name uniqueness checks don't accept literal
@@ -66,7 +67,7 @@ export default function RegisterPage() {
     })
     setLoading(false)
     if (err) {
-      setError(err.message)
+      setError(friendlyAuthError(err.message))
       return
     }
     // Supabase returns user but no session when email confirmation is required.

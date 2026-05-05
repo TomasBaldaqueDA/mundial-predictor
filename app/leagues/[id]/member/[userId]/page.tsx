@@ -53,7 +53,7 @@ export default function LeagueMemberPredictionsPage({
         return
       }
 
-      const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", targetUserId).single()
+      const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", targetUserId).maybeSingle()
       setDisplayName((profile?.display_name ?? "").trim() || "Player")
 
       const { data: preds } = await supabase
@@ -140,27 +140,27 @@ export default function LeagueMemberPredictionsPage({
           return (
             <div key={r.pred_id} className="glass rounded-xl p-4 border border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <div className="font-semibold text-stone-800 flex flex-wrap items-center gap-1.5 text-sm">
+                <div className="font-semibold text-slate-100 flex flex-wrap items-center gap-1.5 text-sm">
                   <TeamWithFlag name={r.team1} /> vs <TeamWithFlag name={r.team2} />
                 </div>
-                <div className="text-xs text-stone-500 mt-1">{formatKickoffDisplay(r.kickoff_time)}</div>
-                <div className="text-xs text-stone-600 mt-1">
-                  Guess: <span className="font-bold tabular-nums">{r.pred_score1}–{r.pred_score2}</span>
-                  {r.pred_mvp && <> · MVP: {r.pred_mvp}</>}
+                <div className="text-xs text-slate-400 mt-1">{formatKickoffDisplay(r.kickoff_time)}</div>
+                <div className="text-xs text-slate-300 mt-1">
+                  Guess: <span className="font-bold tabular-nums text-slate-100">{r.pred_score1}–{r.pred_score2}</span>
+                  {r.pred_mvp && <> · MVP: <span className="text-slate-100">{r.pred_mvp}</span></>}
                 </div>
                 {hasRes && (
-                  <div className="text-xs text-emerald-700 mt-1">
-                    Result: {r.score1}–{r.score2}
+                  <div className="text-xs text-emerald-300 mt-1">
+                    Result: <span className="font-semibold tabular-nums">{r.score1}–{r.score2}</span>
                   </div>
                 )}
               </div>
               <div className="shrink-0 text-right">
                 {r.points != null && hasRes ? (
-                  <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full ${r.points > 0 ? "bg-emerald-100 text-emerald-800" : "bg-stone-100 text-stone-600"}`}>
+                  <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full border ${r.points > 0 ? "bg-emerald-500/15 text-emerald-100 border-emerald-400/35" : "bg-white/5 text-slate-300 border-white/10"}`}>
                     {r.points > 0 ? "+" : ""}{r.points} pts
                   </span>
                 ) : (
-                  <span className="text-xs text-stone-400">Pending</span>
+                  <span className="text-xs text-slate-500">Pending</span>
                 )}
               </div>
             </div>

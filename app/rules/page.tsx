@@ -1,5 +1,10 @@
 import Link from "next/link"
 
+export const metadata = {
+  title: "Rules & scoring",
+  description: "How predictions, deadlines and points work in WC26 Predictor.",
+}
+
 export default function RulesPage() {
   return (
     <main className="space-y-8">

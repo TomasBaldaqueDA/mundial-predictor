@@ -23,8 +23,31 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: "WC26 Predictor",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://mundial-predictor.vercel.app"),
+  title: {
+    default: "WC26 Predictor",
+    template: "%s · WC26 Predictor",
+  },
   description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
+  applicationName: "WC26 Predictor",
+  openGraph: {
+    title: "WC26 Predictor",
+    description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
+    type: "website",
+    siteName: "WC26 Predictor",
+  },
+  twitter: {
+    card: "summary",
+    title: "WC26 Predictor",
+    description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
+  },
+  icons: { icon: "/favicon.ico" },
+}
+
+export const viewport = {
+  themeColor: "#030812",
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({

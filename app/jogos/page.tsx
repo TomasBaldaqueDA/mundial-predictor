@@ -2,6 +2,11 @@ import { Suspense } from "react"
 import { supabase } from "@/lib/supabase"
 import { GamesList } from "./GamesList"
 
+export const metadata = {
+  title: "Games",
+  description: "Every match of the 2026 World Cup with predictions and live results.",
+}
+
 export default async function JogosPage() {
   const { data: matches } = await supabase
     .from("matches")

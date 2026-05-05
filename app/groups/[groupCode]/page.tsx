@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 
@@ -18,7 +19,7 @@ export default async function GroupViewPage({
   const { groupCode } = await params
   const code = groupCode?.toUpperCase()
   if (!code || !VALID_GROUPS.includes(code)) {
-    throw new Error("Invalid group.")
+    notFound()
   }
 
   const supabase = await createClient()
@@ -61,7 +62,7 @@ export default async function GroupViewPage({
     groupPoints: number
     correct: Record<number, boolean>
   }
-  const byUser = new Map<string, Omit<UserRow, "groupPoints" | "correct"> & { positions: Record<number, string> }>()
+  const byUser = new Map<string, Omit<UserRow, "groupPoints" | "correct">>()
   for (const row of preds ?? []) {
     const uid = row.user_id
     if (!uid) continue
@@ -75,6 +76,7 @@ export default async function GroupViewPage({
     byUser.get(uid)!.positions[row.position] = row.team_name
   }
 
+  // Scoring per Rules: 1 pt per correct position; +1 perfect-group bonus.
   const rows: UserRow[] = Array.from(byUser.values())
     .filter((r) => [1, 2, 3, 4].every((p) => r.positions[p]))
     .map((r) => {
@@ -83,9 +85,9 @@ export default async function GroupViewPage({
       for (let pos = 1; pos <= 4; pos++) {
         const ok = hasActual && r.positions[pos] === actualOrder[pos]
         correct[pos] = ok
-        if (ok) groupPoints += 2
+        if (ok) groupPoints += 1
       }
-      if (hasActual && groupPoints === 8) groupPoints += 2
+      if (hasActual && groupPoints === 4) groupPoints += 1
       return { ...r, groupPoints, correct }
     })
   rows.sort((a, b) => b.groupPoints - a.groupPoints || a.name.localeCompare(b.name))
@@ -94,23 +96,24 @@ export default async function GroupViewPage({
     <main className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Group {code} – Predictions
+          Group {code} — predictions
         </h1>
         <Link
           href="/groups"
-          className="rounded-xl px-3 py-2 text-white/90 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
+          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
         >
           ← Back to groups
         </Link>
       </div>
 
       {hasActual && (
-        <div className="glass rounded-2xl border-2 border-wc-green/35 p-4 shadow-md">
-          <p className="text-sm font-semibold text-wc-green-dark mb-3 uppercase tracking-wider">Actual order</p>
+        <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">
+          <p className="text-xs font-semibold text-emerald-300 mb-3 uppercase tracking-wider">Actual order</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             {[1, 2, 3, 4].map((pos) => (
-              <span key={pos} className="font-medium text-stone-800">
-                {POSITION_LABELS[pos]}: <TeamWithFlag name={actualOrder[pos]} />
+              <span key={pos} className="font-medium text-slate-100">
+                <span className="text-slate-400">{POSITION_LABELS[pos]}: </span>
+                <TeamWithFlag name={actualOrder[pos]} />
               </span>
             ))}
           </div>
@@ -119,37 +122,40 @@ export default async function GroupViewPage({
 
       {rows.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600">No predictions for this group yet.</p>
+          <p className="text-slate-400">No predictions for this group yet.</p>
         </div>
       ) : (
-        <div className="glass rounded-2xl overflow-hidden">
+        <div className="glass rounded-2xl overflow-x-auto border border-white/10">
           <table className="min-w-full text-sm">
-            <thead className="bg-stone-100/90 border-b border-stone-200">
+            <thead className="bg-white/5 border-b border-white/10">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">Player</th>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">1st</th>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">2nd</th>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">3rd</th>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">4th</th>
-                <th className="px-4 py-3 text-right font-semibold text-stone-700">Points</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">Player</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">1st</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">2nd</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">3rd</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">4th</th>
+                <th className="px-4 py-3 text-right font-semibold text-wc-gold/85">Points</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {rows.map((r) => (
-                <tr
-                  key={r.userId}
-                  className="border-b border-stone-100 hover:bg-wc-gold-light/20 transition-colors"
-                >
-                  <td className="px-4 py-3 font-medium">{r.name}</td>
+                <tr key={r.userId} className="hover:bg-white/5 transition-colors">
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">{r.name}</td>
                   {[1, 2, 3, 4].map((pos) => (
                     <td
                       key={pos}
-                      className={`px-4 py-3 ${r.correct[pos] ? "bg-wc-green-light/60 text-wc-green-dark" : "bg-red-50/80 text-red-800"}`}
+                      className={`px-4 py-3 ${
+                        hasActual
+                          ? r.correct[pos]
+                            ? "bg-emerald-500/12 text-emerald-100"
+                            : "bg-red-500/10 text-red-100/90"
+                          : "text-slate-200"
+                      }`}
                     >
                       <TeamWithFlag name={r.positions[pos]} />
                     </td>
                   ))}
-                  <td className="px-4 py-3 text-right font-semibold">{r.groupPoints}</td>
+                  <td className="px-4 py-3 text-right font-bold tabular-nums text-wc-gold">{r.groupPoints}</td>
                 </tr>
               ))}
             </tbody>

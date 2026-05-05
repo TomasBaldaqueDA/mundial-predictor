@@ -107,13 +107,13 @@ export default async function ThirdPlacePredictionsPage() {
       </p>
 
       {actualThirdPlaceTeams.length === 8 && (
-        <div className="glass rounded-2xl border-2 border-wc-green/35 p-4 shadow-md">
-          <p className="text-sm font-semibold text-wc-green-dark mb-3 uppercase tracking-wider">Actual 8 third-place (qualified)</p>
+        <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">
+          <p className="text-xs font-semibold text-emerald-300 mb-3 uppercase tracking-wider">Actual 8 third-place (qualified)</p>
           <div className="flex flex-wrap gap-2">
             {actualThirdPlaceTeams.map(({ groupCode, teamName }) => (
               <span
                 key={groupCode}
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium bg-wc-green-light border border-wc-green text-wc-green-dark"
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium bg-emerald-500/15 border border-emerald-400/35 text-emerald-100"
               >
                 {groupCode}: <TeamWithFlag name={teamName} />
               </span>
@@ -124,38 +124,39 @@ export default async function ThirdPlacePredictionsPage() {
 
       {rows.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600">No third-place predictions yet.</p>
+          <p className="text-slate-400">No third-place predictions yet.</p>
         </div>
       ) : (
-        <div className="glass rounded-2xl overflow-hidden">
+        <div className="glass rounded-2xl overflow-x-auto border border-white/10">
           <table className="min-w-full text-sm">
-            <thead className="bg-stone-100/90 border-b border-stone-200">
+            <thead className="bg-white/5 border-b border-white/10">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">Player</th>
-                <th className="px-4 py-3 text-left font-semibold text-stone-700">8 third-place teams</th>
-                <th className="px-4 py-3 text-right font-semibold text-stone-700">Points</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">Player</th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-300">8 third-place teams</th>
+                <th className="px-4 py-3 text-right font-semibold text-wc-gold/85">Points</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {rows.map((r) => (
-                <tr
-                  key={r.userId}
-                  className="border-b border-stone-100 hover:bg-wc-gold-light/20 transition-colors"
-                >
-                  <td className="px-4 py-3 font-medium align-top pt-4">{r.name}</td>
+                <tr key={r.userId} className="hover:bg-white/5 transition-colors">
+                  <td className="px-4 py-3 font-medium align-top pt-4 text-slate-100 whitespace-nowrap">{r.name}</td>
                   <td className="px-4 py-3 align-top pt-4">
                     <div className="flex flex-wrap gap-2">
                       {r.groups.map(({ groupCode, teamName, correct }) => (
                         <span
                           key={groupCode}
-                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium ${correct ? "bg-wc-green-light/80 border border-wc-green text-wc-green-dark" : "bg-red-50 border border-red-200 text-red-800"}`}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium ${
+                            correct
+                              ? "bg-emerald-500/12 border border-emerald-400/30 text-emerald-100"
+                              : "bg-red-500/10 border border-red-400/30 text-red-100/90"
+                          }`}
                         >
                           {groupCode}: <TeamWithFlag name={teamName} />
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right font-semibold align-top pt-4">{r.thirdPlaceBonus}</td>
+                  <td className="px-4 py-3 text-right font-bold align-top pt-4 text-wc-gold tabular-nums">{r.thirdPlaceBonus}</td>
                 </tr>
               ))}
             </tbody>

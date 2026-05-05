@@ -1,5 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import { RankingRow } from "./RankingRow"
+
+export const metadata = {
+  title: "Global ranking · WC26 Predictor",
+  description: "Worldwide leaderboard of WC26 Predictor — match points, special questions, group bonuses and 5-A-SIDE.",
+}
 
 type PredictionRow = {
   user_id: string | null
@@ -112,13 +118,22 @@ export default async function RankingPage() {
   }
 
   const finishedMatchIds = new Set((matches ?? []).map((m: { id: number }) => m.id))
-  const rows: PredictionRow[] = (predictions ?? []).map((row: any) => ({
-    user_id: row.user_id ?? null,
-    user_name: row.user_name ?? null,
-    points: row.points,
-    match_id: row.match_id,
-    created_at: row.created_at,
-  }))
+  const rows: PredictionRow[] = (predictions ?? []).map((row) => {
+    const r = row as {
+      user_id?: string | null
+      user_name?: string | null
+      points?: number | null
+      match_id: number
+      created_at: string
+    }
+    return {
+      user_id: r.user_id ?? null,
+      user_name: r.user_name ?? null,
+      points: r.points ?? null,
+      match_id: r.match_id,
+      created_at: r.created_at,
+    }
+  })
 
   const latestPerUserAndMatch = new Map<string, PredictionRow>()
   for (const row of rows) {
@@ -153,13 +168,6 @@ export default async function RankingPage() {
       }
     })
     .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name))
-
-  const podium = (i: number) => {
-    if (i === 0) return { emoji: "🥇", bg: "bg-amber-400/10 border-amber-400/25", text: "text-amber-400" }
-    if (i === 1) return { emoji: "🥈", bg: "bg-slate-400/10 border-slate-400/20", text: "text-slate-300" }
-    if (i === 2) return { emoji: "🥉", bg: "bg-amber-700/10 border-amber-700/20", text: "text-amber-600" }
-    return null
-  }
 
   return (
     <main>
@@ -198,42 +206,9 @@ export default async function RankingPage() {
 
           {/* Rows */}
           <div className="divide-y divide-white/5">
-            {ranking.map((row, index) => {
-              const pod = podium(index)
-              return (
-                <div
-                  key={`${row.name}-${index}`}
-                  className={`grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_6rem] px-4 py-3.5 items-center transition-colors duration-150 hover:bg-white/10 ${
-                    pod ? pod.bg + " border-l-2" : "border-l-2 border-transparent"
-                  }`}
-                >
-                  {/* Position */}
-                  <div className="flex items-center justify-center">
-                    {pod ? (
-                      <span className="text-xl leading-none" aria-label={`Place ${index + 1}`}>{pod.emoji}</span>
-                    ) : (
-                      <span className="text-sm font-semibold text-white/35 tabular-nums">{index + 1}</span>
-                    )}
-                  </div>
-
-                  {/* Name */}
-                  <div className={`pl-2 font-semibold text-sm truncate ${pod ? pod.text : "text-white/85"}`}>
-                    {row.name}
-                  </div>
-
-                  {/* Breakdown — hidden on mobile */}
-                  <div className="text-right text-sm text-white/40 tabular-nums hidden sm:block">{row.matchPts}</div>
-                  <div className="text-right text-sm text-white/40 tabular-nums hidden sm:block">{row.specialPts}</div>
-                  <div className="text-right text-sm text-white/40 tabular-nums hidden sm:block">{row.groupPts}</div>
-                  <div className="text-right text-sm text-white/40 tabular-nums hidden sm:block">{row.fiveASidePts}</div>
-
-                  {/* Total */}
-                  <div className={`text-right font-black text-base tabular-nums ${pod ? "text-wc-gold" : "text-white/90"}`}>
-                    {row.points}
-                  </div>
-                </div>
-              )
-            })}
+            {ranking.map((row, index) => (
+              <RankingRow key={`${row.name}-${index}`} row={row} index={index} />
+            ))}
           </div>
         </div>
       )}

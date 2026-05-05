@@ -10,8 +10,8 @@ export default async function WinnerPredictionsPage() {
     { data: answers },
     { data: profiles },
   ] = await Promise.all([
-    supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).single(),
-    supabase.from("special_questions").select("id, points, correct_answer").eq("type", "winner").limit(1).single(),
+    supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
+    supabase.from("special_questions").select("id, points, correct_answer").eq("type", "winner").limit(1).maybeSingle(),
     supabase.from("special_answers").select("question_id, user_id, answer").not("answer", "eq", ""),
     supabase.from("profiles").select("id, display_name"),
   ])
@@ -36,7 +36,8 @@ export default async function WinnerPredictionsPage() {
   const winnerRows = filtered
     .map((a: { user_id: string; answer: string }) => {
       const team = a.answer.trim()
-      const correct = correctWinner !== "" && team === correctWinner
+      const correct =
+        correctWinner !== "" && team.toLowerCase() === correctWinner.toLowerCase()
       return {
         userId: a.user_id,
         name: profileNames.get(a.user_id) ?? "Anonymous",
@@ -56,7 +57,7 @@ export default async function WinnerPredictionsPage() {
         </h1>
         <Link
           href="/perguntas"
-          className="rounded-xl px-3 py-2 text-stone-600 hover:text-wc-gold hover:bg-wc-gold-light/30 text-sm font-medium transition-all"
+          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
         >
           ← Back to special questions
         </Link>
@@ -64,47 +65,51 @@ export default async function WinnerPredictionsPage() {
 
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600 font-medium">Winner predictions are visible only after the tournament starts.</p>
-          <p className="text-sm text-stone-500 mt-1">Come back once the first match has kicked off.</p>
+          <p className="text-slate-200 font-medium">Winner predictions are visible only after the tournament starts.</p>
+          <p className="text-sm text-slate-400 mt-1">Come back once the first match has kicked off.</p>
         </div>
       )}
 
       {tournamentStarted && winnerRows.length === 0 && (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-stone-600">No winner predictions yet.</p>
+          <p className="text-slate-400">No winner predictions yet.</p>
         </div>
       )}
 
       {tournamentStarted && winnerRows.length > 0 && (
         <div className="space-y-4">
           {correctWinner !== "" && (
-            <div className="glass rounded-2xl px-5 py-4 flex items-center gap-3 accent-bar-gold bg-wc-gold-light/30">
-              <span className="text-stone-600 font-medium">Tournament winner:</span>
-              <TeamWithFlag name={correctWinner} variant="onLight" className="font-semibold [&_img]:h-6 [&_img]:w-10" />
+            <div className="glass rounded-2xl px-5 py-4 flex items-center gap-3 border border-wc-gold/30">
+              <span className="text-slate-300 font-medium">Tournament winner:</span>
+              <TeamWithFlag name={correctWinner} className="font-semibold text-slate-100" />
             </div>
           )}
-          <div className="glass rounded-2xl overflow-hidden shadow-xl shadow-stone-900/5">
-            <table className="min-w-full text-sm table-modern">
-              <thead className="bg-stone-100/95 border-b-2 border-stone-200">
+          <div className="glass rounded-2xl overflow-x-auto border border-white/10">
+            <table className="min-w-full text-sm">
+              <thead className="bg-white/5 border-b border-white/10">
                 <tr>
-                  <th className="px-5 py-4 text-left font-semibold text-stone-700">Player</th>
-                  <th className="px-5 py-4 text-left font-semibold text-stone-700">Winner prediction</th>
-                  <th className="px-5 py-4 text-right font-semibold text-stone-700">Points</th>
+                  <th className="px-5 py-4 text-left font-semibold text-slate-300">Player</th>
+                  <th className="px-5 py-4 text-left font-semibold text-slate-300">Winner prediction</th>
+                  <th className="px-5 py-4 text-right font-semibold text-wc-gold/85">Points</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-white/5">
                 {winnerRows.map((row) => (
                   <tr
                     key={row.userId}
-                    className={`border-b border-stone-100 last:border-0 transition-colors ${
-                      row.correct ? "bg-wc-green-light/50 text-wc-green-dark hover:bg-wc-green-light/60" : correctWinner !== "" ? "bg-red-50/80 text-red-800 hover:bg-red-50" : "hover:bg-wc-gold-light/20"
+                    className={`transition-colors ${
+                      row.correct
+                        ? "bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-100"
+                        : correctWinner !== ""
+                          ? "bg-red-500/10 hover:bg-red-500/15 text-red-100/90"
+                          : "hover:bg-white/5 text-slate-100"
                     }`}
                   >
                     <td className="px-5 py-3.5 font-medium">{row.name}</td>
                     <td className="px-5 py-3.5">
-                      <TeamWithFlag name={row.team} variant="onLight" className="[&_img]:h-5 [&_img]:w-8" />
+                      <TeamWithFlag name={row.team} />
                     </td>
-                    <td className="px-5 py-3.5 text-right font-medium">{row.points}</td>
+                    <td className="px-5 py-3.5 text-right font-bold tabular-nums text-wc-gold">{row.points}</td>
                   </tr>
                 ))}
               </tbody>
