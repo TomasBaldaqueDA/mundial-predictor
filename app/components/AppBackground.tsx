@@ -18,11 +18,11 @@ type AppBgKey =
 function pathnameToBgKey(pathname: string): AppBgKey {
   const p = pathname || "/"
   if (p === "/") return "home"
-  if (p.startsWith("/perguntas")) return "perguntas"
+  if (p.startsWith("/questions")) return "perguntas"
   if (p.startsWith("/leagues")) return "leagues"
   if (p.startsWith("/groups")) return "groups"
   if (p.startsWith("/five-a-side")) return "five"
-  if (p.startsWith("/jogos") || p.startsWith("/match")) return "matches"
+  if (p.startsWith("/games") || p.startsWith("/match")) return "matches"
   if (p.startsWith("/predict")) return "predict"
   if (p.startsWith("/ranking")) return "ranking"
   if (p.startsWith("/rules")) return "rules"

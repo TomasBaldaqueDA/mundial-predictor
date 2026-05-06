@@ -23,7 +23,7 @@ export default function HomePage() {
 
         <div className="flex flex-wrap justify-center gap-3 mb-4">
           <Link
-            href="/jogos"
+            href="/games"
             className="btn-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden>
@@ -51,7 +51,7 @@ export default function HomePage() {
       {/* ─── Feature cards ─── */}
       <section className="grid sm:grid-cols-2 gap-4">
         <Link
-          href="/jogos"
+          href="/games"
           className="group glass rounded-2xl p-6 hover:-translate-y-1.5 opacity-0 animate-fade-in-up stagger-1 block cursor-pointer transition-all duration-250"
         >
           <div className="flex items-start gap-4">
@@ -86,7 +86,7 @@ export default function HomePage() {
         </Link>
 
         <Link
-          href="/perguntas"
+          href="/questions"
           className="group glass rounded-2xl p-6 hover:-translate-y-1.5 opacity-0 animate-fade-in-up stagger-3 block cursor-pointer transition-all duration-250"
         >
           <div className="flex items-start gap-4">

@@ -6,11 +6,11 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 
 const links = [
-  { href: "/jogos", label: "Games" },
+  { href: "/games", label: "Games" },
   { href: "/leagues", label: "Leagues", activeAlso: ["/ranking"] },
   { href: "/groups", label: "Groups" },
   { href: "/five-a-side", label: "5-A-Side" },
-  { href: "/perguntas", label: "Questions" },
+  { href: "/questions", label: "Questions" },
   { href: "/rules", label: "Rules" },
   { href: "/profile", label: "Profile", isProfile: true },
 ]

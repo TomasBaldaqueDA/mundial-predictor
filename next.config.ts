@@ -23,8 +23,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Legacy standalone predict page lives in /jogos via inline editor.
-      { source: "/predict", destination: "/jogos", permanent: true },
+      // Legacy Portuguese URLs — keep old links working after the EN rename.
+      { source: "/jogos", destination: "/games", permanent: true },
+      { source: "/jogos/:path*", destination: "/games/:path*", permanent: true },
+      { source: "/perguntas", destination: "/questions", permanent: true },
+      { source: "/perguntas/:path*", destination: "/questions/:path*", permanent: true },
+      // Legacy standalone predict page lives in /games via inline editor.
+      { source: "/predict", destination: "/games", permanent: true },
     ]
   },
 }

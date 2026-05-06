@@ -216,7 +216,7 @@ export default function PerguntasPage() {
             }}
           />
           <Link
-            href="/perguntas/winners"
+            href="/questions/winners"
             className="absolute top-3 left-3 rounded-full bg-gradient-to-r from-amber-700 to-amber-900 text-amber-50 px-3 py-1.5 text-xs font-semibold shadow-lg shadow-amber-900/40 hover:from-amber-600 hover:to-amber-800 hover:scale-[1.02] transition-all duration-200 z-10 ring-1 ring-amber-400/40"
           >
             View predictions
@@ -320,7 +320,7 @@ export default function PerguntasPage() {
               </p>
             )}
             <Link
-              href="/perguntas/answers"
+              href="/questions/answers"
               className="rounded-full bg-wc-green/95 text-white px-3 py-1.5 text-xs font-semibold hover:bg-wc-green shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ml-auto"
             >
               View answers

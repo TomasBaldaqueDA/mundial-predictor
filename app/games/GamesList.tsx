@@ -878,6 +878,51 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
       setPowerUpBusyId(null)
       return
     }
+
+    // If another match in this phase is already holding ×2 and the user is
+    // trying to enable here, offer to transfer instead of erroring out.
+    if (enabled) {
+      const bucket = powerUpBucketByMatchId.get(match.id) ?? "Other"
+      const holderId = bucket !== "Other" ? phasePowerUpHolder.get(bucket) : undefined
+      if (holderId != null && holderId !== match.id) {
+        const holderMatch = allMatchesOrdered.find((m) => m.id === holderId)
+        const holderLabel = holderMatch ? `${holderMatch.team1} vs ${holderMatch.team2}` : "another match"
+        const ok = window.confirm(
+          `×2 is currently active on ${holderLabel}. Move it to this match instead?`
+        )
+        if (!ok) {
+          setPowerUpBusyId(null)
+          return
+        }
+        // Clear the holder first.
+        const holderRowId = predictionRowIds.get(holderId)
+        if (holderRowId != null) {
+          const { error: clearErr } = await supabase
+            .from("predictions")
+            .update({ points_multiplier: 1 })
+            .eq("id", holderRowId)
+            .eq("user_id", user.id)
+          if (clearErr) {
+            setPowerUpErr({ mid: match.id, msg: clearErr.message })
+            setPowerUpBusyId(null)
+            return
+          }
+          setPredictionsByMatch((prev) => {
+            const p = prev.get(holderId)
+            if (!p) return prev
+            const n = new Map(prev)
+            n.set(holderId, { ...p, points_multiplier: 1 })
+            return n
+          })
+        }
+        setPowerUpIntent((prev) => {
+          const n = new Map(prev)
+          n.delete(holderId)
+          return n
+        })
+      }
+    }
+
     const rowId = predictionRowIds.get(match.id)
     const v = await validatePowerUpPhase(supabase, {
       userId: user.id,
@@ -939,7 +984,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
     const params = new URLSearchParams()
     params.set("filter", f)
     if (sub) params.set("subFilter", sub)
-    router.replace(`/jogos?${params.toString()}`, { scroll: false })
+    router.replace(`/games?${params.toString()}`, { scroll: false })
   }
 
   const setSubFilterAndUrl = (sub: string | null) => {
@@ -947,7 +992,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
     const params = new URLSearchParams()
     params.set("filter", filter)
     if (sub) params.set("subFilter", sub)
-    router.replace(`/jogos?${params.toString()}`, { scroll: false })
+    router.replace(`/games?${params.toString()}`, { scroll: false })
   }
 
   useEffect(() => {
@@ -1032,19 +1077,9 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
     return holder
   }, [allMatchesOrdered, powerUpBucketByMatchId, predictionsByMatch, powerUpIntent])
 
-  const powerUpPhaseLockedByMatchId = useMemo(() => {
-    const locked = new Map<number, boolean>()
-    for (const m of allMatchesOrdered) {
-      const b = powerUpBucketByMatchId.get(m.id) ?? "Other"
-      if (b === "Other") {
-        locked.set(m.id, false)
-        continue
-      }
-      const holderId = phasePowerUpHolder.get(b)
-      locked.set(m.id, holderId != null && holderId !== m.id)
-    }
-    return locked
-  }, [allMatchesOrdered, powerUpBucketByMatchId, phasePowerUpHolder])
+  // Phase-lock visual hint is no longer used: clicking the toggle on a locked
+  // match now opens a confirm dialog to transfer ×2 from the holder.
+  void phasePowerUpHolder
 
   const showUpcoming = filter === "all" || filter === "upcoming"
   const showPast = filter === "all" || filter === "past"
@@ -1103,7 +1138,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
               onPowerUpToggle={(en) => { void handleCardPowerUpToggle(match, en) }}
               powerUpBusy={powerUpBusyId === match.id}
               powerUpError={powerUpErr?.mid === match.id ? powerUpErr.msg : null}
-              powerUpPhaseLocked={powerUpPhaseLockedByMatchId.get(match.id) ?? false}
+              powerUpPhaseLocked={false}
             />
           ))}
         </div>

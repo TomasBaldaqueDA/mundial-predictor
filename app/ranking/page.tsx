@@ -180,7 +180,7 @@ export default async function RankingPage() {
           <p className="text-white/40 text-sm mt-0.5">Overall standings · WC26 Predictor</p>
         </div>
         <Link
-          href="/jogos"
+          href="/games"
           className="rounded-xl px-4 py-2 text-white/50 hover:text-white/80 hover:bg-white/8 text-sm font-medium transition-all border border-transparent hover:border-white/10"
         >
           ← Games

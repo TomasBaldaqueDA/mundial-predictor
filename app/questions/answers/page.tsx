@@ -40,7 +40,7 @@ export default async function SpecialAnswersPage() {
           Special questions – answers
         </h1>
         <Link
-          href="/perguntas"
+          href="/questions"
           className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
         >
           ← Back to special questions

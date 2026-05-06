@@ -15,7 +15,7 @@ export default function NotFound() {
           Back to home
         </Link>
         <Link
-          href="/jogos"
+          href="/games"
           className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/15 text-slate-200 hover:bg-white/8 text-sm font-medium transition-all"
         >
           View games

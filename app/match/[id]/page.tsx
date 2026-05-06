@@ -18,7 +18,7 @@ export default async function MatchPage({
   const backSearch = new URLSearchParams()
   if (filter) backSearch.set("filter", filter)
   if (subFilter) backSearch.set("subFilter", subFilter)
-  const backHref = backSearch.toString() ? `/jogos?${backSearch.toString()}` : "/jogos"
+  const backHref = backSearch.toString() ? `/games?${backSearch.toString()}` : "/games"
 
   // Reject non-numeric ids before hitting Supabase so a typo or probe maps to 404.
   const matchIdNum = Number(id)
@@ -58,7 +58,20 @@ export default async function MatchPage({
     throw new Error(predError.message)
   }
 
-  const userIds = [...new Set((allPredictions ?? []).map((p: any) => p.user_id).filter(Boolean))]
+  type PredictionDbRow = {
+    user_id: string | null
+    user_name: string | null
+    pred_score1: number | null
+    pred_score2: number | null
+    pred_mvp: string | null
+    pred_qualifier: string | null
+    points: number | null
+    created_at: string
+  }
+
+  const preds = (allPredictions ?? []) as PredictionDbRow[]
+
+  const userIds = [...new Set(preds.map((p) => p.user_id).filter(Boolean))] as string[]
   const { data: profiles } = userIds.length
     ? await supabase.from("profiles").select("id, display_name").in("id", userIds)
     : { data: [] }
@@ -68,13 +81,13 @@ export default async function MatchPage({
     if (name) profileNameByUserId.set(p.id, name)
   }
 
-  const displayName = (p: any) =>
+  const displayName = (p: PredictionDbRow) =>
     (p.user_id && profileNameByUserId.get(p.user_id)) ||
     (p.user_name ?? "").trim() ||
     "Anonymous"
 
-  const latestByUser = new Map<string, any>()
-  for (const p of allPredictions ?? []) {
+  const latestByUser = new Map<string, PredictionDbRow>()
+  for (const p of preds) {
     const createdAt = new Date(p.created_at)
     if (createdAt > kickoff) continue
     const key = p.user_id ?? ((p.user_name ?? "").trim() || "Anonymous")
@@ -166,7 +179,19 @@ export default async function MatchPage({
                       <td className="px-4 py-3">
                         {p.score1} - {p.score2}{" "}
                         <span className="text-stone-500">
-                          ({p.score1 > p.score2 ? <><TeamWithFlag name={match.team1} suffix=" wins" /></> : p.score2 > p.score1 ? <><TeamWithFlag name={match.team2} suffix=" wins" /></> : "Draw"})
+                          (
+                          {(p.score1 ?? 0) > (p.score2 ?? 0) ? (
+                            <>
+                              <TeamWithFlag name={match.team1} suffix=" wins" />
+                            </>
+                          ) : (p.score2 ?? 0) > (p.score1 ?? 0) ? (
+                            <>
+                              <TeamWithFlag name={match.team2} suffix=" wins" />
+                            </>
+                          ) : (
+                            "Draw"
+                          )}
+                          )
                         </span>
                       </td>
                       {isKnockout && (

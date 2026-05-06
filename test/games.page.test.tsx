@@ -14,7 +14,7 @@ vi.mock("@/lib/supabase", () => ({
   },
 }))
 
-vi.mock("@/app/jogos/GamesList", () => ({
+vi.mock("@/app/games/GamesList", () => ({
   GamesList: (props: { upcoming: unknown[]; past: unknown[] }) => {
     gamesListSpy(props)
     return (
@@ -26,7 +26,7 @@ vi.mock("@/app/jogos/GamesList", () => ({
   },
 }))
 
-import JogosPage from "@/app/jogos/page"
+import JogosPage from "@/app/games/page"
 
 describe("Games page", () => {
   it("splits matches into upcoming and past", async () => {

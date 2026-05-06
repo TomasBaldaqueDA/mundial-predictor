@@ -8,7 +8,7 @@ vi.mock("@/lib/supabase/client", () => ({
   createClient: () => createClientMock(),
 }))
 
-import PerguntasPage from "@/app/perguntas/page"
+import PerguntasPage from "@/app/questions/page"
 
 describe("Special questions page", () => {
   it("uses a compact non-negative numeric input for number questions", async () => {
