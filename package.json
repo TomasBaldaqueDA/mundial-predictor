@@ -9,6 +9,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "qa:seed": "node scripts/qa-seed.mjs",
+    "qa:audit": "node scripts/qa-audit.mjs",
+    "sync:squads": "node scripts/sync-cartoon-squads.mjs",
     "prepare": "husky"
   },
   "dependencies": {

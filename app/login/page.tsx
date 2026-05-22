@@ -4,6 +4,7 @@ import { Suspense, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
+import { safeRedirectPath } from "@/lib/safe-redirect"
 import Link from "next/link"
 
 function LoginForm() {
@@ -28,7 +29,7 @@ function LoginForm() {
       setError(friendlyAuthError(err.message))
       return
     }
-    router.push(next || "/")
+    router.push(safeRedirectPath(next, "/"))
     router.refresh()
   }
 
@@ -37,7 +38,7 @@ function LoginForm() {
     setLoading(true)
     const supabase = createClient()
     const callback = new URL("/auth/callback", window.location.origin)
-    if (next) callback.searchParams.set("next", next)
+    if (next) callback.searchParams.set("next", safeRedirectPath(next, "/"))
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: callback.toString() },

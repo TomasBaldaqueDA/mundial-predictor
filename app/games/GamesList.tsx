@@ -88,6 +88,27 @@ function pickGroupStageRoundRange(matches: Match[], startIndex: number, endIndex
   )
 }
 
+function computePowerUpPhaseState(
+  matches: Match[],
+  predictionsByMatch: Map<number, UserPrediction>,
+  powerUpIntent: Map<number, boolean>
+) {
+  const bucketByMatchId = buildPowerUpBucketMap(matches)
+  const holderByBucket = new Map<PowerUpBucket, number>()
+  const boosted = (mid: number) => {
+    const p = predictionsByMatch.get(mid)
+    if (p && Number(p.points_multiplier) === 2) return true
+    return powerUpIntent.get(mid) === true
+  }
+  for (const m of matches) {
+    if (!boosted(m.id)) continue
+    const b = bucketByMatchId.get(m.id) ?? "Other"
+    if (b === "Other") continue
+    if (!holderByBucket.has(b)) holderByBucket.set(b, m.id)
+  }
+  return { bucketByMatchId, holderByBucket, matches }
+}
+
 // ─── Inline prediction form ───────────────────────────────────────────────────
 
 function InlinePredictForm({
@@ -882,8 +903,13 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
     // If another match in this phase is already holding ×2 and the user is
     // trying to enable here, offer to transfer instead of erroring out.
     if (enabled) {
-      const bucket = powerUpBucketByMatchId.get(match.id) ?? "Other"
-      const holderId = bucket !== "Other" ? phasePowerUpHolder.get(bucket) : undefined
+      const { bucketByMatchId, holderByBucket, matches: allMatchesOrdered } = computePowerUpPhaseState(
+        [...past, ...upcoming],
+        predictionsByMatch,
+        powerUpIntent
+      )
+      const bucket = bucketByMatchId.get(match.id) ?? "Other"
+      const holderId = bucket !== "Other" ? holderByBucket.get(bucket) : undefined
       if (holderId != null && holderId !== match.id) {
         const holderMatch = allMatchesOrdered.find((m) => m.id === holderId)
         const holderLabel = holderMatch ? `${holderMatch.team1} vs ${holderMatch.team2}` : "another match"
@@ -1053,33 +1079,6 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
       return n
     })
   }
-
-  const allMatchesOrdered = useMemo(() => [...past, ...upcoming], [past, upcoming])
-
-  const powerUpBucketByMatchId = useMemo(
-    () => buildPowerUpBucketMap(allMatchesOrdered),
-    [allMatchesOrdered]
-  )
-
-  const phasePowerUpHolder = useMemo(() => {
-    const holder = new Map<PowerUpBucket, number>()
-    function boosted(mid: number): boolean {
-      const p = predictionsByMatch.get(mid)
-      if (p && Number(p.points_multiplier) === 2) return true
-      return powerUpIntent.get(mid) === true
-    }
-    for (const m of allMatchesOrdered) {
-      if (!boosted(m.id)) continue
-      const b = powerUpBucketByMatchId.get(m.id) ?? "Other"
-      if (b === "Other") continue
-      if (!holder.has(b)) holder.set(b, m.id)
-    }
-    return holder
-  }, [allMatchesOrdered, powerUpBucketByMatchId, predictionsByMatch, powerUpIntent])
-
-  // Phase-lock visual hint is no longer used: clicking the toggle on a locked
-  // match now opens a confirm dialog to transfer ×2 from the holder.
-  void phasePowerUpHolder
 
   const showUpcoming = filter === "all" || filter === "upcoming"
   const showPast = filter === "all" || filter === "past"

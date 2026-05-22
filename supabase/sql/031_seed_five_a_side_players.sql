@@ -1,5 +1,7 @@
 -- Seed 5-A-SIDE players: 2 GK, 3 DF, 4 MD, 3 ST per team (48 teams from TEAMS_BY_GROUP).
 -- Run after 029_five_a_side_players.sql.
+-- For production squads (26 per team: 3 GK, 8 DF, 8 MD, 7 ST), run 046 after this file
+-- (046 replaces all rows; see its header for pick-reset implications).
 
 WITH teams(team) AS (
   VALUES

@@ -1,0 +1,11 @@
+{
+  "name": "WC26 Predictor",
+  "short_name": "WC26",
+  "description": "Predict the 2026 World Cup",
+  "start_url": "/games",
+  "display": "browser",
+  "background_color": "#030812",
+  "theme_color": "#030812",
+  "orientation": "portrait-primary",
+  "icons": [{ "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }]
+}

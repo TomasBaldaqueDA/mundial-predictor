@@ -40,7 +40,10 @@ export default function LeaguesPage() {
   }
 
   useEffect(() => {
-    refresh()
+    const t = window.setTimeout(() => {
+      void refresh()
+    }, 0)
+    return () => window.clearTimeout(t)
   }, [])
 
   async function createLeague(e: React.FormEvent) {

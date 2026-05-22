@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { isCronAuthorized } from "@/lib/cron-auth"
 import { supabaseAdmin } from "@/lib/supabase-server"
 
 type LiveFixture = {
@@ -294,10 +295,7 @@ function pickBestMatch(feed: LiveFixture, matches: MatchRow[]): MatchRow | null 
  */
 export async function POST(request: NextRequest) {
   const startedAt = Date.now()
-  const secret = process.env.CRON_SECRET
-  const auth = request.headers.get("authorization")
-  const ok = !!secret && auth === `Bearer ${secret}`
-  if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!isCronAuthorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const db = supabaseAdmin
   if (!db) return NextResponse.json({ error: "Server misconfigured" }, { status: 503 })

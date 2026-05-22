@@ -37,6 +37,5 @@ if (!window.ResizeObserver) {
     unobserve() {}
     disconnect() {}
   }
-  // @ts-ignore - test-only polyfill assignment
   window.ResizeObserver = ResizeObserverMock
 }

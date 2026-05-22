@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
       { source: "/perguntas/:path*", destination: "/questions/:path*", permanent: true },
       // Legacy standalone predict page lives in /games via inline editor.
       { source: "/predict", destination: "/games", permanent: true },
+      // Legacy in-browser "app mode" — native apps will ship separately.
+      { source: "/app", destination: "/games", permanent: false },
+      { source: "/app/:path*", destination: "/:path*", permanent: false },
     ]
   },
 }

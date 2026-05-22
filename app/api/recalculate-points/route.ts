@@ -3,15 +3,14 @@
  * Recalculates stored points for finished matches (matches SQL trigger logic + multiplier).
  */
 import { NextRequest, NextResponse } from "next/server"
+import { isCronAuthorized } from "@/lib/cron-auth"
 import { supabaseAdmin } from "@/lib/supabase-server"
 import { calculateMatchPoints } from "@/lib/points"
 
 export async function POST(request: NextRequest) {
   // Require the same shared secret used for cron endpoints. Without this,
   // anyone could trigger a full recalculation of stored points.
-  const secret = process.env.CRON_SECRET
-  const auth = request.headers.get("authorization")
-  if (!secret || auth !== `Bearer ${secret}`) {
+  if (!isCronAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

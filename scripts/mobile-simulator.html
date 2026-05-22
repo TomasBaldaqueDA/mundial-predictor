@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <title>WC26 — simulador mobile</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+        padding: 1.5rem;
+        background: radial-gradient(circle at 50% 0%, #1e293b, #020617 55%);
+        font-family: system-ui, sans-serif;
+        color: #e2e8f0;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        text-align: center;
+        max-width: 22rem;
+        line-height: 1.45;
+      }
+      .phone {
+        position: relative;
+        width: 390px;
+        height: 844px;
+        border-radius: 44px;
+        padding: 14px;
+        background: linear-gradient(145deg, #0f172a, #1e293b);
+        box-shadow:
+          0 0 0 2px #334155,
+          0 24px 80px rgba(0, 0, 0, 0.55),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+      .phone::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 110px;
+        height: 26px;
+        border-radius: 20px;
+        background: #020617;
+        z-index: 2;
+      }
+      .screen {
+        width: 100%;
+        height: 100%;
+        border-radius: 32px;
+        background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0a1020 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem 1.5rem;
+        text-align: center;
+      }
+      .screen svg {
+        width: 3rem;
+        height: 3rem;
+        opacity: 0.35;
+      }
+      .screen strong {
+        font-size: 0.9rem;
+        color: #f1f5f9;
+      }
+      .screen span {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        line-height: 1.4;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+      .toolbar button {
+        font: inherit;
+        font-size: 0.8rem;
+        padding: 0.55rem 1rem;
+        border-radius: 999px;
+        border: 1px solid #fbbf24;
+        background: #422006;
+        color: #fef3c7;
+        cursor: pointer;
+      }
+      .toolbar button.secondary {
+        border-color: #475569;
+        background: #1e293b;
+        color: #f8fafc;
+      }
+      .toolbar button:hover {
+        filter: brightness(1.08);
+      }
+      .hint {
+        font-size: 0.72rem;
+        color: #64748b;
+        max-width: 20rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Simulador iPhone 14 (390×844)</h1>
+    <p>
+      O site não pode aparecer <em>dentro</em> desta moldura (a Vercel bloqueia iframes por
+      segurança). Abre numa <strong>janela do browser</strong> com o mesmo tamanho de ecrã.
+    </p>
+
+    <div class="phone" aria-hidden="true">
+      <div class="screen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="5" y="2" width="14" height="20" rx="3" />
+          <path d="M9 18h6" />
+        </svg>
+        <strong>Pré-visualização mobile</strong>
+        <span>Clica no botão dourado para abrir o 5-A-SIDE numa janela 390px de largura.</span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" id="open">Abrir simulador (5-A-SIDE)</button>
+      <button type="button" class="secondary" id="open-home">Abrir home</button>
+    </div>
+    <p class="hint">
+      Se o popup for bloqueado, permite popups para este ficheiro ou usa F12 → modo dispositivo
+      (Ctrl+Shift+M) na página normal.
+    </p>
+
+    <script>
+      const APP_URL = "https://mundial-predictor.vercel.app/five-a-side"
+      const HOME_URL = "https://mundial-predictor.vercel.app/"
+      const FEATURES =
+        "popup=yes,width=390,height=900,left=120,top=40,resizable=yes,scrollbars=yes"
+
+      function openMobile(url) {
+        const w = window.open(url, "wc26-mobile-preview", FEATURES)
+        if (!w) {
+          alert(
+            "O browser bloqueou a janela. Permite popups ou abre manualmente:\n" + url
+          )
+          return
+        }
+        try {
+          w.focus()
+        } catch (_) {}
+      }
+
+      document.getElementById("open").onclick = () => openMobile(APP_URL)
+      document.getElementById("open-home").onclick = () => openMobile(HOME_URL)
+
+      // Tenta abrir automaticamente uma vez (podes ter de permitir popups).
+      setTimeout(() => openMobile(APP_URL), 400)
+    </script>
+  </body>
+</html>

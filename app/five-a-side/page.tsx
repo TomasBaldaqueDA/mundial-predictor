@@ -16,6 +16,8 @@ type Player = {
   wins: number
   clean_sheets: number
   mvp: number
+  /** Public or same-origin image URL; when set, shown on lineup cards (and optional thumb in picker). */
+  photo_url: string | null
 }
 
 type Picks = {
@@ -121,7 +123,11 @@ export default function FiveASidePage() {
         { data: firstMatch },
         { data: finishedRows },
       ] = await Promise.all([
-        supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp").order("team").order("name"),
+        supabase
+          .from("five_a_side_players")
+          .select("id, name, team, position, goals, assists, wins, clean_sheets, mvp, photo_url")
+          .order("team")
+          .order("name"),
         supabase.auth.getUser(),
         supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
         supabase.from("matches").select("team1, team2").eq("status", "finished"),
@@ -140,6 +146,7 @@ export default function FiveASidePage() {
         wins: Number(p.wins) || 0,
         clean_sheets: Number(p.clean_sheets) || 0,
         mvp: Number(p.mvp) || 0,
+        photo_url: (typeof p.photo_url === "string" ? p.photo_url : null) as string | null,
       })) as Player[]
       setPlayers(list)
       const byPos: Record<string, Player[]> = { gk: [], df: [], md: [], st: [] }
@@ -174,7 +181,6 @@ export default function FiveASidePage() {
   // The Rules page documents that the team locks at the first match kickoff,
   // not at first submit, so users can keep editing until then.
   const submittedAt = picks?.submitted_at ?? null
-  const locked = lockedByTime
 
   const getPlayerId = (slot: SlotKey): string | null => {
     if (!picks) return null
@@ -477,6 +483,13 @@ export default function FiveASidePage() {
                       {shirtNumberByPlayerId.get(p.id) ?? "—"}
                     </span>
                     <img src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
+                    {p.photo_url ? (
+                      <img
+                        src={p.photo_url}
+                        alt=""
+                        className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-black/15 bg-slate-700"
+                      />
+                    ) : null}
                     <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
                     <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
                   </button>
@@ -533,20 +546,29 @@ function KitShirtBack({
   number,
   name,
   team,
+  size = "default",
 }: {
   kit: KitStyle
   number: number
   name: string
   team: string
+  size?: "default" | "mini"
 }) {
   const bg = kitShirtBackground(kit)
   const n = number < 1 ? 1 : number
   const label = n > 99 ? "99" : String(n)
   const nameLine = shirtBackNameLabel(name, team)
   const nameShadow = "0 0 3px #000, 0 1px 4px #000, 0 -1px 2px #000"
+  const mini = size === "mini"
 
   return (
-    <div className="relative mx-2 mt-0.5 flex aspect-[4/5] max-h-[8rem] flex-col overflow-hidden rounded-t-[14px] border border-black/30 shadow-[inset_0_-16px_28px_rgba(0,0,0,0.18)]">
+    <div
+      className={
+        mini
+          ? "relative flex aspect-[4/5] w-[2.35rem] shrink-0 flex-col overflow-hidden rounded-t-[6px] border border-black/35 shadow-md"
+          : "relative mx-2 mt-0.5 flex aspect-[4/5] max-h-[8rem] flex-col overflow-hidden rounded-t-[14px] border border-black/30 shadow-[inset_0_-16px_28px_rgba(0,0,0,0.18)]"
+      }
+    >
       <div className="absolute inset-0" style={bg} />
       <div
         className="absolute top-[16%] bottom-[14%] left-0 w-[11%] border-r border-black/15"
@@ -556,28 +578,30 @@ function KitShirtBack({
         className="absolute top-[16%] bottom-[14%] right-0 w-[11%] border-l border-black/15"
         style={{ backgroundColor: kit.secondary }}
       />
-      <div className="relative z-[1] flex justify-center pt-1.5">
+      <div className={`relative z-[1] flex justify-center ${mini ? "pt-0.5" : "pt-1.5"}`}>
         <div
-          className="h-2 w-9 rounded-b-md border border-black/25 shadow-sm"
+          className={`rounded-b-md border border-black/25 shadow-sm ${mini ? "h-1 w-5" : "h-2 w-9"}`}
           style={{ background: kit.accent ?? kit.secondary }}
         />
       </div>
-      <div className="relative z-[1] flex min-h-0 flex-1 flex-col items-center px-1 pb-1.5">
-        <span
-          className="max-h-[2.75rem] w-full shrink-0 overflow-hidden pt-1.5 text-center text-[9px] font-extrabold uppercase leading-tight tracking-wide line-clamp-2 sm:pt-2 sm:text-[11px]"
-          style={{
-            color: "#ffffff",
-            textShadow: nameShadow,
-            wordBreak: "break-word",
-          }}
-        >
-          {nameLine}
-        </span>
-        <div className="flex min-h-0 w-full flex-1 items-center justify-center pb-1">
+      <div className={`relative z-[1] flex min-h-0 flex-1 flex-col items-center ${mini ? "px-0.5 pb-0.5" : "px-1 pb-1.5"}`}>
+        {!mini && (
+          <span
+            className="max-h-[2.75rem] w-full shrink-0 overflow-hidden pt-1.5 text-center text-[9px] font-extrabold uppercase leading-tight tracking-wide line-clamp-2 sm:pt-2 sm:text-[11px]"
+            style={{
+              color: "#ffffff",
+              textShadow: nameShadow,
+              wordBreak: "break-word",
+            }}
+          >
+            {nameLine}
+          </span>
+        )}
+        <div className={`flex w-full flex-1 items-center justify-center ${mini ? "pb-0" : "pb-1"}`}>
           <span
             className="font-black tabular-nums leading-none tracking-tight"
             style={{
-              fontSize: label.length >= 2 ? "1.95rem" : "2.2rem",
+              fontSize: mini ? (label.length >= 2 ? "0.55rem" : "0.62rem") : label.length >= 2 ? "1.95rem" : "2.2rem",
               color: "#ffffff",
               textShadow: "0 0 5px #000, 0 3px 8px #000, 0 -1px 4px #000",
             }}
@@ -657,8 +681,10 @@ function FantasyPlayerCard({
   const statMuted = lightKit ? "text-zinc-400" : "text-slate-400/85"
   const statVal = "tabular-nums text-[9px] sm:text-[10px]"
 
+  const heroPhoto = !!player?.photo_url
+
   return (
-    <div className="relative w-[9.25rem] sm:w-40">
+    <div className={`relative ${heroPhoto ? "w-[10.5rem] sm:w-[11.5rem]" : "w-[9.25rem] sm:w-40"}`}>
       {isPickerOpen && (
         <div className="pointer-events-none absolute -inset-1 z-20" aria-hidden>
           <span className="absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-cyan-400/70 rounded-tl-sm" />
@@ -690,13 +716,42 @@ function FantasyPlayerCard({
 
         {player ? (
           <>
-            <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
+            {player.photo_url ? (
+              <div className="relative z-[1] px-2 pt-0.5 pb-1">
+                <div className="relative w-full">
+                  <img
+                    src={player.photo_url}
+                    alt=""
+                    className="block w-full min-h-[7.75rem] max-h-[10.5rem] aspect-[3/4] rounded-xl object-cover object-top border-2 border-white/45 shadow-[0_8px_24px_rgba(0,0,0,0.55)] bg-slate-900"
+                  />
+                  <div className="absolute -bottom-0.5 right-0 z-[2]">
+                    <KitShirtBack
+                      size="mini"
+                      kit={getKitForTeam(player.team)}
+                      number={shirtNumber}
+                      name={player.name}
+                      team={player.team}
+                    />
+                  </div>
+                </div>
+                <p
+                  className={`mt-1 truncate text-center text-[10px] font-extrabold uppercase tracking-wide ${
+                    lightKit ? "text-zinc-700" : "text-slate-100"
+                  }`}
+                  title={player.name}
+                >
+                  {shirtBackNameLabel(player.name, player.team)}
+                </p>
+              </div>
+            ) : (
+              <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
+            )}
 
             {/* Stats — row1: G A [CS] MVP (CS only GK/DF; MD/ST = 3 cols) · row2: GP W POS NAT */}
             <div
-              className={`relative mt-2 border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] ${
-                lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"
-              }`}
+              className={`relative border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] ${
+                player.photo_url ? "mt-1" : "mt-2"
+              } ${lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"}`}
             >
               <div className="space-y-1">
                 <div className={`grid gap-x-0.5 ${showCleanSheet ? "grid-cols-4" : "grid-cols-3"}`}>
