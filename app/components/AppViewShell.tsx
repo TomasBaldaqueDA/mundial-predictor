@@ -2,10 +2,10 @@
 
 import Link from "next/link"
 import { AppBackground } from "@/app/components/AppBackground"
+import { BottomNav } from "@/app/components/BottomNav"
 import { HeaderAuth } from "@/app/components/HeaderAuth"
 import { NavLinks } from "@/app/components/NavLinks"
 
-/** Site chrome (header + nav). Native iOS/Android apps will use separate clients later. */
 export function AppViewShell({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -23,14 +23,22 @@ export function AppViewShell({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
           <div className="flex items-center gap-1 justify-end min-w-0 flex-1">
-            <NavLinks />
+            {/* Desktop nav — hidden on mobile (bottom bar handles it) */}
+            <div className="hidden sm:flex">
+              <NavLinks />
+            </div>
             <HeaderAuth />
           </div>
         </div>
       </header>
-      <div className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-5 sm:pt-8 pb-12 sm:pb-16 animate-fade-in-soft relative z-10">
+
+      {/* Main content — extra bottom padding on mobile for the bottom nav */}
+      <div className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-5 sm:pt-8 pb-24 sm:pb-16 animate-fade-in-soft relative z-10">
         {children}
       </div>
+
+      {/* Mobile bottom nav */}
+      <BottomNav />
     </>
   )
 }
