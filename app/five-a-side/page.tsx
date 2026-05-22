@@ -31,7 +31,7 @@ const POSITION_LABELS: Record<string, string> = {
   gk: "Goalkeeper",
   df: "Defender",
   md: "Midfielder",
-  st: "Striker",
+  st: "Forward",
 }
 
 const SLOT_KEYS = ["gk", "df", "md1", "md2", "st"] as const
@@ -49,9 +49,9 @@ const SLOT_POSITION: Record<SlotKey, string> = {
 const LINEUP_SLOTS: { slot: SlotKey; badge: string }[] = [
   { slot: "gk", badge: "GK" },
   { slot: "df", badge: "DF" },
-  { slot: "md1", badge: "MD" },
-  { slot: "md2", badge: "MD" },
-  { slot: "st", badge: "ST" },
+  { slot: "md1", badge: "MF" },
+  { slot: "md2", badge: "MF" },
+  { slot: "st", badge: "FW" },
 ]
 
 export function pickIdForSlot(picks: Picks | null, slot: SlotKey): string | null {
@@ -311,7 +311,7 @@ export default function FiveASidePage() {
       <div className="text-center mb-6">
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-2">5-A-SIDE</h1>
         <p className="page-intro-on-stadium text-sm max-w-md mx-auto leading-relaxed">
-          Pick 1 GK, 1 DF, 2 MD, 1 ST — max one player per nation. Locked at first match or when you submit.
+          Pick 1 GK, 1 DF, 2 MF, 1 FW — max one player per nation. Locked at first match or when you submit.
         </p>
       </div>
 
@@ -502,7 +502,7 @@ function shirtBackNameLabel(fullName: string, team: string): string {
   const teamNorm = team.trim().toLowerCase()
 
   // Seed format: "{Team name…} {POS} {n}" — match POS + number from the end (teams can be multi-word).
-  const end = raw.match(/\s+(GK|DF|MD|ST)\s+(\d+)$/i)
+  const end = raw.match(/\s+(GK|DF|MD|MF|ST|FW)\s+(\d+)$/i)
   if (end && end.index !== undefined) {
     const prefix = raw.slice(0, end.index).trim()
     if (prefix.toLowerCase() === teamNorm) {
@@ -515,7 +515,7 @@ function shirtBackNameLabel(fullName: string, team: string): string {
 
   const parts = raw.split(/\s+/).filter(Boolean)
   while (parts.length && /^\d+$/.test(parts[parts.length - 1]!)) parts.pop()
-  while (parts.length && /^(GK|DF|MD|ST)$/i.test(parts[parts.length - 1]!)) parts.pop()
+  while (parts.length && /^(GK|DF|MD|MF|ST|FW)$/i.test(parts[parts.length - 1]!)) parts.pop()
   if (parts.length === 0) return "PLAYER"
 
   const remainder = parts.join(" ")
@@ -706,7 +706,7 @@ function FantasyPlayerCard({
           <>
             <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
 
-            {/* Stats — row1: G A [CS] MVP (CS only GK/DF; MD/ST = 3 cols) · row2: GP W POS NAT */}
+            {/* Stats — row1: G A [CS] MVP (CS only GK/DF; MF/FW = 3 cols) · row2: GP W POS NAT */}
             <div
               className={`relative border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] mt-2 ${lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"}`}
             >

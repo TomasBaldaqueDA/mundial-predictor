@@ -143,7 +143,7 @@ export default function RulesPage() {
         <h2 className="text-lg font-semibold text-wc-green-dark">5. 5-A-SIDE fantasy team</h2>
         <p className="text-sm text-slate-300">
           You pick a fixed team of <span className="font-semibold">5 players</span> for the whole tournament:
-          1&nbsp;Goalkeeper, 1&nbsp;Defender, 2&nbsp;Midfielders and 1&nbsp;Striker. The team locks at the kickoff of
+          1&nbsp;Goalkeeper, 1&nbsp;Defender, 2&nbsp;Midfielders and 1&nbsp;Forward. The team locks at the kickoff of
           the first match (or when you save after that deadline in test environments).
         </p>
         <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">

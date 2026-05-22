@@ -54,7 +54,7 @@ const features = [
   {
     href: "/five-a-side",
     title: "5-A-Side",
-    desc: "Pick your fantasy team (1 GK · 1 DF · 2 MID · 1 ST)",
+    desc: "Pick your fantasy team (1 GK · 1 DF · 2 MF · 1 FW)",
     gradient: "from-sky-500 to-blue-700",
     shadow: "shadow-[0_4px_14px_rgba(14,165,233,0.35)] group-hover:shadow-[0_6px_20px_rgba(14,165,233,0.5)]",
     titleColor: "group-hover:text-sky-300",
