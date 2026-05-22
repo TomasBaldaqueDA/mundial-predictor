@@ -16,8 +16,6 @@ type Player = {
   wins: number
   clean_sheets: number
   mvp: number
-  /** Public or same-origin image URL; when set, shown on lineup cards (and optional thumb in picker). */
-  photo_url: string | null
 }
 
 type Picks = {
@@ -125,7 +123,7 @@ export default function FiveASidePage() {
       ] = await Promise.all([
         supabase
           .from("five_a_side_players")
-          .select("id, name, team, position, goals, assists, wins, clean_sheets, mvp, photo_url")
+          .select("id, name, team, position, goals, assists, wins, clean_sheets, mvp")
           .order("team")
           .order("name"),
         supabase.auth.getUser(),
@@ -146,7 +144,6 @@ export default function FiveASidePage() {
         wins: Number(p.wins) || 0,
         clean_sheets: Number(p.clean_sheets) || 0,
         mvp: Number(p.mvp) || 0,
-        photo_url: (typeof p.photo_url === "string" ? p.photo_url : null) as string | null,
       })) as Player[]
       setPlayers(list)
       const byPos: Record<string, Player[]> = { gk: [], df: [], md: [], st: [] }
@@ -483,13 +480,6 @@ export default function FiveASidePage() {
                       {shirtNumberByPlayerId.get(p.id) ?? "—"}
                     </span>
                     <img src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
-                    {p.photo_url ? (
-                      <img
-                        src={p.photo_url}
-                        alt=""
-                        className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-black/15 bg-slate-700"
-                      />
-                    ) : null}
                     <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
                     <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
                   </button>
@@ -681,10 +671,8 @@ function FantasyPlayerCard({
   const statMuted = lightKit ? "text-zinc-400" : "text-slate-400/85"
   const statVal = "tabular-nums text-[9px] sm:text-[10px]"
 
-  const heroPhoto = !!player?.photo_url
-
   return (
-    <div className={`relative ${heroPhoto ? "w-[10.5rem] sm:w-[11.5rem]" : "w-[9.25rem] sm:w-40"}`}>
+    <div className="relative w-[9.25rem] sm:w-40">
       {isPickerOpen && (
         <div className="pointer-events-none absolute -inset-1 z-20" aria-hidden>
           <span className="absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-cyan-400/70 rounded-tl-sm" />
@@ -716,42 +704,11 @@ function FantasyPlayerCard({
 
         {player ? (
           <>
-            {player.photo_url ? (
-              <div className="relative z-[1] px-2 pt-0.5 pb-1">
-                <div className="relative w-full">
-                  <img
-                    src={player.photo_url}
-                    alt=""
-                    className="block w-full min-h-[7.75rem] max-h-[10.5rem] aspect-[3/4] rounded-xl object-cover object-top border-2 border-white/45 shadow-[0_8px_24px_rgba(0,0,0,0.55)] bg-slate-900"
-                  />
-                  <div className="absolute -bottom-0.5 right-0 z-[2]">
-                    <KitShirtBack
-                      size="mini"
-                      kit={getKitForTeam(player.team)}
-                      number={shirtNumber}
-                      name={player.name}
-                      team={player.team}
-                    />
-                  </div>
-                </div>
-                <p
-                  className={`mt-1 truncate text-center text-[10px] font-extrabold uppercase tracking-wide ${
-                    lightKit ? "text-zinc-700" : "text-slate-100"
-                  }`}
-                  title={player.name}
-                >
-                  {shirtBackNameLabel(player.name, player.team)}
-                </p>
-              </div>
-            ) : (
-              <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
-            )}
+            <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
 
             {/* Stats — row1: G A [CS] MVP (CS only GK/DF; MD/ST = 3 cols) · row2: GP W POS NAT */}
             <div
-              className={`relative border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] ${
-                player.photo_url ? "mt-1" : "mt-2"
-              } ${lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"}`}
+              className={`relative border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] mt-2 ${lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"}`}
             >
               <div className="space-y-1">
                 <div className={`grid gap-x-0.5 ${showCleanSheet ? "grid-cols-4" : "grid-cols-3"}`}>
