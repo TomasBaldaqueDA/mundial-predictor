@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 
 export default async function WinnerPredictionsPage() {
   const supabase = await createClient()
@@ -105,7 +106,9 @@ export default async function WinnerPredictionsPage() {
                           : "hover:bg-white/5 text-slate-100"
                     }`}
                   >
-                    <td className="px-5 py-3.5 font-medium">{row.name}</td>
+                    <td className="px-5 py-3.5 font-medium">
+                      <PlayerNameLink userId={row.userId} name={row.name} className="text-inherit" />
+                    </td>
                     <td className="px-5 py-3.5">
                       <TeamWithFlag name={row.team} />
                     </td>

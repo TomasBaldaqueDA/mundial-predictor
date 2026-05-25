@@ -1,0 +1,120 @@
+import { createClient } from "@/lib/supabase/server"
+import Link from "next/link"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
+import {
+  hasAnyPick,
+  normalizePlayer,
+  teamFantasyPoints,
+  type FiveASidePicks,
+  type FiveASidePlayer,
+} from "@/lib/five-a-side"
+
+export const metadata = {
+  title: "5-A-SIDE teams",
+  description: "View other players' 5-A-SIDE fantasy teams.",
+}
+
+export default async function FiveASideTeamsPage() {
+  const supabase = await createClient()
+
+  const [{ data: picksRows }, { data: playersRows }, { data: profiles }] = await Promise.all([
+    supabase
+      .from("five_a_side_picks")
+      .select("user_id, gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at"),
+    supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
+    supabase.from("profiles").select("id, display_name"),
+  ])
+
+  const playersById = new Map<string, FiveASidePlayer>()
+  for (const row of playersRows ?? []) {
+    const p = normalizePlayer(row as Record<string, unknown>)
+    playersById.set(p.id, p)
+  }
+
+  const profileNames = new Map<string, string>()
+  for (const p of profiles ?? []) {
+    const name = (p.display_name ?? "").trim()
+    if (name) profileNames.set(p.id, name)
+  }
+
+  const teams = (picksRows ?? [])
+    .map((row) => {
+      const picks = row as FiveASidePicks & { user_id: string; submitted_at: string | null }
+      if (!hasAnyPick(picks)) return null
+      const pts = teamFantasyPoints(picks, playersById)
+      const filled = [picks.gk_player_id, picks.df_player_id, picks.md1_player_id, picks.md2_player_id, picks.st_player_id].filter(
+        Boolean
+      ).length
+      return {
+        userId: picks.user_id,
+        name: profileNames.get(picks.user_id) ?? "Anonymous",
+        pts,
+        filled,
+        complete: filled === 5,
+        submitted: !!picks.submitted_at,
+      }
+    })
+    .filter((t): t is NonNullable<typeof t> => t !== null)
+    .sort((a, b) => b.pts - a.pts || a.name.localeCompare(b.name))
+
+  return (
+    <main className="space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
+          5-A-SIDE teams
+        </h1>
+        <Link
+          href="/five-a-side"
+          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
+        >
+          ← Back to my team
+        </Link>
+      </div>
+
+      <p className="text-sm text-slate-300 max-w-2xl">
+        Browse every player&apos;s fantasy lineup. Teams are read-only.
+      </p>
+
+      {teams.length === 0 ? (
+        <div className="glass rounded-2xl p-8 text-center">
+          <p className="text-slate-400">No 5-A-SIDE teams saved yet.</p>
+        </div>
+      ) : (
+        <div className="glass rounded-2xl overflow-hidden border border-white/10">
+          <table className="min-w-full text-sm">
+            <thead className="bg-white/5 border-b border-white/10">
+              <tr>
+                <th className="px-5 py-3 text-left font-semibold text-slate-300">Player</th>
+                <th className="px-5 py-3 text-center font-semibold text-slate-300">Lineup</th>
+                <th className="px-5 py-3 text-right font-semibold text-wc-gold/85">Points</th>
+                <th className="px-5 py-3 text-right font-semibold text-slate-300" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {teams.map((t) => (
+                <tr key={t.userId} className="hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-3 font-medium text-slate-100">
+                    <PlayerNameLink userId={t.userId} name={t.name} className="text-slate-100" />
+                  </td>
+                  <td className="px-5 py-3 text-center text-slate-400 tabular-nums">
+                    {t.filled}/5
+                    {!t.complete && <span className="text-xs text-amber-300/90 ml-1">(incomplete)</span>}
+                  </td>
+                  <td className="px-5 py-3 text-right font-bold tabular-nums text-wc-gold">{t.pts}</td>
+                  <td className="px-5 py-3 text-right">
+                    <Link
+                      href={`/five-a-side/view/${t.userId}`}
+                      className="inline-flex rounded-lg px-3 py-1.5 text-xs font-semibold bg-wc-green/90 text-white hover:bg-wc-green-dark transition-colors"
+                    >
+                      View team
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </main>
+  )
+}

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
 
 const VALID_GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
@@ -164,7 +165,9 @@ export default async function GroupViewPage({
             <tbody className="divide-y divide-white/5">
               {rows.map((r) => (
                 <tr key={r.userId} className="hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">{r.name}</td>
+                  <td className="px-4 py-3 font-medium text-slate-100 whitespace-nowrap">
+                    <PlayerNameLink userId={r.userId} name={r.name} className="text-slate-100" />
+                  </td>
                   {[1, 2, 3, 4].map((pos) => (
                     <td
                       key={pos}

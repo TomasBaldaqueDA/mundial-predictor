@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 
 const GROUPS_ORDER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 
@@ -139,7 +140,9 @@ export default async function ThirdPlacePredictionsPage() {
             <tbody className="divide-y divide-white/5">
               {rows.map((r) => (
                 <tr key={r.userId} className="hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-medium align-top pt-4 text-slate-100 whitespace-nowrap">{r.name}</td>
+                  <td className="px-4 py-3 font-medium align-top pt-4 text-slate-100 whitespace-nowrap">
+                    <PlayerNameLink userId={r.userId} name={r.name} className="text-slate-100" />
+                  </td>
                   <td className="px-4 py-3 align-top pt-4">
                     <div className="flex flex-wrap gap-2">
                       {r.groups.map(({ groupCode, teamName, correct }) => (

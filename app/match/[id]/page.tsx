@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
 
@@ -129,6 +130,7 @@ export default async function MatchPage({
 
   const predictions = Array.from(latestByUser.entries())
     .map(([, p]) => ({
+      userId: p.user_id,
       name: displayName(p),
       score1: p.pred_score1,
       score2: p.pred_score2,
@@ -227,7 +229,7 @@ export default async function MatchPage({
                       }`}
                     >
                       <td className="px-4 py-3 font-medium text-slate-100">
-                        {p.name}
+                        <PlayerNameLink userId={p.userId} name={p.name} className="text-slate-100" />
                         {p.isOwn && (
                           <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-wc-gold/80 bg-wc-gold/15 border border-wc-gold/30 rounded-full px-1.5 py-0.5">
                             you

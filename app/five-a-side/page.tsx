@@ -314,6 +314,14 @@ export default function FiveASidePage() {
         <p className="page-intro-on-stadium text-sm max-w-md mx-auto leading-relaxed">
           Pick 1 GK, 1 DF, 2 MF, 1 FW — max one player per nation. Locked at first match or when you submit.
         </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <Link
+            href="/five-a-side/teams"
+            className="inline-flex rounded-xl px-4 py-2 text-sm font-semibold bg-wc-green/90 text-white hover:bg-wc-green-dark transition-colors shadow-md"
+          >
+            View teams
+          </Link>
+        </div>
       </div>
 
       {!user && (

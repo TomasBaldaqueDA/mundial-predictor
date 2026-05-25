@@ -1,8 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import {
+  computeGlobalRanking,
+  computeMemberRanking,
+  rankPosition,
+} from "@/lib/compute-member-ranking"
 
 type LeagueRow = {
   id: string
@@ -12,22 +17,63 @@ type LeagueRow = {
   created_at: string
 }
 
+function RankBadge({ rank, total }: { rank: number; total: number }) {
+  return (
+    <span className="text-xs font-bold text-wc-gold tabular-nums shrink-0">
+      #{rank} of {total}
+    </span>
+  )
+}
+
 export default function LeaguesPage() {
   const [leagues, setLeagues] = useState<LeagueRow[]>([])
   const [loading, setLoading] = useState(true)
+  const [ranksLoading, setRanksLoading] = useState(true)
+  const [globalRank, setGlobalRank] = useState<{ rank: number; total: number } | null>(null)
+  const [leagueRanks, setLeagueRanks] = useState<Record<string, { rank: number; total: number }>>({})
   const [name, setName] = useState("")
   const [joinCode, setJoinCode] = useState("")
   const [msg, setMsg] = useState<{ type: "ok" | "error"; text: string } | null>(null)
 
-  async function refresh() {
+  async function loadRanks(userId: string, leagueList: LeagueRow[]) {
+    setRanksLoading(true)
     const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    try {
+      const global = await computeGlobalRanking(supabase)
+      setGlobalRank(rankPosition(global, userId))
+
+      const ranks: Record<string, { rank: number; total: number }> = {}
+      await Promise.all(
+        leagueList.map(async (l) => {
+          const { data: mem } = await supabase
+            .from("private_league_members")
+            .select("user_id")
+            .eq("league_id", l.id)
+          const ids = [...new Set((mem ?? []).map((m: { user_id: string }) => m.user_id))]
+          const ranked = await computeMemberRanking(supabase, ids)
+          const pos = rankPosition(ranked, userId)
+          if (pos) ranks[l.id] = pos
+        })
+      )
+      setLeagueRanks(ranks)
+    } finally {
+      setRanksLoading(false)
+    }
+  }
+
+  const refresh = useCallback(async () => {
+    const supabase = createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
       setLeagues([])
+      setGlobalRank(null)
+      setLeagueRanks({})
       setLoading(false)
+      setRanksLoading(false)
       return
     }
-    // Fetch all leagues the user owns or is a member of (policy allows both)
     const { data, error } = await supabase
       .from("private_leagues")
       .select("*")
@@ -35,16 +81,18 @@ export default function LeaguesPage() {
     if (error) {
       console.error("refresh leagues error:", error)
     }
-    setLeagues((data as LeagueRow[]) ?? [])
+    const list = (data as LeagueRow[]) ?? []
+    setLeagues(list)
     setLoading(false)
-  }
+    void loadRanks(user.id, list)
+  }, [])
 
   useEffect(() => {
     const t = window.setTimeout(() => {
       void refresh()
     }, 0)
     return () => window.clearTimeout(t)
-  }, [])
+  }, [refresh])
 
   async function createLeague(e: React.FormEvent) {
     e.preventDefault()
@@ -105,6 +153,11 @@ export default function LeaguesPage() {
         <div>
           <p className="text-lg font-black text-wc-gold tracking-tight drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">Global</p>
           <p className="page-intro-on-stadium text-xs mt-1 opacity-95">Worldwide leaderboard — all players, all matches.</p>
+          {!ranksLoading && globalRank && (
+            <p className="text-sm font-semibold text-wc-gold/90 mt-2 tabular-nums">
+              Your position: #{globalRank.rank} of {globalRank.total}
+            </p>
+          )}
         </div>
         <span className="text-sm font-bold text-wc-gold shrink-0">Open ranking →</span>
       </Link>
@@ -156,7 +209,12 @@ export default function LeaguesPage() {
                   className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 glass-dark rounded-xl px-4 py-3 border border-white/10 hover:border-wc-gold/25 transition-colors"
                 >
                   <span className="font-semibold text-white">{l.name}</span>
-                  <span className="text-xs font-mono text-wc-gold/80">Code: {l.invite_code}</span>
+                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                    {!ranksLoading && leagueRanks[l.id] && (
+                      <RankBadge rank={leagueRanks[l.id].rank} total={leagueRanks[l.id].total} />
+                    )}
+                    <span className="text-xs font-mono text-wc-gold/80">Code: {l.invite_code}</span>
+                  </div>
                 </Link>
               </li>
             ))}

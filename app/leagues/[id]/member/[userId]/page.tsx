@@ -131,7 +131,11 @@ export default function LeagueMemberPredictionsPage({
         <h1 className="text-2xl font-bold text-gradient-hero [font-family:var(--font-outfit)]">
           {displayName}&apos;s predictions
         </h1>
-        <p className="text-sm text-white/45 mt-1">Visible because you share a private league.</p>
+        <p className="text-sm text-white/45 mt-1">
+          <Link href={`/player/${targetUserId}`} className="text-wc-gold hover:underline">
+            View full profile (groups, questions, 5-A-SIDE)
+          </Link>
+        </p>
       </div>
 
       <div className="space-y-3">

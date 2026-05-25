@@ -1,8 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 
 type Row = {
+  userId?: string
   name: string
   matchPts: number
   groupPts: number
@@ -74,7 +76,8 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
           </div>
           {/* Name */}
           <div className={`font-bold text-sm truncate pl-1 ${podCfg.text}`}>
-            {podCfg.medal} {row.name}
+            {podCfg.medal}{" "}
+            <PlayerNameLink userId={row.userId} name={row.name} className={podCfg.text} stopPropagation />
           </div>
           {/* Desktop columns */}
           <div className={`text-right text-sm tabular-nums hidden sm:block ${podCfg.text} opacity-80`}>{row.matchPts}</div>
@@ -122,7 +125,9 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
           <span className="text-sm font-semibold text-white/25 tabular-nums">{index + 1}</span>
         </div>
         {/* Name */}
-        <div className="font-medium text-sm text-white/75 truncate pl-1">{row.name}</div>
+        <div className="font-medium text-sm text-white/75 truncate pl-1">
+          <PlayerNameLink userId={row.userId} name={row.name} className="text-white/75" stopPropagation />
+        </div>
         {/* Desktop columns */}
         <div className="text-right text-sm text-white/35 tabular-nums hidden sm:block">{row.matchPts}</div>
         <div className="text-right text-sm text-white/35 tabular-nums hidden sm:block">{row.specialPts}</div>

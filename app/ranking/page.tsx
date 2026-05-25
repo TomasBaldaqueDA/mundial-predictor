@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { RankingRow } from "./RankingRow"
+import { RankingBoard } from "@/app/components/RankingBoard"
 
 export const metadata = {
   title: "Global ranking · WC26 Predictor",
@@ -9,6 +9,9 @@ export const metadata = {
 
 export default async function RankingPage() {
   const supabase = await createClient()
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser()
   const [
     { data: matchPointsRows, error: matchPointsError },
     { data: profiles },
@@ -126,6 +129,7 @@ export default async function RankingPage() {
       const specialPts = specialPointsByUserId.get(uid) ?? 0
       const fiveASidePts = fiveASidePointsByUserId.get(uid) ?? 0
       return {
+        userId: uid,
         name,
         matchPts,
         groupPts,
@@ -136,6 +140,13 @@ export default async function RankingPage() {
     })
     .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name))
 
+  const myGlobalRank =
+    currentUser?.id != null
+      ? ranking.findIndex((r) => r.userId === currentUser.id)
+      : -1
+  const myRankLabel =
+    myGlobalRank >= 0 ? { rank: myGlobalRank + 1, total: ranking.length } : null
+
   return (
     <main>
       {/* ── Header ── */}
@@ -145,6 +156,11 @@ export default async function RankingPage() {
             Global League
           </h1>
           <p className="text-white/40 text-sm mt-0.5">Overall standings · WC26 Predictor</p>
+          {myRankLabel && (
+            <p className="text-sm font-semibold text-wc-gold mt-1 tabular-nums">
+              Your position: #{myRankLabel.rank} of {myRankLabel.total}
+            </p>
+          )}
         </div>
         <Link
           href="/leagues"
@@ -159,25 +175,11 @@ export default async function RankingPage() {
           <p className="text-white/40">No registered users yet.</p>
         </div>
       ) : (
-        <div className="glass-dark rounded-2xl overflow-hidden border border-white/8 shadow-2xl shadow-black/50">
-          {/* Table header */}
-          <div className="grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_6rem] px-4 py-3 border-b border-white/10 bg-white/12">
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider text-center">#</div>
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider pl-2">Name</div>
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider text-right hidden sm:block">Games</div>
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider text-right hidden sm:block">Quest.</div>
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider text-right hidden sm:block">Groups</div>
-            <div className="text-[11px] font-semibold text-white/35 uppercase tracking-wider text-right hidden sm:block">5-A-Side</div>
-            <div className="text-[11px] font-semibold text-wc-gold/70 uppercase tracking-wider text-right">Total</div>
-          </div>
-
-          {/* Rows */}
-          <div className="divide-y divide-white/5">
-            {ranking.map((row, index) => (
-              <RankingRow key={`${row.name}-${index}`} row={row} index={index} />
-            ))}
-          </div>
-        </div>
+        <RankingBoard
+          rows={ranking}
+          currentUserId={currentUser?.id ?? null}
+          scrollToUser
+        />
       )}
 
       {/* Legend */}

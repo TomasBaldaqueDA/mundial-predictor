@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
+import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 
 export default async function SpecialAnswersPage({
   searchParams,
@@ -93,6 +94,7 @@ export default async function SpecialAnswersPage({
               .map((r) => {
                 const correct = correctNorm !== "" && r.answer.toLowerCase() === correctNorm
                 return {
+                  userId: r.userId,
                   name: profileNames.get(r.userId) ?? "Anonymous",
                   answer: r.answer,
                   correct,
@@ -140,7 +142,9 @@ export default async function SpecialAnswersPage({
                                 : "hover:bg-white/5 text-slate-100"
                           }`}
                         >
-                          <td className="px-5 py-3 font-medium">{row.name}</td>
+                          <td className="px-5 py-3 font-medium">
+                            <PlayerNameLink userId={row.userId} name={row.name} className="text-inherit" />
+                          </td>
                           <td className="px-5 py-3">{row.answer}</td>
                           <td className="px-5 py-3 text-right font-bold tabular-nums text-wc-gold">{row.points}</td>
                         </tr>
