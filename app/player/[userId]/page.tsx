@@ -76,10 +76,6 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     supabase.from("group_actual_third_place").select("group_code"),
   ])
 
-  if (!profile && !preds?.length && !groupPreds?.length && !specialAnswers?.length && !hasAnyPick(picks)) {
-    notFound()
-  }
-
   const displayName = (profile?.display_name ?? "").trim() || "Anonymous"
   const tournamentStarted = isTournamentStarted(firstMatch?.kickoff_time as string | undefined)
   const isOwnProfile = currentUser?.id === userId
@@ -179,6 +175,17 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
   const winnerQuestion = questions.find((q) => q.type === "winner")
 
   const picks = (picksRow as FiveASidePicks | null) ?? null
+
+  if (
+    !profile &&
+    !preds?.length &&
+    !groupPreds?.length &&
+    !specialAnswers?.length &&
+    !hasAnyPick(picks)
+  ) {
+    notFound()
+  }
+
   const players = (playersRows ?? []).map((row) => normalizePlayer(row as Record<string, unknown>))
   const playersById = new Map(players.map((p) => [p.id, p]))
   const fiveASidePts = teamFantasyPoints(picks, playersById)

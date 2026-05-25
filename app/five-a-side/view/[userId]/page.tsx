@@ -79,7 +79,7 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
         </div>
       </div>
 
-      <FiveASideLineupReadonly picks={picks} players={players} teamGpByTeam={teamGpByTeam} />
+      <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
     </main>
   )
 }
