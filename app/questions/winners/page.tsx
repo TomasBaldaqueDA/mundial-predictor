@@ -2,9 +2,20 @@ import { createClient } from "@/lib/supabase/server"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
+import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
 
-export default async function WinnerPredictionsPage() {
+export default async function WinnerPredictionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ league?: string }>
+}) {
+  const sp = await searchParams
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
+
   const supabase = await createClient()
+  const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
+
   const [
     { data: firstMatch },
     { data: winnerQuestion },
@@ -32,7 +43,10 @@ export default async function WinnerPredictionsPage() {
 
   const filtered =
     winnerQuestionId
-      ? (answers ?? []).filter((a: { question_id: string }) => a.question_id === winnerQuestionId)
+      ? (answers ?? []).filter((a: { question_id: string; user_id: string }) => {
+          if (a.question_id !== winnerQuestionId) return false
+          return isUserInLeagueFilter(leagueMemberIds, a.user_id)
+        })
       : []
   const winnerRows = filtered
     .map((a: { user_id: string; answer: string }) => {
@@ -59,6 +73,10 @@ export default async function WinnerPredictionsPage() {
         backLabel="Questions"
       />
 
+      {tournamentStarted && (
+        <LeagueFilterBar title="All predictions" currentLeagueId={leagueId || undefined} />
+      )}
+
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">
           <p className="text-slate-200 font-medium">Winner predictions are visible only after the tournament starts.</p>
@@ -68,7 +86,11 @@ export default async function WinnerPredictionsPage() {
 
       {tournamentStarted && winnerRows.length === 0 && (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-slate-400">No winner predictions yet.</p>
+          <p className="text-slate-400">
+            {leagueMemberIds
+              ? "No winner predictions from players in this league yet."
+              : "No winner predictions yet."}
+          </p>
         </div>
       )}
 
