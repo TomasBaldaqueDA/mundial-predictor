@@ -17,6 +17,13 @@ export function userNeedsDisplayName(user: UserLike | null | undefined): boolean
   return user?.user_metadata?.[NEEDS_DISPLAY_NAME_KEY] === true
 }
 
+/** Profile row has a non-empty display name — source of truth for setup completion. */
+export function hasCompletedDisplayNameSetup(
+  displayName: string | null | undefined
+): boolean {
+  return Boolean(displayName?.trim())
+}
+
 /** First sign-in right after account creation (e.g. re-register after delete). */
 export function isNewAuthUser(user: UserLike | null | undefined): boolean {
   if (!user?.created_at || !user.last_sign_in_at) return false

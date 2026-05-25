@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   googleUserNeedsProfileSetup,
+  hasCompletedDisplayNameSetup,
   isGoogleAuthUser,
   isNewAuthUser,
   NEEDS_DISPLAY_NAME_KEY,
@@ -13,6 +14,13 @@ describe("auth-profile-setup", () => {
     expect(isGoogleAuthUser({ user_metadata: { provider: "google" } })).toBe(true)
     expect(isGoogleAuthUser({ identities: [{ provider: "email" }] })).toBe(false)
     expect(isGoogleAuthUser(null)).toBe(false)
+  })
+
+  it("detects completed display name from profile row", () => {
+    expect(hasCompletedDisplayNameSetup("Player")).toBe(true)
+    expect(hasCompletedDisplayNameSetup("  ")).toBe(false)
+    expect(hasCompletedDisplayNameSetup("")).toBe(false)
+    expect(hasCompletedDisplayNameSetup(null)).toBe(false)
   })
 
   it("detects pending display name setup", () => {

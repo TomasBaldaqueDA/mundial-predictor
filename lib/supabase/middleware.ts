@@ -1,17 +1,18 @@
 import { createServerClient } from "@supabase/ssr"
-import { userNeedsDisplayName } from "@/lib/auth-profile-setup"
+import { hasCompletedDisplayNameSetup } from "@/lib/auth-profile-setup"
 import { NextResponse, type NextRequest } from "next/server"
 
-async function userMissingProfile(
+async function userMustCompleteProfileSetup(
   supabase: ReturnType<typeof createServerClient>,
   userId: string
 ): Promise<boolean> {
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id")
+    .select("display_name")
     .eq("id", userId)
     .maybeSingle()
-  return !profile
+  if (!profile) return true
+  return !hasCompletedDisplayNameSetup(profile.display_name)
 }
 
 export async function updateSession(request: NextRequest) {
@@ -55,7 +56,7 @@ export async function updateSession(request: NextRequest) {
 
   if (
     user &&
-    (userNeedsDisplayName(user) || (await userMissingProfile(supabase, user.id))) &&
+    (await userMustCompleteProfileSetup(supabase, user.id)) &&
     pathname !== "/profile" &&
     !pathname.startsWith("/auth/") &&
     !pathname.startsWith("/api/")

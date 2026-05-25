@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
 import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
 import {
+  hasCompletedDisplayNameSetup,
   NEEDS_DISPLAY_NAME_KEY,
   userNeedsDisplayName,
 } from "@/lib/auth-profile-setup"
@@ -55,7 +56,9 @@ function ProfilePageContent() {
       const name = profile?.display_name ?? ""
       setEditingName(name)
       const needsSetup =
-        searchParams.get("setup") === "1" || userNeedsDisplayName(user)
+        searchParams.get("setup") === "1" ||
+        userNeedsDisplayName(user) ||
+        !hasCompletedDisplayNameSetup(name)
       setSetupMode(needsSetup)
       setNextPath(safeRedirectPath(searchParams.get("next"), "/"))
       setLoading(false)
@@ -95,30 +98,47 @@ function ProfilePageContent() {
       setNameMsg({ type: "error", text: "This display name is already taken. Please choose another one." })
       return
     }
-    const { error } = await supabase
+    const { data: saved, error } = await supabase
       .from("profiles")
-      .update({ display_name: trimmedName })
-      .eq("id", user.id)
-    setSavingName(false)
+      .upsert({ id: user.id, display_name: trimmedName }, { onConflict: "id" })
+      .select("id, display_name")
+      .single()
     if (error) {
+      setSavingName(false)
       setNameMsg({ type: "error", text: friendlyAuthError(error.message) })
       return
     }
-
-    if (setupMode) {
-      const { error: metaError } = await supabase.auth.updateUser({
-        data: { [NEEDS_DISPLAY_NAME_KEY]: false },
+    if (!saved?.id) {
+      setSavingName(false)
+      setNameMsg({
+        type: "error",
+        text: "Could not save your display name. Please try again or contact support.",
       })
-      if (metaError) {
-        setNameMsg({ type: "error", text: friendlyAuthError(metaError.message) })
-        return
-      }
-      setSetupMode(false)
-      router.push(nextPath)
-      router.refresh()
       return
     }
 
+    setEditingName(saved.display_name ?? trimmedName)
+
+    if (setupMode) {
+      const { error: metaError } = await supabase.auth.updateUser({
+        data: {
+          [NEEDS_DISPLAY_NAME_KEY]: false,
+          display_name: trimmedName,
+        },
+      })
+      if (metaError) {
+        setSavingName(false)
+        setNameMsg({ type: "error", text: friendlyAuthError(metaError.message) })
+        return
+      }
+      await supabase.auth.refreshSession()
+      setSavingName(false)
+      setSetupMode(false)
+      window.location.assign(nextPath)
+      return
+    }
+
+    setSavingName(false)
     setNameMsg({ type: "ok", text: "Profile updated." })
   }
 
