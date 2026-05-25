@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { LeagueFilter } from "@/app/components/LeagueFilter"
 
 const VALID_GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 const POSITION_LABELS: Record<number, string> = {
@@ -13,16 +14,33 @@ const POSITION_LABELS: Record<number, string> = {
 
 export default async function GroupViewPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ groupCode: string }>
+  searchParams: Promise<{ league?: string }>
 }) {
   const { groupCode } = await params
+  const sp = await searchParams
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
   const code = groupCode?.toUpperCase()
   if (!code || !VALID_GROUPS.includes(code)) {
     notFound()
   }
 
   const supabase = await createClient()
+
+  // Filter to league members if active
+  let leagueMemberIds: Set<string> | null = null
+  if (leagueId) {
+    const { data: members } = await supabase
+      .from("private_league_members")
+      .select("user_id")
+      .eq("league_id", leagueId)
+    if (members && members.length > 0) {
+      leagueMemberIds = new Set(members.map((m: { user_id: string }) => m.user_id))
+    }
+  }
+
   const [
     { data: preds, error: predError },
     { data: profiles },
@@ -66,6 +84,7 @@ export default async function GroupViewPage({
   for (const row of preds ?? []) {
     const uid = row.user_id
     if (!uid) continue
+    if (leagueMemberIds && !leagueMemberIds.has(uid)) continue
     if (!byUser.has(uid)) {
       byUser.set(uid, {
         userId: uid,
@@ -94,16 +113,21 @@ export default async function GroupViewPage({
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Group {code} — predictions
-        </h1>
-        <Link
-          href="/groups"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Back to groups
-        </Link>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
+            Group {code} — predictions
+          </h1>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <LeagueFilter currentLeagueId={leagueId || undefined} />
+          <Link
+            href="/groups"
+            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
+          >
+            ← Back to groups
+          </Link>
+        </div>
       </div>
 
       {hasActual && (

@@ -2,6 +2,11 @@ import fs from "node:fs"
 import path from "node:path"
 import { createClient } from "@supabase/supabase-js"
 
+if (process.env.QA_TLS_INSECURE === "1") {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+  console.warn("⚠ QA_TLS_INSECURE=1 — TLS certificate verification disabled\n")
+}
+
 const TEST_USERS = [
   { email: "wc26.qa.01@example.com", password: "Wc26Qa!123", displayName: "QA User 01" },
   { email: "wc26.qa.02@example.com", password: "Wc26Qa!123", displayName: "QA User 02" },

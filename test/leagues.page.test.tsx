@@ -29,6 +29,6 @@ describe("Leagues page", () => {
     await user.type(screen.getByPlaceholderText(/league name/i), "A")
     await user.click(screen.getByRole("button", { name: /^create$/i }))
 
-    expect(screen.getByText("Name is too short.")).toBeInTheDocument()
+    expect(screen.getByText("League name must be at least 2 characters.")).toBeInTheDocument()
   })
 })

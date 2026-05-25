@@ -1,10 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
+import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
+import {
+  NEEDS_DISPLAY_NAME_KEY,
+  userNeedsDisplayName,
+} from "@/lib/auth-profile-setup"
+import { safeRedirectPath } from "@/lib/safe-redirect"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 // Treat `_` and `%` as literal characters when checking display-name uniqueness
 // (Supabase ilike still treats them as wildcards otherwise).
@@ -12,11 +18,14 @@ function escapeIlike(value: string): string {
   return value.replace(/[\\%_]/g, "\\$&")
 }
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState("")
-  const [displayName, setDisplayName] = useState("")
+  const [editingName, setEditingName] = useState("")
   const [loading, setLoading] = useState(true)
+  const [setupMode, setSetupMode] = useState(false)
+  const [nextPath, setNextPath] = useState("/")
   const [savingName, setSavingName] = useState(false)
   const [nameMsg, setNameMsg] = useState<{ type: "ok" | "error"; text: string } | null>(null)
 
@@ -43,11 +52,16 @@ export default function ProfilePage() {
         .select("display_name")
         .eq("id", user.id)
         .maybeSingle()
-      setDisplayName(profile?.display_name ?? "")
+      const name = profile?.display_name ?? ""
+      setEditingName(name)
+      const needsSetup =
+        searchParams.get("setup") === "1" || userNeedsDisplayName(user)
+      setSetupMode(needsSetup)
+      setNextPath(safeRedirectPath(searchParams.get("next"), "/"))
       setLoading(false)
     }
     load()
-  }, [])
+  }, [searchParams])
 
   async function handleNameSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -59,7 +73,7 @@ export default function ProfilePage() {
       setSavingName(false)
       return
     }
-    const trimmedName = displayName.trim()
+    const trimmedName = editingName.trim()
     if (!trimmedName) {
       setSavingName(false)
       setNameMsg({ type: "error", text: "Display name cannot be empty." })
@@ -88,16 +102,32 @@ export default function ProfilePage() {
     setSavingName(false)
     if (error) {
       setNameMsg({ type: "error", text: friendlyAuthError(error.message) })
-    } else {
-      setNameMsg({ type: "ok", text: "Profile updated." })
+      return
     }
+
+    if (setupMode) {
+      const { error: metaError } = await supabase.auth.updateUser({
+        data: { [NEEDS_DISPLAY_NAME_KEY]: false },
+      })
+      if (metaError) {
+        setNameMsg({ type: "error", text: friendlyAuthError(metaError.message) })
+        return
+      }
+      setSetupMode(false)
+      router.push(nextPath)
+      router.refresh()
+      return
+    }
+
+    setNameMsg({ type: "ok", text: "Profile updated." })
   }
 
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault()
     setPwdMsg(null)
-    if (newPwd.length < 6) {
-      setPwdMsg({ type: "error", text: "Password must be at least 6 characters." })
+    const pwdError = validatePasswordLength(newPwd)
+    if (pwdError) {
+      setPwdMsg({ type: "error", text: pwdError })
       return
     }
     if (newPwd !== confirmPwd) {
@@ -135,7 +165,8 @@ export default function ProfilePage() {
         setDeleteErr(friendlyAuthError(body?.error ?? "Could not delete account."))
         return
       }
-      // The session cookie is now invalid; force a hard reload to clear state.
+      const supabase = createClient()
+      await supabase.auth.signOut({ scope: "global" })
       window.location.href = "/"
     } catch {
       setDeleting(false)
@@ -154,14 +185,30 @@ export default function ProfilePage() {
   return (
     <main className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">Profile</h1>
-        <Link
-          href="/"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Back to home
-        </Link>
+        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
+          {setupMode ? "Choose your display name" : "Profile"}
+        </h1>
+        {!setupMode && (
+          <Link
+            href="/"
+            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
+          >
+            ← Back to home
+          </Link>
+        )}
       </div>
+
+      {setupMode && (
+        <div
+          role="status"
+          className="max-w-md glass rounded-2xl p-5 border border-wc-gold/35 shadow-xl"
+        >
+          <p className="text-sm text-slate-200">
+            Welcome! Choose a display name to continue. It will appear on predictions and in the
+            ranking.
+          </p>
+        </div>
+      )}
 
       {email && (
         <div className="max-w-md glass rounded-2xl p-5 border border-cyan-400/20 shadow-xl">
@@ -184,8 +231,8 @@ export default function ProfilePage() {
           <input
             id="display_name"
             type="text"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            value={editingName}
+            onChange={(e) => setEditingName(e.target.value)}
             maxLength={40}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="Your name"
@@ -208,14 +255,15 @@ export default function ProfilePage() {
           disabled={savingName}
           className="w-full py-3 px-4 bg-wc-gold text-white font-semibold rounded-xl hover:bg-wc-gold-dark disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200"
         >
-          {savingName ? "Saving…" : "Save name"}
+          {savingName ? "Saving…" : setupMode ? "Continue" : "Save name"}
         </button>
       </form>
 
-      <form onSubmit={handlePasswordSubmit} className="max-w-md glass rounded-2xl p-6 border border-cyan-400/20 shadow-xl space-y-5">
+      {!setupMode && (
+        <form onSubmit={handlePasswordSubmit} className="max-w-md glass rounded-2xl p-6 border border-cyan-400/20 shadow-xl space-y-5">
         <div>
           <h2 className="text-lg font-semibold text-emerald-300">Change password</h2>
-          <p className="text-xs text-slate-400 mt-1">At least 6 characters.</p>
+          <p className="text-xs text-slate-400 mt-1">At least {MIN_PASSWORD_LENGTH} characters.</p>
         </div>
         <div>
           <label htmlFor="new_password" className="block text-sm font-medium text-slate-300 mb-1.5">
@@ -227,7 +275,7 @@ export default function ProfilePage() {
             value={newPwd}
             onChange={(e) => setNewPwd(e.target.value)}
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />
@@ -242,7 +290,7 @@ export default function ProfilePage() {
             value={confirmPwd}
             onChange={(e) => setConfirmPwd(e.target.value)}
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />
@@ -267,6 +315,7 @@ export default function ProfilePage() {
           {savingPwd ? "Updating…" : "Update password"}
         </button>
       </form>
+      )}
 
       <div className="max-w-md">
         <button
@@ -278,6 +327,7 @@ export default function ProfilePage() {
         </button>
       </div>
 
+      {!setupMode && (
       <div className="max-w-md glass rounded-2xl p-6 border border-red-500/25 space-y-4">
         <div>
           <h2 className="text-lg font-semibold text-red-200">Delete account</h2>
@@ -328,6 +378,15 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+      )}
     </main>
+  )
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<main><p className="text-white/50">Loading profile…</p></main>}>
+      <ProfilePageContent />
+    </Suspense>
   )
 }

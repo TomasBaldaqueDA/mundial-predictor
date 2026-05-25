@@ -1,8 +1,29 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import { LeagueFilter } from "@/app/components/LeagueFilter"
 
-export default async function SpecialAnswersPage() {
+export default async function SpecialAnswersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ league?: string }>
+}) {
+  const sp = await searchParams
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
+
   const supabase = await createClient()
+
+  // Filter to league members if active
+  let leagueMemberIds: Set<string> | null = null
+  if (leagueId) {
+    const { data: members } = await supabase
+      .from("private_league_members")
+      .select("user_id")
+      .eq("league_id", leagueId)
+    if (members && members.length > 0) {
+      leagueMemberIds = new Set(members.map((m: { user_id: string }) => m.user_id))
+    }
+  }
+
   const [
     { data: firstMatch },
     { data: questions },
@@ -28,6 +49,7 @@ export default async function SpecialAnswersPage() {
   const byQuestion = new Map<string, { userId: string; answer: string }[]>()
   for (const a of answers ?? []) {
     const row = a as { question_id: string; user_id: string; answer: string }
+    if (leagueMemberIds && !leagueMemberIds.has(row.user_id)) continue
     const list = byQuestion.get(row.question_id) ?? []
     list.push({ userId: row.user_id, answer: row.answer.trim() })
     byQuestion.set(row.question_id, list)
@@ -35,16 +57,19 @@ export default async function SpecialAnswersPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
           Special questions – answers
         </h1>
-        <Link
-          href="/questions"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Back to special questions
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <LeagueFilter currentLeagueId={leagueId || undefined} />
+          <Link
+            href="/questions"
+            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
+          >
+            ← Back to special questions
+          </Link>
+        </div>
       </div>
 
       {!tournamentStarted && (

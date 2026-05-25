@@ -16,8 +16,14 @@ export function friendlyAuthError(message: string | undefined | null): string {
   if (m.includes("user already registered") || m.includes("already been registered")) {
     return "An account with this email already exists. Try logging in."
   }
+  if (m.includes("provider is not enabled") || m.includes("unsupported provider")) {
+    return "Google sign-in is not enabled yet. Use email and password, or ask the admin to enable Google in Supabase."
+  }
+  if (m.includes("redirect") && m.includes("url")) {
+    return "Sign-in redirect URL is not configured. Check Supabase Auth URL settings."
+  }
   if (m.includes("password should be at least")) {
-    return "Password must be at least 6 characters."
+    return "Password must be at least 8 characters."
   }
   if (m.includes("rate limit") || m.includes("too many requests")) {
     return "Too many attempts — please wait a moment and try again."

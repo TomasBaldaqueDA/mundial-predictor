@@ -298,10 +298,6 @@ export default function GroupsPage() {
     setEditingThirdPlace(false)
   }
 
-  const hasAllGroupsFilled = GROUPS.every((c) => {
-    const p = predictions[c] ?? {}
-    return [1, 2, 3, 4].every((pos) => p[pos])
-  })
   const thirdPlaceOptions = GROUPS.map((groupCode) => ({
     groupCode,
     teamName: (predictions[groupCode] ?? {})[3] ?? "",
@@ -481,8 +477,7 @@ export default function GroupsPage() {
         })}
       </div>
 
-      {hasAllGroupsFilled && (
-        <div className="glass rounded-2xl p-6 border-wc-gold/20">
+      <div className="glass rounded-2xl p-6 border-wc-gold/20">
           <div className="flex items-center justify-between gap-2 mb-2">
             <h2 className="text-xl font-semibold text-wc-green-dark">
               Select the 8 third-place teams that advance
@@ -532,6 +527,11 @@ export default function GroupsPage() {
               <p className="text-sm text-slate-400 mb-3">
                 Choose exactly 8 groups whose 3rd place advances ({thirdPlaceQualifiers.length}/8).
               </p>
+              {thirdPlaceOptions.length === 0 && (
+                <p className="text-sm text-slate-500 mb-3 italic">
+                  Fill in at least one group to see the 3rd-place teams here.
+                </p>
+              )}
               <div className="flex flex-wrap gap-2 mb-4">
                 {thirdPlaceOptions.map(({ groupCode, teamName }) => {
                   const selected = thirdPlaceQualifiers.includes(groupCode)
@@ -567,7 +567,6 @@ export default function GroupsPage() {
             </>
           )}
         </div>
-      )}
     </div>
   )
 }

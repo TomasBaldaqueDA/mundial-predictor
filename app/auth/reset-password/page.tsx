@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
+import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
 import Link from "next/link"
 
 export default function ResetPasswordPage() {
@@ -26,8 +27,9 @@ export default function ResetPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
-    if (pwd.length < 6) {
-      setError("Password must be at least 6 characters.")
+    const pwdError = validatePasswordLength(pwd)
+    if (pwdError) {
+      setError(pwdError)
       return
     }
     if (pwd !== confirm) {
@@ -72,7 +74,7 @@ export default function ResetPasswordPage() {
   return (
     <main className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl">
       <h1 className="text-2xl font-bold text-emerald-300 mb-2">Set a new password</h1>
-      <p className="text-slate-400 mb-6">Choose a new password (at least 6 characters).</p>
+      <p className="text-slate-400 mb-6">Choose a new password (at least {MIN_PASSWORD_LENGTH} characters).</p>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label htmlFor="pwd" className="block text-sm font-medium text-slate-300 mb-1.5">
@@ -85,7 +87,7 @@ export default function ResetPasswordPage() {
             onChange={(e) => setPwd(e.target.value)}
             required
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />
@@ -101,7 +103,7 @@ export default function ResetPasswordPage() {
             onChange={(e) => setConfirm(e.target.value)}
             required
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />

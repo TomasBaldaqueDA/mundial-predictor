@@ -13,6 +13,19 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "flagcdn.com",
+        pathname: "/**",
+      },
+    ],
+  },
+  // Avoid TLS failures fetching Google Fonts during local/CI Turbopack builds.
+  experimental: {
+    turbopackUseSystemTlsCerts: true,
+  },
   async headers() {
     return [
       {

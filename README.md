@@ -45,10 +45,17 @@ After deployment on Vercel:
 ### High-frequency cron on Vercel Hobby (free)
 
 If you need updates more than once/day on Hobby, use an external scheduler
-such as cron-job.org and call these URLs with HTTP POST:
+such as cron-job.org and call these URLs with HTTP POST and Bearer auth:
 
-- `https://<your-domain>/api/cron/live-scores?secret=CRON_SECRET`
-- `https://<your-domain>/api/cron/advance-matches?secret=CRON_SECRET`
+```bash
+curl -X POST "https://<your-domain>/api/cron/live-scores" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
+curl -X POST "https://<your-domain>/api/cron/advance-matches" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
+```
+
+Vercel Cron sends `Authorization: Bearer $CRON_SECRET` automatically when `CRON_SECRET` is set in project env.
+Query `?secret=` is only accepted in local/dev (not production).
 
 ### Smart request budgeting (free plan friendly)
 
@@ -69,27 +76,25 @@ For API-Football free tier (100 req/day), a safe baseline is:
 
 With this setup, requests are scoped to `league=1` and `season=2026` only.
 
-You can manually bypass the schedule for testing (`POST` or `GET`):
+You can manually bypass the schedule for testing (`POST` in dev, Bearer header):
 
 ```bash
-curl -X POST "http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET&force=1"
+curl -X POST "http://localhost:3000/api/cron/live-scores?force=1" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
 ```
 
 ### Local manual trigger
 
-Call endpoints with `CRON_SECRET` (recommended: `POST`):
+Call endpoints with Bearer auth (recommended):
 
 ```bash
-curl -X POST "http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET"
-curl -X POST "http://localhost:3000/api/cron/advance-matches?secret=YOUR_CRON_SECRET"
+curl -X POST "http://localhost:3000/api/cron/live-scores" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
+curl -X POST "http://localhost:3000/api/cron/advance-matches" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
 ```
 
-Browser-only checks are also supported with `GET`:
-
-```text
-http://localhost:3000/api/cron/live-scores?secret=YOUR_CRON_SECRET&force=1
-http://localhost:3000/api/cron/advance-matches?secret=YOUR_CRON_SECRET
-```
+In development only, `?secret=` query param is also accepted. GET cron routes are disabled in production.
 
 ### Observability notes
 

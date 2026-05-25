@@ -66,27 +66,44 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
           type="button"
           aria-expanded={expanded}
           onClick={() => setExpanded((v) => !v)}
-          className="w-full px-4 py-3.5 flex items-center gap-3 text-left"
+          className="w-full grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_6rem] px-4 py-3.5 items-center text-left gap-2 sm:gap-0"
         >
-          {/* Avatar */}
-          <div className={`w-9 h-9 rounded-xl ${podCfg.avatarBg} ring-2 ${podCfg.ring} flex items-center justify-center text-white font-black text-sm shrink-0`}>
+          {/* Avatar (replaces rank number) */}
+          <div className={`w-9 h-9 rounded-xl ${podCfg.avatarBg} ring-2 ${podCfg.ring} flex items-center justify-center text-white font-black text-sm shrink-0 mx-auto`}>
             {initials(row.name)}
           </div>
-          {/* Name + position */}
-          <div className="flex-1 min-w-0">
-            <div className={`font-bold text-sm truncate ${podCfg.text}`}>
-              {podCfg.medal} {row.name}
-            </div>
-            <div className="text-[11px] text-white/35 mt-0.5">
-              {row.matchPts} match · {row.groupPts} groups · {row.specialPts} quest. · {row.fiveASidePts} 5-a-side
-            </div>
+          {/* Name */}
+          <div className={`font-bold text-sm truncate pl-1 ${podCfg.text}`}>
+            {podCfg.medal} {row.name}
           </div>
-          {/* Total points */}
-          <div className={`font-black text-xl tabular-nums ${podCfg.pts} shrink-0`}>
+          {/* Desktop columns */}
+          <div className={`text-right text-sm tabular-nums hidden sm:block ${podCfg.text} opacity-80`}>{row.matchPts}</div>
+          <div className={`text-right text-sm tabular-nums hidden sm:block ${podCfg.text} opacity-80`}>{row.specialPts}</div>
+          <div className={`text-right text-sm tabular-nums hidden sm:block ${podCfg.text} opacity-80`}>{row.groupPts}</div>
+          <div className={`text-right text-sm tabular-nums hidden sm:block ${podCfg.text} opacity-80`}>{row.fiveASidePts}</div>
+          {/* Total */}
+          <div className={`text-right font-black text-lg tabular-nums sm:col-auto ${podCfg.pts}`}>
             {row.points}
             <span className="text-xs font-normal ml-0.5 opacity-60">pts</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className={`sm:hidden inline-block w-3 h-3 ml-1 opacity-40 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+              aria-hidden
+            >
+              <path fillRule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+            </svg>
           </div>
         </button>
+        {expanded && (
+          <div className="sm:hidden px-4 pb-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs border-t border-white/10">
+            <span className="text-white/35 pt-2">Games</span><span className={`text-right tabular-nums pt-2 ${podCfg.text}`}>{row.matchPts}</span>
+            <span className="text-white/35">Questions</span><span className={`text-right tabular-nums ${podCfg.text}`}>{row.specialPts}</span>
+            <span className="text-white/35">Groups</span><span className={`text-right tabular-nums ${podCfg.text}`}>{row.groupPts}</span>
+            <span className="text-white/35">5-A-Side</span><span className={`text-right tabular-nums ${podCfg.text}`}>{row.fiveASidePts}</span>
+          </div>
+        )}
       </div>
     )
   }

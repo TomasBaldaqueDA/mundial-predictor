@@ -444,29 +444,18 @@ function SavedPredictionPanel({
           )}
         </div>
 
-        {/* Single row: fits narrow grid columns; team names truncate */}
-        <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-x-1.5 gap-y-1 items-center pt-0.5">
-          <div className="min-w-0 flex justify-end">
-            <TeamWithFlag
-              name={match.team1}
-              size="md"
-              className="flex-row-reverse text-right max-w-full"
-              flagSize="w40"
-            />
-          </div>
-          <div className="flex items-baseline justify-center gap-0.5 shrink-0 px-0.5">
-            <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none">
+        <div className="space-y-2 pt-0.5">
+          <div className="flex items-center justify-between gap-2">
+            <TeamWithFlag name={match.team1} size="md" flagSize="w40" className="min-w-0 flex-1" />
+            <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none shrink-0">
               {pred.pred_score1}
             </span>
-            <span className="text-wc-gold/80 text-lg font-extralight select-none translate-y-[-0.05em]" aria-hidden>
-              –
-            </span>
-            <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none">
+          </div>
+          <div className="flex items-center justify-between gap-2">
+            <TeamWithFlag name={match.team2} size="md" flagSize="w40" className="min-w-0 flex-1" />
+            <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none shrink-0">
               {pred.pred_score2}
             </span>
-          </div>
-          <div className="min-w-0 flex justify-start">
-            <TeamWithFlag name={match.team2} size="md" className="text-left max-w-full" flagSize="w40" />
           </div>
         </div>
 
@@ -562,7 +551,7 @@ function MatchCard({
   const predictClosed = new Date(match.kickoff_time) <= new Date()
   const canEditPrediction = showPredict && signedIn && !predictClosed && !hasResult
   const showPowerStrip = canEditPrediction
-  const showPastResult = hasResult && filterParam === "past"
+  const showPastResult = hasResult
   const matchViewParams = new URLSearchParams()
   if (filterParam) matchViewParams.set("filter", filterParam)
   if (subFilterParam) matchViewParams.set("subFilter", subFilterParam)
@@ -613,36 +602,29 @@ function MatchCard({
       <div className="px-4 sm:px-5 py-4">
         {showLiveOrResultBoard ? (
           <>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="flex-1 flex justify-end min-w-0">
-                <TeamWithFlag
-                  name={match.team1}
-                  size="lg"
-                  className="flex-row-reverse text-right max-w-full"
-                />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <TeamWithFlag name={match.team1} size="lg" className="min-w-0 flex-1" />
+                <span className="text-2xl font-black text-white tracking-tight tabular-nums shrink-0">{score1Display}</span>
               </div>
-              <div className="flex flex-col items-center justify-center shrink-0 px-1">
-                <span className="text-xl sm:text-2xl font-black text-white tracking-tight tabular-nums">
-                  {score1Display}–{score2Display}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <TeamWithFlag name={match.team2} size="lg" className="max-w-full" />
+              <div className="flex items-center justify-between gap-2">
+                <TeamWithFlag name={match.team2} size="lg" className="min-w-0 flex-1" />
+                <span className="text-2xl font-black text-white tracking-tight tabular-nums shrink-0">{score2Display}</span>
               </div>
             </div>
 
             {showPastResult && (match.mvp || (isKnockout && match.qualifier)) && (
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
                 {match.mvp && (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3" aria-hidden>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-200 bg-amber-500/15 border border-amber-400/35 rounded-full px-2.5 py-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 text-amber-300" aria-hidden>
                       <path fillRule="evenodd" d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z" clipRule="evenodd"/>
                     </svg>
-                    MVP: {match.mvp}
+                    MVP: <span className="font-bold text-amber-100">{match.mvp}</span>
                   </span>
                 )}
                 {isKnockout && match.qualifier && (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-200 bg-emerald-500/15 border border-emerald-400/35 rounded-full px-2.5 py-1">
                     ✓ <TeamWithFlag name={match.qualifier} className="text-xs" />
                   </span>
                 )}
@@ -709,22 +691,15 @@ function MatchCard({
               />
             ) : (
               <>
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="flex-1 flex justify-end min-w-0">
-                    <TeamWithFlag
-                      name={match.team1}
-                      size="lg"
-                      className="flex-row-reverse text-right max-w-full"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center justify-center w-14 sm:w-16 shrink-0">
-                    <span className="text-[11px] font-bold text-slate-400 bg-white/10 rounded-lg px-2.5 py-1 tracking-wider ring-1 ring-white/10">
+                <div className="space-y-2">
+                  <TeamWithFlag name={match.team1} size="lg" className="min-w-0" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-slate-500 bg-white/8 rounded-md px-2 py-0.5 tracking-widest ring-1 ring-white/8">
                       VS
                     </span>
+                    <div className="flex-1 h-px bg-white/6" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <TeamWithFlag name={match.team2} size="lg" className="max-w-full" />
-                  </div>
+                  <TeamWithFlag name={match.team2} size="lg" className="min-w-0" />
                 </div>
                 {showPredict && !signedIn && (
                   <p className="mt-3 text-xs text-slate-500 text-center sm:text-left">
@@ -881,6 +856,18 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
   const [powerUpIntent, setPowerUpIntent] = useState<Map<number, boolean>>(new Map())
   const [powerUpBusyId, setPowerUpBusyId] = useState<number | null>(null)
   const [powerUpErr, setPowerUpErr] = useState<{ mid: number; msg: string } | null>(null)
+  const [confirmDialog, setConfirmDialog] = useState<{ message: string; resolve: (ok: boolean) => void } | null>(null)
+
+  function showConfirm(message: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      setConfirmDialog({ message, resolve })
+    })
+  }
+
+  function handleConfirmAnswer(ok: boolean) {
+    confirmDialog?.resolve(ok)
+    setConfirmDialog(null)
+  }
 
   function effectivePowerUp(matchId: number): boolean {
     const pred = predictionsByMatch.get(matchId)
@@ -913,7 +900,15 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
       if (holderId != null && holderId !== match.id) {
         const holderMatch = allMatchesOrdered.find((m) => m.id === holderId)
         const holderLabel = holderMatch ? `${holderMatch.team1} vs ${holderMatch.team2}` : "another match"
-        const ok = window.confirm(
+
+        // If the holder match has already kicked off the ×2 is permanently locked there.
+        if (holderMatch && new Date(holderMatch.kickoff_time) <= new Date()) {
+          setPowerUpErr({ mid: match.id, msg: `×2 is locked on ${holderLabel} — that match has already started.` })
+          setPowerUpBusyId(null)
+          return
+        }
+
+        const ok = await showConfirm(
           `×2 is currently active on ${holderLabel}. Move it to this match instead?`
         )
         if (!ok) {
@@ -1187,15 +1182,16 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
         </div>
       )}
 
-      {filter === "today" && (
-        todayMatches.length > 0 ? (
-          <div className="mb-10">
-            <h2 className="text-lg font-bold text-white/80 mb-4">Today&apos;s matches</h2>
-            {todayFiltered.length > 0
-              ? renderSections(todaySections, (m) => new Date(m.kickoff_time) >= new Date())
-              : <p className="text-white/40 text-sm">No matches today for this filter.</p>}
-          </div>
-        ) : <p className="text-white/50">No matches today.</p>
+      {(filter === "today" || filter === "all") && todayMatches.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-lg font-bold text-white/80 mb-4">Today&apos;s matches</h2>
+          {todayFiltered.length > 0
+            ? renderSections(todaySections, (m) => new Date(m.kickoff_time) >= new Date())
+            : <p className="text-white/40 text-sm">No matches today for this filter.</p>}
+        </div>
+      )}
+      {filter === "today" && todayMatches.length === 0 && (
+        <p className="text-white/50">No matches today.</p>
       )}
 
       {showUpcoming && upcoming.length > 0 && (
@@ -1211,7 +1207,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
         <div>
           <h2 className="text-lg font-bold text-white/80 mb-4">Past matches</h2>
           {pastFiltered.length > 0
-            ? renderSections(pastSections, false)
+            ? renderSections(pastSections, true)
             : <p className="text-white/40 text-sm">No past matches for this filter.</p>}
         </div>
       )}
@@ -1219,6 +1215,42 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
       {filter === "all" && upcoming.length === 0 && past.length === 0 && <p className="text-white/50">No matches yet.</p>}
       {filter === "upcoming" && upcoming.length === 0 && <p className="text-white/50">No upcoming matches.</p>}
       {filter === "past" && past.length === 0 && <p className="text-white/50">No past matches.</p>}
+
+      {/* ── Custom confirm dialog ── */}
+      {confirmDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => handleConfirmAnswer(false)}
+          />
+          {/* panel */}
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-white/15 bg-[#0d1526] shadow-[0_24px_64px_rgba(0,0,0,0.7)] p-6">
+            <div className="flex items-start gap-3 mb-5">
+              <div className="shrink-0 w-9 h-9 rounded-xl bg-wc-gold/15 border border-wc-gold/30 flex items-center justify-center">
+                <span className="text-wc-gold font-black text-sm">×2</span>
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed pt-1.5">{confirmDialog.message}</p>
+            </div>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => handleConfirmAnswer(false)}
+                className="px-4 py-2 rounded-xl text-sm font-semibold text-white/60 border border-white/15 hover:bg-white/8 hover:text-white transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => handleConfirmAnswer(true)}
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-wc-gold text-[#1a0f00] hover:bg-wc-gold/90 transition-all shadow-[0_2px_12px_rgba(240,180,41,0.35)]"
+              >
+                Move ×2
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

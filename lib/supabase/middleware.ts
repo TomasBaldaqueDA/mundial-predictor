@@ -1,5 +1,18 @@
 import { createServerClient } from "@supabase/ssr"
+import { userNeedsDisplayName } from "@/lib/auth-profile-setup"
 import { NextResponse, type NextRequest } from "next/server"
+
+async function userMissingProfile(
+  supabase: ReturnType<typeof createServerClient>,
+  userId: string
+): Promise<boolean> {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle()
+  return !profile
+}
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -37,6 +50,19 @@ export async function updateSession(request: NextRequest) {
   if (!user && !isPublic) {
     const url = new URL("/login", request.url)
     url.searchParams.set("next", pathname)
+    return NextResponse.redirect(url)
+  }
+
+  if (
+    user &&
+    (userNeedsDisplayName(user) || (await userMissingProfile(supabase, user.id))) &&
+    pathname !== "/profile" &&
+    !pathname.startsWith("/auth/") &&
+    !pathname.startsWith("/api/")
+  ) {
+    const url = new URL("/profile", request.url)
+    url.searchParams.set("setup", "1")
+    if (pathname !== "/") url.searchParams.set("next", pathname)
     return NextResponse.redirect(url)
   }
 

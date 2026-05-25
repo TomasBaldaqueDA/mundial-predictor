@@ -3,6 +3,8 @@
  *
  * Usage: npm run qa:audit
  * Requires .env.local (Supabase URL + service role + anon key for sign-in tests).
+ *
+ * Set QA_TLS_INSECURE=1 only on trusted networks if TLS cert verification fails locally.
  */
 import fs from "node:fs"
 import path from "node:path"
@@ -16,6 +18,10 @@ const QA_USERS = [
 
 const SITE = process.env.QA_SITE_URL || "https://mundial-predictor.vercel.app"
 
+if (process.env.QA_TLS_INSECURE === "1") {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+  console.warn("⚠ QA_TLS_INSECURE=1 — TLS certificate verification disabled\n")
+}
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) return {}
   const out = {}
@@ -69,12 +75,31 @@ async function main() {
   const section = (title) => console.log(`\n## ${title}`)
 
   section("Smoke — public pages")
-  const paths = ["/", "/games", "/login", "/register", "/five-a-side", "/leagues", "/questions"]
-  for (const p of paths) {
+  const publicPaths = ["/", "/login", "/register", "/rules"]
+  for (const p of publicPaths) {
     try {
       const res = await fetch(`${SITE}${p}`, { redirect: "follow" })
       if (res.status === 200) ok += pass(`${p} → ${res.status}`)
       else bad += fail(`${p} → ${res.status}`)
+    } catch (e) {
+      bad += fail(`${p} → ${e.message}`)
+    }
+  }
+
+  section("Smoke — auth-gated pages redirect to login")
+  const protectedPaths = ["/games", "/five-a-side", "/leagues", "/questions", "/ranking"]
+  for (const p of protectedPaths) {
+    try {
+      const res = await fetch(`${SITE}${p}`, { redirect: "manual" })
+      const location = res.headers.get("location") ?? ""
+      if (res.status === 307 || res.status === 302) {
+        if (location.includes("/login")) ok += pass(`${p} → ${res.status} login redirect`)
+        else bad += fail(`${p} → ${res.status} unexpected redirect ${location}`)
+      } else if (res.status === 200) {
+        bad += fail(`${p} → 200 without auth (middleware may be misconfigured)`)
+      } else {
+        bad += fail(`${p} → ${res.status}`)
+      }
     } catch (e) {
       bad += fail(`${p} → ${e.message}`)
     }
@@ -148,21 +173,42 @@ async function main() {
   if (leagues?.length) ok += pass(`league "${leagues[0].name}" code ${leagues[0].invite_code}`)
   else bad += fail("no QA league (run npm run qa:seed)")
 
-  section("Cron auth — ?secret= (local only if CRON_SECRET set)")
+  section("Cron auth — Bearer header (local if QA_CRON_BASE + CRON_SECRET set)")
   if (cronSecret && process.env.QA_CRON_BASE) {
     const base = process.env.QA_CRON_BASE.replace(/\/$/, "")
     for (const ep of ["/api/cron/advance-matches", "/api/cron/live-scores?force=1"]) {
       const noAuth = await fetch(`${base}${ep}`)
-      const sep = ep.includes("?") ? "&" : "?"
-      const withSecret = await fetch(`${base}${ep}${sep}secret=${encodeURIComponent(cronSecret)}`)
+      const withBearer = await fetch(`${base}${ep}`, {
+        headers: { Authorization: `Bearer ${cronSecret}` },
+      })
       if (noAuth.status === 401) ok += pass(`${ep} rejects without auth`)
       else bad += fail(`${ep} should 401 without auth (got ${noAuth.status})`)
-      if (withSecret.status === 200 || withSecret.status === 503) ok += pass(`${ep} accepts ?secret= (${withSecret.status})`)
-      else bad += fail(`${ep} ?secret= → ${withSecret.status}`)
+      if (withBearer.status === 200 || withBearer.status === 503) ok += pass(`${ep} accepts Bearer (${withBearer.status})`)
+      else bad += fail(`${ep} Bearer → ${withBearer.status}`)
     }
   } else {
     console.log("  (skip — set QA_CRON_BASE + CRON_SECRET to test cron locally)")
   }
+
+  section("Migrations — scoring & ranking RPCs")
+  const { data: pts, error: ptsErr } = await admin.rpc("calc_prediction_points", {
+    p_score1: 2,
+    p_score2: 1,
+    p_mvp: "A",
+    p_qualifier: "Team A",
+    pred_score1: 2,
+    pred_score2: 1,
+    pred_mvp: "A",
+    pred_qualifier: "Team A",
+  })
+  if (ptsErr) bad += fail(`calc_prediction_points: ${ptsErr.message} — apply 049–050`)
+  else if (pts === 6) ok += pass("calc_prediction_points qualifier scoring = 6")
+  else bad += fail(`calc_prediction_points returned ${pts}, expected 6`)
+
+  const { error: rankRpcErr } = await admin.rpc("get_match_points_by_user")
+  if (rankRpcErr?.code === "PGRST202") bad += fail("get_match_points_by_user missing — apply 052")
+  else if (rankRpcErr) bad += fail(`get_match_points_by_user: ${rankRpcErr.message}`)
+  else ok += pass("get_match_points_by_user RPC ready")
 
   section("DB guard — migration 048 (kickoff / points)")
   const { data: pastMatch } = await admin

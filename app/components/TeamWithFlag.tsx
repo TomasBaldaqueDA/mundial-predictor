@@ -1,6 +1,7 @@
 "use client"
 
 import { getFlagSrc } from "@/lib/team-flags"
+import { FlagImage } from "@/app/components/FlagImage"
 
 type TeamWithFlagProps = {
   name: string | null | undefined
@@ -46,7 +47,7 @@ export function TeamWithFlag({
     <span
       className={`inline-flex gap-2 min-w-0 max-w-full ${truncate ? "items-center" : "items-start"} ${className}`}
     >
-      <img src={getFlagSrc(n, flagSize)} alt="" className={imgClass} />
+      <FlagImage src={getFlagSrc(n, flagSize)} alt="" className={imgClass} />
       <span className={textClass}>
         {n}
         {suffix}

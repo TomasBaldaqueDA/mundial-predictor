@@ -17,13 +17,10 @@ function getTimeLeft() {
 }
 
 export function TournamentCountdown() {
-  const [timeLeft, setTimeLeft] = useState<ReturnType<typeof getTimeLeft>>(null)
+  const [timeLeft, setTimeLeft] = useState<ReturnType<typeof getTimeLeft>>(() => getTimeLeft())
 
   useEffect(() => {
-    // Tick immediately then every second
-    const tick = () => setTimeLeft(getTimeLeft()) // eslint-disable-line react-hooks/set-state-in-effect
-    tick()
-    const t = setInterval(tick, 1000)
+    const t = setInterval(() => setTimeLeft(getTimeLeft()), 1000)
     return () => clearInterval(t)
   }, [])
 

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { getFlagSrc } from "@/lib/team-flags"
+import { FlagImage } from "@/app/components/FlagImage"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
 
 type Player = {
@@ -479,7 +480,7 @@ export default function FiveASidePage() {
                     <span className="flex h-6 min-w-[1.35rem] items-center justify-center rounded bg-slate-800 text-[10px] font-black text-white tabular-nums shrink-0">
                       {shirtNumberByPlayerId.get(p.id) ?? "—"}
                     </span>
-                    <img src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
+                    <FlagImage src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
                     <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
                     <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
                   </button>
@@ -746,7 +747,7 @@ function FantasyPlayerCard({
                   </div>
                   <div className="flex min-w-0 flex-col items-center justify-start">
                     <div className={statMuted}>Nat</div>
-                    <img
+                    <FlagImage
                       src={getFlagSrc(player.team)}
                       alt=""
                       className="mt-0.5 h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"

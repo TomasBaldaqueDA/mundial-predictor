@@ -3,18 +3,20 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
+import { LeagueFilter } from "@/app/components/LeagueFilter"
 
 export default async function MatchPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ filter?: string; subFilter?: string }>
+  searchParams: Promise<{ filter?: string; subFilter?: string; league?: string }>
 }) {
   const { id } = await params
   const sp = await searchParams
   const filter = typeof sp?.filter === "string" ? sp.filter : ""
   const subFilter = typeof sp?.subFilter === "string" ? sp.subFilter : ""
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
   const backSearch = new URLSearchParams()
   if (filter) backSearch.set("filter", filter)
   if (subFilter) backSearch.set("subFilter", subFilter)
@@ -28,6 +30,8 @@ export default async function MatchPage({
   const matchId = matchIdNum
 
   const supabase = await createClient()
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
+
   const { data: match, error: matchError } = await supabase
     .from("matches")
     .select("*")
@@ -58,6 +62,18 @@ export default async function MatchPage({
     throw new Error(predError.message)
   }
 
+  // Filter to league members if a league filter is active
+  let leagueMemberIds: Set<string> | null = null
+  if (leagueId) {
+    const { data: members } = await supabase
+      .from("private_league_members")
+      .select("user_id")
+      .eq("league_id", leagueId)
+    if (members && members.length > 0) {
+      leagueMemberIds = new Set(members.map((m: { user_id: string }) => m.user_id))
+    }
+  }
+
   type PredictionDbRow = {
     user_id: string | null
     user_name: string | null
@@ -69,7 +85,9 @@ export default async function MatchPage({
     created_at: string
   }
 
-  const preds = (allPredictions ?? []) as PredictionDbRow[]
+  const preds = ((allPredictions ?? []) as PredictionDbRow[]).filter(
+    (p) => !leagueMemberIds || (p.user_id != null && leagueMemberIds.has(p.user_id))
+  )
 
   const userIds = [...new Set(preds.map((p) => p.user_id).filter(Boolean))] as string[]
   const { data: profiles } = userIds.length
@@ -89,10 +107,23 @@ export default async function MatchPage({
   const latestByUser = new Map<string, PredictionDbRow>()
   for (const p of preds) {
     const createdAt = new Date(p.created_at)
-    if (createdAt > kickoff) continue
+    // For other users: only show predictions submitted before kickoff (no post-kickoff peeking)
+    // For the current user: always show their own prediction (RLS already blocks post-kickoff edits)
+    const isOwnRow = currentUser != null && p.user_id === currentUser.id
+    if (!isOwnRow && createdAt > kickoff) continue
     const key = p.user_id ?? ((p.user_name ?? "").trim() || "Anonymous")
     if (!latestByUser.has(key)) {
       latestByUser.set(key, p)
+    }
+  }
+
+  // Also ensure the current user's own prediction always appears even if league filter is active
+  if (currentUser && leagueMemberIds && !leagueMemberIds.has(currentUser.id)) {
+    const allPreds = (allPredictions ?? []) as PredictionDbRow[]
+    const ownPred = allPreds.find((p) => p.user_id === currentUser.id)
+    if (ownPred) {
+      const key = currentUser.id
+      if (!latestByUser.has(key)) latestByUser.set(key, ownPred)
     }
   }
 
@@ -104,6 +135,7 @@ export default async function MatchPage({
       mvp: p.pred_mvp,
       pred_qualifier: p.pred_qualifier ?? null,
       points: p.points ?? 0,
+      isOwn: p.user_id != null && p.user_id === currentUser?.id,
     }))
     .sort((a, b) => b.points - a.points)
 
@@ -111,10 +143,12 @@ export default async function MatchPage({
     <main className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-wc-green-dark mb-2 flex flex-wrap items-center gap-2">
-            <TeamWithFlag name={match.team1} /> vs <TeamWithFlag name={match.team2} />
+          <h1 className="text-2xl font-bold tracking-tight text-white mb-2 flex flex-wrap items-center gap-2">
+            <TeamWithFlag name={match.team1} />
+            <span className="text-sm font-bold text-white/40 uppercase tracking-widest">vs</span>
+            <TeamWithFlag name={match.team2} />
           </h1>
-          <p className="text-stone-500">
+          <p className="text-white/50 text-sm">
             {formatKickoffDisplay(String(match.kickoff_time))}
           </p>
         </div>
@@ -133,26 +167,36 @@ export default async function MatchPage({
       )}
 
       {hasResult && (
-        <div className="p-4 glass rounded-2xl border-wc-gold/20">
-          <p className="font-semibold text-stone-800">
-            Result: {match.score1} - {match.score2}
-            {match.mvp && (
-              <span className="font-normal text-stone-600 ml-2">
-                · MVP: {match.mvp}
-              </span>
-            )}
-            {isKnockout && match.qualifier && (
-              <span className="font-normal text-stone-600 ml-2 inline-flex items-center gap-1.5">
-                · Qualified: <TeamWithFlag name={match.qualifier} />
-              </span>
-            )}
-          </p>
+        <div className="glass rounded-2xl border border-wc-gold/30 px-5 py-4 bg-gradient-to-r from-wc-gold/10 to-transparent">
+          <p className="text-xs font-bold uppercase tracking-widest text-wc-gold/70 mb-2">Final result</p>
+          <div className="flex flex-wrap items-center gap-3 text-white font-bold text-lg">
+            <TeamWithFlag name={match.team1} />
+            <span className="text-2xl font-black tabular-nums text-white">
+              {match.score1} <span className="text-white/40">–</span> {match.score2}
+            </span>
+            <TeamWithFlag name={match.team2} />
+          </div>
+          {match.mvp && (
+            <p className="mt-2 text-sm text-white/70">
+              <span className="text-white/40">MVP: </span>
+              <span className="text-white font-semibold">{match.mvp}</span>
+            </p>
+          )}
+          {isKnockout && match.qualifier && (
+            <p className="mt-1 text-sm text-white/70 inline-flex items-center gap-1.5">
+              <span className="text-white/40">Qualified: </span>
+              <TeamWithFlag name={match.qualifier} />
+            </p>
+          )}
         </div>
       )}
 
       {showPredictionsList && (
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-100">Player predictions</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-xl font-semibold text-slate-100">Player predictions</h2>
+            <LeagueFilter currentLeagueId={leagueId || undefined} />
+          </div>
 
           {predictions.length === 0 ? (
             <p className="text-stone-600 glass rounded-2xl p-6">
@@ -161,44 +205,54 @@ export default async function MatchPage({
           ) : (
             <div className="glass rounded-2xl overflow-hidden">
               <table className="min-w-full text-sm">
-                <thead className="bg-stone-100/80 border-b border-stone-200">
+                <thead className="bg-white/5 border-b border-white/10">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-stone-700">Player</th>
-                    <th className="px-4 py-3 text-left font-semibold text-stone-700">Result</th>
+                    <th className="px-4 py-3 text-left font-semibold text-slate-300 text-xs uppercase tracking-wide">Player</th>
+                    <th className="px-4 py-3 text-left font-semibold text-slate-300 text-xs uppercase tracking-wide">Prediction</th>
                     {isKnockout && (
-                      <th className="px-4 py-3 text-left font-semibold text-stone-700">Qualifier</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-300 text-xs uppercase tracking-wide">Qualifier</th>
                     )}
-                    <th className="px-4 py-3 text-left font-semibold text-stone-700">MVP</th>
-                    <th className="px-4 py-3 text-right font-semibold text-stone-700">Points</th>
+                    <th className="px-4 py-3 text-left font-semibold text-slate-300 text-xs uppercase tracking-wide">MVP</th>
+                    <th className="px-4 py-3 text-right font-semibold text-wc-gold/80 text-xs uppercase tracking-wide">Pts</th>
                   </tr>
                 </thead>
                 <tbody>
                   {predictions.map((p, i) => (
-                    <tr key={`${p.name}-${i}`} className="border-b border-stone-100 hover:bg-wc-gold-light/20 transition-colors">
-                      <td className="px-4 py-3 font-medium">{p.name}</td>
-                      <td className="px-4 py-3">
-                        {p.score1} - {p.score2}{" "}
-                        <span className="text-stone-500">
-                          (
-                          {(p.score1 ?? 0) > (p.score2 ?? 0) ? (
-                            <>
-                              <TeamWithFlag name={match.team1} suffix=" wins" />
-                            </>
+                    <tr
+                      key={`${p.name}-${i}`}
+                      className={`border-b border-white/5 transition-colors ${
+                        p.isOwn
+                          ? "bg-wc-gold/10 hover:bg-wc-gold/15"
+                          : "hover:bg-white/5"
+                      }`}
+                    >
+                      <td className="px-4 py-3 font-medium text-slate-100">
+                        {p.name}
+                        {p.isOwn && (
+                          <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-wc-gold/80 bg-wc-gold/15 border border-wc-gold/30 rounded-full px-1.5 py-0.5">
+                            you
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-slate-200">
+                        <span className="font-semibold tabular-nums">
+                          {p.score1} – {p.score2}
+                        </span>
+                        <span className="text-white/40 ml-1.5 text-xs">
+                          ({(p.score1 ?? 0) > (p.score2 ?? 0) ? (
+                            <><TeamWithFlag name={match.team1} suffix=" wins" /></>
                           ) : (p.score2 ?? 0) > (p.score1 ?? 0) ? (
-                            <>
-                              <TeamWithFlag name={match.team2} suffix=" wins" />
-                            </>
+                            <><TeamWithFlag name={match.team2} suffix=" wins" /></>
                           ) : (
                             "Draw"
-                          )}
-                          )
+                          )})
                         </span>
                       </td>
                       {isKnockout && (
-                        <td className="px-4 py-3"><TeamWithFlag name={p.pred_qualifier} /></td>
+                        <td className="px-4 py-3 text-slate-200"><TeamWithFlag name={p.pred_qualifier} /></td>
                       )}
-                      <td className="px-4 py-3">{p.mvp}</td>
-                      <td className="px-4 py-3 text-right">{p.points}</td>
+                      <td className="px-4 py-3 text-slate-200">{p.mvp}</td>
+                      <td className="px-4 py-3 text-right font-bold tabular-nums text-wc-gold">{p.points}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -44,11 +44,18 @@ export function calculateMatchPoints(
     Boolean(match.mvp) &&
     match.mvp!.trim().toLowerCase() === prediction.pred_mvp.trim().toLowerCase()
 
+  // Knockout qualifier: +1 if the user picked the correct advancing team
+  const qualifierCorrect =
+    Boolean(match.qualifier) &&
+    Boolean(prediction.pred_qualifier) &&
+    match.qualifier!.trim().toLowerCase() === prediction.pred_qualifier!.trim().toLowerCase()
+
   const exactPts = exact ? 3 : 0
   const winnerPts = correctWinner ? 1 : 0
   const mvpPts = mvpCorrect ? 1 : 0
   const comboPts = exact && mvpCorrect ? 1 : 0
+  const qualifierPts = qualifierCorrect ? 1 : 0
 
   const mult = options?.points_multiplier === 2 ? 2 : 1
-  return (exactPts + winnerPts + mvpPts + comboPts) * mult
+  return (exactPts + winnerPts + mvpPts + comboPts + qualifierPts) * mult
 }

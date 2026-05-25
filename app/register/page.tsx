@@ -4,6 +4,8 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
+import { getAuthCallbackUrl, OAUTH_SIGNUP_FLOW, signOutBeforeOAuth } from "@/lib/auth-oauth"
+import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
 import Link from "next/link"
 
 // Escape `_` and `%` so display-name uniqueness checks don't accept literal
@@ -34,8 +36,9 @@ export default function RegisterPage() {
       setError("Passwords do not match.")
       return
     }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.")
+    const pwdError = validatePasswordLength(password)
+    if (pwdError) {
+      setError(pwdError)
       return
     }
     setLoading(true)
@@ -101,10 +104,13 @@ export default function RegisterPage() {
     setError(null)
     setLoading(true)
     const supabase = createClient()
-    const callback = new URL("/auth/callback", window.location.origin)
+    await signOutBeforeOAuth(supabase)
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: callback.toString() },
+      options: {
+        redirectTo: getAuthCallbackUrl(undefined, undefined, { flow: OAUTH_SIGNUP_FLOW }),
+        queryParams: { prompt: "select_account" },
+      },
     })
     if (err) {
       setLoading(false)
@@ -116,7 +122,7 @@ export default function RegisterPage() {
     <div className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl">
       <h1 className="text-2xl font-bold text-emerald-300 mb-2">Create account</h1>
       <p className="text-slate-400 mb-6">
-        Enter your display name, email and choose a password (at least 6 characters).
+        Enter your display name, email and choose a password (at least {MIN_PASSWORD_LENGTH} characters).
       </p>
       <button
         type="button"
@@ -184,7 +190,7 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />
@@ -200,7 +206,7 @@ export default function RegisterPage() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             autoComplete="new-password"
-            minLength={6}
+            minLength={MIN_PASSWORD_LENGTH}
             className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
             placeholder="••••••••"
           />

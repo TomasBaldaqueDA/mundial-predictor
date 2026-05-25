@@ -72,6 +72,7 @@ const pointsRules = [
   { pts: "1", label: "Correct winner" },
   { pts: "1", label: "Correct MVP" },
   { pts: "+1", label: "Combo bonus" },
+  { pts: "+1", label: "Correct qualifier (knockout)" },
 ]
 
 export default function HomePage() {

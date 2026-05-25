@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { supabase } from "@/lib/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { GamesList } from "./GamesList"
 
 export const metadata = {
@@ -8,6 +8,7 @@ export const metadata = {
 }
 
 export default async function JogosPage() {
+  const supabase = await createClient()
   const { data: matches } = await supabase
     .from("matches")
     .select("*")

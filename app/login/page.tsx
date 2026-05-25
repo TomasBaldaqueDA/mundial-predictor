@@ -4,6 +4,7 @@ import { Suspense, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
+import { getAuthCallbackUrl, signOutBeforeOAuth } from "@/lib/auth-oauth"
 import { safeRedirectPath } from "@/lib/safe-redirect"
 import Link from "next/link"
 
@@ -17,6 +18,14 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [forgotSent, setForgotSent] = useState(false)
+
+  const urlAuthError = searchParams.get("error")
+  const urlErrorMessage = urlAuthError
+    ? urlAuthError === "auth"
+      ? "Sign-in failed or was cancelled. Please try again."
+      : friendlyAuthError(searchParams.get("error_description") ?? urlAuthError)
+    : null
+  const displayError = error ?? urlErrorMessage
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,11 +46,13 @@ function LoginForm() {
     setError(null)
     setLoading(true)
     const supabase = createClient()
-    const callback = new URL("/auth/callback", window.location.origin)
-    if (next) callback.searchParams.set("next", safeRedirectPath(next, "/"))
+    await signOutBeforeOAuth(supabase)
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: callback.toString() },
+      options: {
+        redirectTo: getAuthCallbackUrl(next),
+        queryParams: { prompt: "select_account" },
+      },
     })
     if (err) {
       setLoading(false)
@@ -157,9 +168,9 @@ function LoginForm() {
             placeholder="••••••••"
           />
         </div>
-        {error && (
+        {displayError && (
           <p className="text-sm text-red-200 rounded-lg bg-red-500/15 border border-red-400/30 px-3 py-2" role="alert">
-            {error}
+            {displayError}
           </p>
         )}
         <button

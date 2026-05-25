@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { supabaseAdmin } from "@/lib/supabase-server"
+import { NextResponse } from "next/server"
 
 /**
  * POST /api/account/delete
@@ -21,16 +21,27 @@ export async function POST() {
 
   const admin = supabaseAdmin
   if (!admin) {
-    return NextResponse.json({ error: "Server misconfigured" }, { status: 503 })
+    return NextResponse.json(
+      { error: "Account deletion is unavailable. Please contact support." },
+      { status: 503 }
+    )
   }
 
-  const { error } = await admin.auth.admin.deleteUser(user.id)
+  const userId = user.id
+  const { error } = await admin.auth.admin.deleteUser(userId)
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // Sign out client-side too — the cookie session is now orphaned.
-  await ssr.auth.signOut()
+  const { data: stillExists } = await admin.auth.admin.getUserById(userId)
+  if (stillExists?.user) {
+    return NextResponse.json(
+      { error: "Account could not be fully removed. Please try again." },
+      { status: 500 }
+    )
+  }
+
+  await ssr.auth.signOut({ scope: "global" })
 
   return NextResponse.json({ ok: true })
 }

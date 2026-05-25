@@ -7,19 +7,10 @@ export const metadata = {
   description: "Worldwide leaderboard of WC26 Predictor — match points, special questions, group bonuses and 5-A-SIDE.",
 }
 
-type PredictionRow = {
-  user_id: string | null
-  user_name: string | null
-  points: number | null
-  match_id: number
-  created_at: string
-}
-
 export default async function RankingPage() {
   const supabase = await createClient()
   const [
-    { data: predictions, error: predError },
-    { data: matches, error: matchError },
+    { data: matchPointsRows, error: matchPointsError },
     { data: profiles },
     { data: groupPointsRows, error: groupPointsError },
     { data: specialQuestions },
@@ -27,14 +18,7 @@ export default async function RankingPage() {
     { data: fiveASidePicks },
     { data: fiveASidePlayers },
   ] = await Promise.all([
-    supabase
-      .from("predictions")
-      .select("user_id, user_name, points, match_id, created_at")
-      .order("created_at", { ascending: false }),
-    supabase
-      .from("matches")
-      .select("id, status")
-      .eq("status", "finished"),
+    supabase.rpc("get_match_points_by_user"),
     supabase.from("profiles").select("id, display_name"),
     supabase.rpc("get_all_group_points"),
     supabase.from("special_questions").select("id, points, correct_answer").not("correct_answer", "is", null),
@@ -44,9 +28,27 @@ export default async function RankingPage() {
   ])
   const safeGroupPoints = groupPointsError ? [] : groupPointsRows ?? []
 
-  if (predError) throw new Error(predError.message)
-  if (matchError) throw new Error(matchError.message)
-
+  const matchPointsByUserId = new Map<string, number>()
+  if (matchPointsError?.code === "PGRST202") {
+    const [{ data: finishedMatches }, { data: predictions }] = await Promise.all([
+      supabase.from("matches").select("id").eq("status", "finished"),
+      supabase.from("predictions").select("user_id, points, match_id").not("user_id", "is", null),
+    ])
+    const finishedIds = new Set((finishedMatches ?? []).map((m: { id: number }) => m.id))
+    for (const row of predictions ?? []) {
+      const r = row as { user_id: string; points: number | null; match_id: number }
+      if (!finishedIds.has(r.match_id)) continue
+      const current = matchPointsByUserId.get(r.user_id) ?? 0
+      matchPointsByUserId.set(r.user_id, current + (r.points ?? 0))
+    }
+  } else if (matchPointsError) {
+    throw new Error(matchPointsError.message)
+  } else {
+    for (const row of matchPointsRows ?? []) {
+      const r = row as { user_id: string; match_points: number }
+      if (r.user_id) matchPointsByUserId.set(r.user_id, Number(r.match_points) || 0)
+    }
+  }
   const profileNameByUserId = new Map<string, string>()
   for (const p of profiles ?? []) {
     const name = (p.display_name ?? "").trim()
@@ -117,44 +119,9 @@ export default async function RankingPage() {
     if (row.user_id) fiveASidePointsByUserId.set(row.user_id, pts)
   }
 
-  const finishedMatchIds = new Set((matches ?? []).map((m: { id: number }) => m.id))
-  const rows: PredictionRow[] = (predictions ?? []).map((row) => {
-    const r = row as {
-      user_id?: string | null
-      user_name?: string | null
-      points?: number | null
-      match_id: number
-      created_at: string
-    }
-    return {
-      user_id: r.user_id ?? null,
-      user_name: r.user_name ?? null,
-      points: r.points ?? null,
-      match_id: r.match_id,
-      created_at: r.created_at,
-    }
-  })
-
-  const latestPerUserAndMatch = new Map<string, PredictionRow>()
-  for (const row of rows) {
-    if (!row.user_id || !finishedMatchIds.has(row.match_id)) continue
-    const key = `${row.user_id}::${row.match_id}`
-    if (!latestPerUserAndMatch.has(key)) {
-      latestPerUserAndMatch.set(key, row)
-    }
-  }
-
-  const totalsFromPredictions = new Map<string, number>()
-  for (const [, row] of latestPerUserAndMatch) {
-    const uid = row.user_id!
-    const pts = row.points ?? 0
-    const current = totalsFromPredictions.get(uid) ?? 0
-    totalsFromPredictions.set(uid, current + pts)
-  }
-
   const ranking = Array.from(profileNameByUserId.entries())
     .map(([uid, name]) => {
-      const matchPts = totalsFromPredictions.get(uid) ?? 0
+      const matchPts = matchPointsByUserId.get(uid) ?? 0
       const groupPts = groupPointsByUserId.get(uid) ?? 0
       const specialPts = specialPointsByUserId.get(uid) ?? 0
       const fiveASidePts = fiveASidePointsByUserId.get(uid) ?? 0
@@ -180,10 +147,10 @@ export default async function RankingPage() {
           <p className="text-white/40 text-sm mt-0.5">Overall standings · WC26 Predictor</p>
         </div>
         <Link
-          href="/games"
+          href="/leagues"
           className="rounded-xl px-4 py-2 text-white/50 hover:text-white/80 hover:bg-white/8 text-sm font-medium transition-all border border-transparent hover:border-white/10"
         >
-          ← Games
+          ← Leagues
         </Link>
       </div>
 

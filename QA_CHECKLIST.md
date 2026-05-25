@@ -2,6 +2,16 @@
 
 Use this before major deploys to keep the app portfolio-ready.
 
+## 0) Database migrations (required before launch)
+
+Apply in Supabase SQL Editor, in order:
+
+1. `supabase/sql/049_fix_recalc_trigger_and_guard.sql`
+2. `supabase/sql/050_qualifier_point.sql`
+3. `supabase/sql/052_ranking_match_points_rpc.sql`
+
+Verify: `npm run verify:migrations` (expect calc_prediction_points = 6 and get_match_points_by_user exists).
+
 ## 1) Access and auth
 
 - Register a new user and confirm login works.

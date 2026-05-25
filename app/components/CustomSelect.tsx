@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useEffect, useRef, useState } from "react"
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react"
 
 type CustomSelectProps = {
   value: string
@@ -27,10 +27,13 @@ export function CustomSelect({
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  const setOpenWithCallback = (next: boolean) => {
-    setOpen(next)
-    onOpenChange?.(next)
-  }
+  const setOpenWithCallback = useCallback(
+    (next: boolean) => {
+      setOpen(next)
+      onOpenChange?.(next)
+    },
+    [onOpenChange]
+  )
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -42,7 +45,7 @@ export function CustomSelect({
       document.addEventListener("mousedown", handleClickOutside)
       return () => document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [open])
+  }, [open, setOpenWithCallback])
 
   const isPlaceholder = !value
   const displayContent: ReactNode = isPlaceholder
@@ -80,6 +83,7 @@ export function CustomSelect({
             <button
               type="button"
               role="option"
+              aria-selected={!value}
               onClick={() => {
                 onChange("")
                 setOpenWithCallback(false)
@@ -96,6 +100,7 @@ export function CustomSelect({
               <button
                 type="button"
                 role="option"
+                aria-selected={value === opt}
                 onClick={() => {
                   onChange(opt)
                   setOpenWithCallback(false)

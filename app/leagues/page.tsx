@@ -17,7 +17,7 @@ export default function LeaguesPage() {
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState("")
   const [joinCode, setJoinCode] = useState("")
-  const [msg, setMsg] = useState<string | null>(null)
+  const [msg, setMsg] = useState<{ type: "ok" | "error"; text: string } | null>(null)
 
   async function refresh() {
     const supabase = createClient()
@@ -27,14 +27,14 @@ export default function LeaguesPage() {
       setLoading(false)
       return
     }
-    const { data: mem } = await supabase.from("private_league_members").select("league_id").eq("user_id", user.id)
-    const ids = [...new Set((mem ?? []).map((m) => m.league_id))]
-    if (ids.length === 0) {
-      setLeagues([])
-      setLoading(false)
-      return
+    // Fetch all leagues the user owns or is a member of (policy allows both)
+    const { data, error } = await supabase
+      .from("private_leagues")
+      .select("*")
+      .order("created_at", { ascending: false })
+    if (error) {
+      console.error("refresh leagues error:", error)
     }
-    const { data } = await supabase.from("private_leagues").select("*").in("id", ids).order("created_at", { ascending: false })
     setLeagues((data as LeagueRow[]) ?? [])
     setLoading(false)
   }
@@ -51,18 +51,22 @@ export default function LeaguesPage() {
     setMsg(null)
     const n = name.trim()
     if (n.length < 2) {
-      setMsg("Name is too short.")
+      setMsg({ type: "error", text: "League name must be at least 2 characters." })
       return
     }
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    if (!user) {
+      setMsg({ type: "error", text: "You must be logged in to create a league." })
+      return
+    }
     const { error } = await supabase.from("private_leagues").insert({ name: n, owner_id: user.id })
     if (error) {
-      setMsg(error.message)
+      setMsg({ type: "error", text: error.message })
       return
     }
     setName("")
+    setMsg({ type: "ok", text: `League "${n}" created!` })
     await refresh()
   }
 
@@ -74,11 +78,11 @@ export default function LeaguesPage() {
     const supabase = createClient()
     const { data, error } = await supabase.rpc("join_private_league", { p_code: code })
     if (error) {
-      setMsg(error.message)
+      setMsg({ type: "error", text: error.message })
       return
     }
     setJoinCode("")
-    setMsg(`Joined league.`)
+    setMsg({ type: "ok", text: "Joined league!" })
     await refresh()
     if (data) window.location.href = `/leagues/${data}`
   }
@@ -131,7 +135,11 @@ export default function LeaguesPage() {
         </button>
       </form>
 
-      {msg && <p className="text-sm text-amber-200/90 bg-amber-950/40 border border-amber-500/30 rounded-xl px-4 py-2">{msg}</p>}
+      {msg && (
+        <p className={`text-sm rounded-xl px-4 py-2 border ${msg.type === "ok" ? "text-emerald-300 bg-emerald-950/40 border-emerald-500/30" : "text-amber-200/90 bg-amber-950/40 border-amber-500/30"}`}>
+          {msg.text}
+        </p>
+      )}
 
       <section>
         <h2 className="text-sm font-bold text-white/90 uppercase tracking-wider mb-3">Your leagues</h2>

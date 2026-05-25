@@ -31,13 +31,13 @@ export default function RulesPage() {
             You must be <span className="font-semibold">logged in</span> to make or edit predictions.
           </li>
           <li>
-            <span className="font-semibold">Match predictions</span> and{" "}
-            <span className="font-semibold">group predictions</span> are locked at{" "}
+            <span className="font-semibold">Match predictions</span> are locked at{" "}
             <span className="font-semibold">kickoff time</span> of each game.
           </li>
           <li>
-            <span className="font-semibold">Special questions</span> and{" "}
-            <span className="font-semibold">5-A-SIDE team</span> are locked at kickoff of the{" "}
+            <span className="font-semibold">Special questions</span>,{" "}
+            <span className="font-semibold">5-A-SIDE team</span> and{" "}
+            <span className="font-semibold">group predictions</span> are locked at kickoff of the{" "}
             <span className="font-semibold">first match of the World Cup</span>.
           </li>
           <li>
@@ -66,10 +66,24 @@ export default function RulesPage() {
           <li>
             <span className="font-semibold">Combo bonus</span> (exact score + correct MVP): +1 pt
           </li>
+          <li>
+            <span className="font-semibold">×2 Power-up</span>: you receive{" "}
+            <span className="font-semibold">one ×2 token per round</span>. Activate it on any single match within
+            that round before kick-off to <span className="font-semibold">double all points</span> earned from that
+            match (score + MVP + combo). You can move the token to a different match in the same round at any time
+            before it kicks off. The rounds are:{" "}
+            <span className="font-semibold">
+              1st Round, 2nd Round, 3rd Round, Round of 32, Round of 16, Quarter-final, Semi-final,
+              and Play-off for third place + Final
+            </span>.
+          </li>
+          <li>
+            <span className="font-semibold">Correct qualifier</span> (knockout matches only): +1 pt if you correctly
+            pick which team advances after 90 minutes.
+          </li>
         </ul>
         <p className="text-xs text-slate-400">
-          For knockout matches you may also pick which team qualifies; that choice is not worth extra points (tie-break
-          / display only).
+          The qualifying team pick is only available in knockout matches (Round of 32 onwards).
         </p>
       </section>
 
@@ -175,7 +189,7 @@ export default function RulesPage() {
           Your <span className="font-semibold">total points</span> in the ranking are the sum of:
         </p>
         <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
-          <li>Games (match predictions: score, MVP, combo; optional ×2 power-up multiplies that match’s points)</li>
+          <li>Games (match predictions: score, MVP, combo; one ×2 power-up per round doubles that match’s points)</li>
           <li>Questions (special questions)</li>
           <li>Groups (group standings + qualified + bonuses)</li>
           <li>5-A-SIDE (fantasy team points)</li>

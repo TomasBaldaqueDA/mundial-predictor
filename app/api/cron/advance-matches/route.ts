@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { isCronAuthorized } from "@/lib/cron-auth"
+import { isCronAuthorized, isCronGetAllowed } from "@/lib/cron-auth"
 import { supabaseAdmin } from "@/lib/supabase-server"
 
 /**
@@ -29,9 +29,11 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET is supported for quick manual checks in browser/tools.
- * Security stays the same: CRON_SECRET required.
+ * GET is supported outside production for manual checks (Bearer auth only).
  */
 export async function GET(request: NextRequest) {
+  if (!isCronGetAllowed()) {
+    return NextResponse.json({ error: "Method not allowed" }, { status: 405 })
+  }
   return POST(request)
 }

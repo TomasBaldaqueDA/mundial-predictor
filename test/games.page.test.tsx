@@ -4,14 +4,14 @@ import { vi } from "vitest"
 const orderMock = vi.fn()
 const gamesListSpy = vi.fn()
 
-vi.mock("@/lib/supabase", () => ({
-  supabase: {
+vi.mock("@/lib/supabase/server", () => ({
+  createClient: vi.fn(async () => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: orderMock,
       })),
     })),
-  },
+  })),
 }))
 
 vi.mock("@/app/games/GamesList", () => ({
@@ -33,8 +33,8 @@ describe("Games page", () => {
     const now = Date.now()
     orderMock.mockResolvedValueOnce({
       data: [
-        { id: 1, kickoff_time: new Date(now + 86_400_000).toISOString() },
-        { id: 2, kickoff_time: new Date(now - 86_400_000).toISOString() },
+        { id: 1, kickoff_time: new Date(now + 86_400_000).toISOString(), status: "scheduled" },
+        { id: 2, kickoff_time: new Date(now - 86_400_000).toISOString(), status: "finished" },
       ],
     })
 
