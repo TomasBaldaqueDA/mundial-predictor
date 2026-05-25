@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
-import Link from "next/link"
 import { RankingBoard } from "@/app/components/RankingBoard"
+import { PageHeader } from "@/app/components/PageHeader"
 
 export const metadata = {
   title: "Global ranking · WC26 Predictor",
@@ -149,26 +149,19 @@ export default async function RankingPage() {
 
   return (
     <main>
-      {/* ── Header ── */}
-      <div className="flex items-center justify-between mb-7">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-            Global League
-          </h1>
-          <p className="text-white/40 text-sm mt-0.5">Overall standings · WC26 Predictor</p>
-          {myRankLabel && (
-            <p className="text-sm font-semibold text-wc-gold mt-1 tabular-nums">
-              Your position: #{myRankLabel.rank} of {myRankLabel.total}
-            </p>
-          )}
-        </div>
-        <Link
-          href="/leagues"
-          className="rounded-xl px-4 py-2 text-white/50 hover:text-white/80 hover:bg-white/8 text-sm font-medium transition-all border border-transparent hover:border-white/10"
-        >
-          ← Leagues
-        </Link>
-      </div>
+      <PageHeader
+        title="Global Ranking"
+        description="Overall standings across match predictions, groups, questions and 5-A-Side."
+        backHref="/leagues"
+        backLabel="Leagues"
+        badge={
+          myRankLabel ? (
+            <span className="badge-pill tabular-nums">
+              #{myRankLabel.rank} of {myRankLabel.total}
+            </span>
+          ) : undefined
+        }
+      />
 
       {ranking.length === 0 ? (
         <div className="glass-dark rounded-2xl p-12 text-center border border-white/8">

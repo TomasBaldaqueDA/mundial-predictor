@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
@@ -203,20 +204,12 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
 
   return (
     <main className="space-y-8 max-w-4xl mx-auto">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-            {displayName}
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">All predictions</p>
-        </div>
-        <Link
-          href="/ranking"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Ranking
-        </Link>
-      </div>
+      <PageHeader
+        title={displayName}
+        description="All predictions — matches, groups, questions and 5-A-SIDE."
+        backHref="/ranking"
+        backLabel="Ranking"
+      />
 
       {!canViewLockedSections && (
         <div className="glass rounded-2xl p-6 border border-wc-gold/25 text-center">
@@ -229,7 +222,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
 
       {/* Match predictions */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-emerald-300">Match predictions</h2>
+        <h2 className="section-title">Match predictions</h2>
         <p className="text-xs text-slate-400">Games that have already kicked off.</p>
         {matchRows.length === 0 ? (
           <p className="text-sm text-slate-500 glass rounded-xl p-4">No match predictions yet.</p>
@@ -307,7 +300,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
         <>
           {/* Groups */}
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-emerald-300">Group predictions</h2>
+            <h2 className="section-title">Group predictions</h2>
             {groupByCode.size === 0 && thirdPlaceGroups.length === 0 ? (
               <p className="text-sm text-slate-500 glass rounded-xl p-4">No group predictions saved.</p>
             ) : (
@@ -369,7 +362,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
 
           {/* Special questions */}
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-emerald-300">Special questions</h2>
+            <h2 className="section-title">Special questions</h2>
             {winnerQuestion && answerByQ.has(winnerQuestion.id) && (
               <div className="glass rounded-xl p-4 border border-white/10 mb-3">
                 <p className="text-sm font-medium text-slate-200">{winnerQuestion.question}</p>
@@ -419,7 +412,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
           {/* 5-A-SIDE */}
           <section className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-lg font-semibold text-emerald-300">5-A-SIDE team</h2>
+              <h2 className="section-title">5-A-SIDE team</h2>
               {hasAnyPick(picks) && (
                 <span className="text-sm tabular-nums text-wc-gold font-semibold">{fiveASidePts} pts</span>
               )}

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
+import { PageHeader } from "@/app/components/PageHeader"
 import {
   hasAnyPick,
   normalizePlayer,
@@ -59,21 +60,12 @@ export default async function FiveASideTeamsPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          5-A-SIDE teams
-        </h1>
-        <Link
-          href="/five-a-side"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Back to my team
-        </Link>
-      </div>
-
-      <p className="text-sm text-slate-300 max-w-2xl">
-        Browse every player&apos;s fantasy lineup. Teams are read-only.
-      </p>
+      <PageHeader
+        title="5-A-SIDE teams"
+        description="Browse every player's fantasy lineup. Teams are read-only."
+        backHref="/five-a-side"
+        backLabel="My team"
+      />
 
       {teams.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">

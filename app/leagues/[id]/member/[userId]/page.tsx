@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from "react"
 import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
@@ -124,19 +125,16 @@ export default function LeagueMemberPredictionsPage({
 
   return (
     <main className="max-w-3xl mx-auto space-y-6">
-      <div>
-        <Link href={`/leagues/${leagueId}`} className="text-xs text-white/40 hover:text-wc-gold mb-2 inline-block">
-          ← League
+      <PageHeader
+        title={`${displayName}'s predictions`}
+        description="Match predictions in this league."
+        backHref={`/leagues/${leagueId}`}
+        backLabel="League"
+      >
+        <Link href={`/player/${targetUserId}`} className="btn-ghost text-xs">
+          Full profile
         </Link>
-        <h1 className="text-2xl font-bold text-gradient-hero [font-family:var(--font-outfit)]">
-          {displayName}&apos;s predictions
-        </h1>
-        <p className="text-sm text-white/45 mt-1">
-          <Link href={`/player/${targetUserId}`} className="text-wc-gold hover:underline">
-            View full profile (groups, questions, 5-A-SIDE)
-          </Link>
-        </p>
-      </div>
+      </PageHeader>
 
       <div className="space-y-3">
         {rows.map((r) => {

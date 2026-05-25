@@ -6,6 +6,7 @@ import Link from "next/link"
 import { CustomSelect } from "@/app/components/CustomSelect"
 import { ResultIcon } from "@/app/components/ResultIcon"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
+import { PageHeader } from "@/app/components/PageHeader"
 
 type GroupTeam = { group_code: string; team_name: string }
 type GroupPredictionRow = { group_code: string; team_name: string; position: number; qualifies?: boolean }
@@ -313,11 +314,10 @@ export default function GroupsPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">Group predictions</h1>
-
-      <p className="page-intro-on-stadium text-sm leading-relaxed max-w-2xl -mt-2">
-        Pick 1st–4th in every group and which third-place sides advance. Points update as results come in.
-      </p>
+      <PageHeader
+        title="Group predictions"
+        description="Pick 1st–4th in every group and which third-place sides advance. Points update as results come in."
+      />
 
       {message && (
         <p
@@ -333,7 +333,7 @@ export default function GroupsPage() {
       )}
 
       <div className="glass rounded-2xl p-5 border-wc-gold/20">
-        <h2 className="text-lg font-semibold text-emerald-300 mb-3">Your points per group</h2>
+        <h2 className="section-title mb-3">Your points per group</h2>
         <p className="text-sm text-slate-400 mb-3 leading-relaxed">
           <span className="text-slate-200 font-medium">Scoring:</span> 1 pt per correct position (max 4/group); +1 if all
           four are right; +10 if your 32 qualifiers match reality; +5 if you nail the 8 advancing third-place groups.

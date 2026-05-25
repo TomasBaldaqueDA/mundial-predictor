@@ -143,24 +143,24 @@ export default async function MatchPage({
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white mb-2 flex flex-wrap items-center gap-2">
-            <TeamWithFlag name={match.team1} />
-            <span className="text-sm font-bold text-white/40 uppercase tracking-widest">vs</span>
-            <TeamWithFlag name={match.team2} />
-          </h1>
-          <p className="text-white/50 text-sm">
-            {formatKickoffDisplay(String(match.kickoff_time))}
-          </p>
+      <header className="page-header mb-8 sm:mb-10">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0 space-y-2">
+            <Link href={backHref} className="back-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden>
+                <path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.832 10l2.948 2.948a.75.75 0 0 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06-.02Z" clipRule="evenodd" />
+              </svg>
+              Games
+            </Link>
+            <h1 className="page-title flex flex-wrap items-center gap-2 text-2xl sm:text-3xl">
+              <TeamWithFlag name={match.team1} />
+              <span className="text-sm font-bold text-white/40 uppercase tracking-widest">vs</span>
+              <TeamWithFlag name={match.team2} />
+            </h1>
+            <p className="page-description">{formatKickoffDisplay(String(match.kickoff_time))}</p>
+          </div>
         </div>
-        <Link
-          href={backHref}
-          className="rounded-xl px-3 py-2 text-stone-600 hover:text-wc-gold hover:bg-wc-gold-light/30 text-sm font-medium transition-all"
-        >
-          ← Back to match list
-        </Link>
-      </div>
+      </header>
 
       {!showPredictionsList && (
         <p className="text-slate-300 rounded-xl glass border border-white/10 px-4 py-3">
@@ -201,7 +201,7 @@ export default async function MatchPage({
           </div>
 
           {predictions.length === 0 ? (
-            <p className="text-stone-600 glass rounded-2xl p-6">
+            <p className="text-slate-300 glass rounded-2xl p-6">
               No valid predictions for this match yet.
             </p>
           ) : (

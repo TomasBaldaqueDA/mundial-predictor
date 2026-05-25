@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import { createClient } from "@/lib/supabase/server"
+import { PageHeader } from "@/app/components/PageHeader"
 import { GamesList } from "./GamesList"
 
 export const metadata = {
@@ -25,7 +26,10 @@ export default async function JogosPage() {
 
   return (
     <main>
-      <h1 className="mb-6 sm:mb-8 text-2xl sm:text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">Games</h1>
+      <PageHeader
+        title="Games"
+        description="Every match of the 2026 World Cup — predict scores, MVPs and qualifiers before kickoff."
+      />
       <Suspense fallback={<p className="text-white/50 text-sm">Loading games…</p>}>
         <GamesList upcoming={upcoming} past={past} />
       </Suspense>

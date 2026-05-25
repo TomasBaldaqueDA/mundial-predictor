@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"
+import { PageHeader } from "@/app/components/PageHeader"
 import {
   hasAnyPick,
   normalizePlayer,
@@ -54,30 +55,16 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
 
   return (
     <main className="space-y-6 max-w-6xl mx-auto">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-            {displayName}&apos;s 5-A-SIDE
-          </h1>
-          <p className="text-sm text-slate-400 mt-1 tabular-nums">
-            Total points: <span className="font-semibold text-wc-gold">{totalPts}</span>
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/five-a-side/teams"
-            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            ← All teams
-          </Link>
-          <Link
-            href="/five-a-side"
-            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            My team
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title={`${displayName}'s 5-A-SIDE`}
+        description={`Total points: ${totalPts}`}
+        backHref="/five-a-side/teams"
+        backLabel="All teams"
+      >
+        <Link href="/five-a-side" className="btn-ghost">
+          My team
+        </Link>
+      </PageHeader>
 
       <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
     </main>

@@ -5,6 +5,15 @@ import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
+function avatarInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("")
+    .slice(0, 2) || "?"
+}
+
 export function HeaderAuth() {
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -12,7 +21,9 @@ export function HeaderAuth() {
 
   useEffect(() => {
     const supabase = createClient()
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) {
         setDisplayName(null)
         setLoading(false)
@@ -38,25 +49,27 @@ export function HeaderAuth() {
     router.refresh()
   }
 
-  if (loading) return <div className="w-16 h-7 rounded-xl bg-white/5 animate-pulse" />
+  if (loading) {
+    return <div className="w-24 h-9 rounded-xl bg-white/[0.04] animate-pulse border border-white/[0.06]" />
+  }
 
   if (displayName) {
+    const initials = avatarInitials(displayName)
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0">
         <Link
           href="/profile"
-          className="hidden sm:inline-flex items-center justify-center rounded-xl w-8 h-8 text-white/70 hover:text-wc-gold hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200"
-          title={displayName ?? "Your profile"}
+          className="hidden sm:flex items-center gap-2 rounded-xl pl-1 pr-2.5 py-1 border border-transparent hover:border-white/10 hover:bg-white/[0.06] transition-all duration-200 group"
+          title={displayName}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4" aria-hidden>
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-          </svg>
+          <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-wc-gold/90 to-amber-600 flex items-center justify-center text-[11px] font-bold text-[#1a0f00] ring-1 ring-white/20 shadow-[0_2px_12px_rgba(232,184,74,0.35)]">
+            {initials}
+          </span>
+          <span className="text-[13px] font-semibold text-white/80 max-w-[7rem] truncate group-hover:text-wc-gold transition-colors">
+            {displayName}
+          </span>
         </Link>
-        <button
-          type="button"
-          onClick={signOut}
-          className="rounded-xl px-3 py-1.5 text-white/55 hover:text-red-300 hover:bg-red-500/10 font-medium text-[12.5px] transition-all duration-200 border border-transparent hover:border-red-500/20"
-        >
+        <button type="button" onClick={signOut} className="btn-ghost text-white/50 hover:text-red-300 hover:border-red-500/20 hover:bg-red-500/10">
           Log out
         </button>
       </div>
@@ -64,17 +77,11 @@ export function HeaderAuth() {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Link
-        href="/login"
-        className="rounded-xl px-3 py-1.5 text-white/80 hover:text-wc-gold hover:bg-white/8 font-medium text-[13px] transition-all duration-200"
-      >
+    <div className="flex items-center gap-2 shrink-0">
+      <Link href="/login" className="btn-ghost">
         Log in
       </Link>
-      <Link
-        href="/register"
-        className="rounded-xl px-3 py-1.5 bg-wc-gold text-[#1a0f00] hover:bg-wc-gold-dark font-semibold text-[13px] transition-all duration-200 shadow-[0_2px_12px_rgba(240,180,41,0.4)]"
-      >
+      <Link href="/register" className="btn-primary text-[13px] py-2 px-4">
         Sign up
       </Link>
     </div>

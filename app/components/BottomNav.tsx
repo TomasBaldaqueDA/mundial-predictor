@@ -13,7 +13,6 @@ const tabs = [
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={active ? 0 : 1.5} className="w-5 h-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         <path fill={active ? "currentColor" : "none"} d="M8.25 3.75H4.875A2.625 2.625 0 0 0 2.25 6.375v.375m19.5 0v-.375a2.625 2.625 0 0 0-2.625-2.625H15.75M2.25 6.75v10.125a2.625 2.625 0 0 0 2.625 2.625h14.25a2.625 2.625 0 0 0 2.625-2.625V6.75M2.25 6.75h19.5" />
-        {!active && <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3.75H4.875A2.625 2.625 0 0 0 2.25 6.375v.375m19.5 0v-.375a2.625 2.625 0 0 0-2.625-2.625H15.75M2.25 6.75v10.125a2.625 2.625 0 0 0 2.625 2.625h14.25a2.625 2.625 0 0 0 2.625-2.625V6.75M2.25 6.75h19.5M12 12h.008v.008H12V12Z" />}
       </svg>
     ),
     activeAlso: ["/match"],
@@ -64,7 +63,9 @@ export function BottomNav() {
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data: { user } }) => setSignedIn(!!user))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_e, session) => {
       setSignedIn(!!session?.user)
     })
     return () => subscription.unsubscribe()
@@ -74,11 +75,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#030812]/95 backdrop-blur-2xl border-t border-white/10 shadow-[0_-4px_32px_rgba(0,0,0,0.6)]"
-      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      className="sm:hidden fixed bottom-0 left-0 right-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
       aria-label="Main navigation"
     >
-      <div className="flex items-stretch">
+      <div className="flex items-stretch rounded-2xl border border-white/[0.1] bg-[#02060f]/90 backdrop-blur-2xl shadow-[0_-8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]">
         {tabs.map(({ href, label, icon, activeAlso }) => {
           const also = activeAlso ?? []
           const active =
@@ -91,15 +91,16 @@ export function BottomNav() {
               key={href}
               href={href}
               className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 transition-all duration-200 relative ${
-                active ? "text-wc-gold" : "text-white/40 hover:text-white/70"
+                active ? "text-wc-gold" : "text-white/40"
               }`}
               aria-label={label}
+              aria-current={active ? "page" : undefined}
             >
               {active && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-wc-gold shadow-[0_0_8px_rgba(240,180,41,0.8)]" />
+                <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-gradient-to-r from-transparent via-wc-gold to-transparent shadow-[0_0_12px_rgba(232,184,74,0.8)]" />
               )}
-              {icon(active)}
-              <span className={`text-[9px] font-semibold tracking-wide uppercase ${active ? "text-wc-gold" : "text-white/35"}`}>
+              <span className={active ? "scale-110 transition-transform" : ""}>{icon(active)}</span>
+              <span className={`text-[9px] font-bold tracking-wide uppercase ${active ? "text-wc-gold" : "text-white/30"}`}>
                 {label}
               </span>
             </Link>

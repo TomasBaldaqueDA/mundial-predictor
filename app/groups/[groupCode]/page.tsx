@@ -4,6 +4,7 @@ import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
+import { PageHeader } from "@/app/components/PageHeader"
 
 const VALID_GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 const POSITION_LABELS: Record<number, string> = {
@@ -114,22 +115,13 @@ export default async function GroupViewPage({
 
   return (
     <main className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-            Group {code} — predictions
-          </h1>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <LeagueFilter currentLeagueId={leagueId || undefined} />
-          <Link
-            href="/groups"
-            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            ← Back to groups
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title={`Group ${code} — predictions`}
+        backHref="/groups"
+        backLabel="Groups"
+      >
+        <LeagueFilter currentLeagueId={leagueId || undefined} />
+      </PageHeader>
 
       {hasActual && (
         <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">

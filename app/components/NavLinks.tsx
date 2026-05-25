@@ -85,7 +85,7 @@ export function NavLinks() {
   if (!signedIn) return null
 
   return (
-    <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-none">
+    <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-none py-0.5" aria-label="Main">
       {links.map((link) => {
         const { href, label, icon } = link
         const also = "activeAlso" in link && link.activeAlso ? link.activeAlso : []
@@ -95,15 +95,7 @@ export function NavLinks() {
           (href !== "/" && pathname.startsWith(href + "/"))
 
         return (
-          <Link
-            key={href}
-            href={href}
-            className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-[12.5px] font-medium transition-all duration-200 whitespace-nowrap ${
-              active
-                ? "bg-wc-gold/15 text-wc-gold border border-wc-gold/25 shadow-[0_0_12px_rgba(240,180,41,0.15)]"
-                : "text-white/70 hover:text-white hover:bg-white/8 border border-transparent"
-            }`}
-          >
+          <Link key={href} href={href} className={`nav-pill ${active ? "nav-pill-active" : ""}`}>
             {icon}
             {label}
           </Link>

@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 import { getFlagSrc } from "@/lib/team-flags"
 import { FlagImage } from "@/app/components/FlagImage"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
@@ -302,31 +303,25 @@ export default function FiveASidePage() {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <p className="text-stone-600">Loading 5-A-SIDE…</p>
+        <p className="text-white/50">Loading 5-A-SIDE…</p>
       </div>
     )
   }
 
   return (
     <div className="max-w-6xl mx-auto px-3 sm:px-4">
-      <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-2">5-A-SIDE</h1>
-        <p className="page-intro-on-stadium text-sm max-w-md mx-auto leading-relaxed">
-          Pick 1 GK, 1 DF, 2 MF, 1 FW — max one player per nation. Locked at first match or when you submit.
-        </p>
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <Link
-            href="/five-a-side/teams"
-            className="inline-flex rounded-xl px-4 py-2 text-sm font-semibold bg-wc-green/90 text-white hover:bg-wc-green-dark transition-colors shadow-md"
-          >
-            View teams
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title="5-A-SIDE"
+        description="Pick 1 GK, 1 DF, 2 MF, 1 FW — max one player per nation. Locked at first match or when you submit."
+      >
+        <Link href="/five-a-side/teams" className="btn-secondary text-sm py-2 px-4">
+          View teams
+        </Link>
+      </PageHeader>
 
       {!user && (
         <div className="glass rounded-2xl p-6 text-center border border-wc-gold/25 mb-6">
-          <p className="text-stone-600 mb-4">Sign in to pick your 5-a-side team.</p>
+          <p className="text-slate-300 mb-4">Sign in to pick your 5-a-side team.</p>
           <Link href="/login" className="btn-primary inline-block">
             Sign in
           </Link>
@@ -336,13 +331,13 @@ export default function FiveASidePage() {
       {lockedByTime && (
         <div className="glass rounded-xl px-4 py-2 mb-4 border border-wc-gold/40 text-center">
           <span className="font-medium text-wc-gold">Team locked</span>
-          <span className="text-stone-600 ml-1">(World Cup started)</span>
+          <span className="text-slate-400 ml-1">(World Cup started)</span>
         </div>
       )}
       {!!submittedAt && !lockedByTime && (
         <div className="glass rounded-xl px-4 py-2 mb-4 border border-wc-green/30 text-center">
           <span className="font-medium text-wc-green-dark">Team submitted</span>
-          <span className="text-stone-600 ml-1">— you can still edit until the first match</span>
+          <span className="text-slate-400 ml-1">— you can still edit until the first match</span>
         </div>
       )}
 

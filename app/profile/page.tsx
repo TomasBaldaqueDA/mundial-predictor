@@ -10,6 +10,7 @@ import {
 } from "@/lib/auth-profile-setup"
 import { safeRedirectPath } from "@/lib/safe-redirect"
 import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 import { useRouter, useSearchParams } from "next/navigation"
 
 // Treat `_` and `%` as literal characters when checking display-name uniqueness
@@ -184,19 +185,16 @@ function ProfilePageContent() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          {setupMode ? "Choose your display name" : "Profile"}
-        </h1>
-        {!setupMode && (
-          <Link
-            href="/"
-            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            ← Back to home
-          </Link>
-        )}
-      </div>
+      <PageHeader
+        title={setupMode ? "Choose your display name" : "Profile"}
+        description={
+          setupMode
+            ? "Pick a name that appears on predictions and in the ranking."
+            : "Manage your account, display name and password."
+        }
+        backHref={setupMode ? undefined : "/"}
+        backLabel="Home"
+      />
 
       {setupMode && (
         <div
@@ -219,7 +217,7 @@ function ProfilePageContent() {
 
       <form onSubmit={handleNameSubmit} className="max-w-md glass rounded-2xl p-6 border border-cyan-400/20 shadow-xl space-y-5">
         <div>
-          <h2 className="text-lg font-semibold text-emerald-300">Display name</h2>
+          <h2 className="section-title">Display name</h2>
           <p className="text-xs text-slate-400 mt-1">
             Shown when you make predictions and in the ranking.
           </p>
@@ -234,7 +232,7 @@ function ProfilePageContent() {
             value={editingName}
             onChange={(e) => setEditingName(e.target.value)}
             maxLength={40}
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="Your name"
           />
         </div>
@@ -262,7 +260,7 @@ function ProfilePageContent() {
       {!setupMode && (
         <form onSubmit={handlePasswordSubmit} className="max-w-md glass rounded-2xl p-6 border border-cyan-400/20 shadow-xl space-y-5">
         <div>
-          <h2 className="text-lg font-semibold text-emerald-300">Change password</h2>
+          <h2 className="section-title">Change password</h2>
           <p className="text-xs text-slate-400 mt-1">At least {MIN_PASSWORD_LENGTH} characters.</p>
         </div>
         <div>
@@ -276,7 +274,7 @@ function ProfilePageContent() {
             onChange={(e) => setNewPwd(e.target.value)}
             autoComplete="new-password"
             minLength={MIN_PASSWORD_LENGTH}
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="••••••••"
           />
         </div>
@@ -291,7 +289,7 @@ function ProfilePageContent() {
             onChange={(e) => setConfirmPwd(e.target.value)}
             autoComplete="new-password"
             minLength={MIN_PASSWORD_LENGTH}
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="••••••••"
           />
         </div>

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
+import { PageHeader } from "@/app/components/PageHeader"
 
 export default async function WinnerPredictionsPage() {
   const supabase = await createClient()
@@ -52,17 +53,12 @@ export default async function WinnerPredictionsPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Winner predictions
-        </h1>
-        <Link
-          href="/questions"
-          className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-        >
-          ← Back to special questions
-        </Link>
-      </div>
+      <PageHeader
+        title="Winner predictions"
+        description="Who each player picked to win the World Cup."
+        backHref="/questions"
+        backLabel="Questions"
+      />
 
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">

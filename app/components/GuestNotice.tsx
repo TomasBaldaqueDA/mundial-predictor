@@ -4,10 +4,6 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 
-/**
- * Shown only to unauthenticated visitors on the home page so guests know they
- * need an account before clicking around. Hidden once a session is detected.
- */
 export function GuestNotice() {
   const [isGuest, setIsGuest] = useState<boolean | null>(null)
 
@@ -25,23 +21,16 @@ export function GuestNotice() {
   if (isGuest !== true) return null
 
   return (
-    <div className="mb-6 mt-2 glass rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5 border border-cyan-400/25 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <p className="text-sm text-slate-200">
-        <span className="font-semibold text-wc-gold">Welcome —</span>{" "}
-        create an account to predict, join leagues and climb the global ranking. Browsing without one is
-        limited to this page and the rules.
+    <div className="alert-banner mb-8">
+      <p className="text-sm text-slate-200 leading-relaxed">
+        <span className="font-bold text-wc-gold">Welcome</span> — create an account to predict scores, join private
+        leagues, and climb the global ranking. Guests can browse this page and the rules only.
       </p>
       <div className="flex gap-2 shrink-0">
-        <Link
-          href="/register"
-          className="rounded-xl px-3 py-1.5 bg-wc-gold text-[#1a0f00] text-sm font-semibold hover:bg-wc-gold-dark transition-colors"
-        >
+        <Link href="/register" className="btn-primary text-sm py-2 px-4">
           Sign up
         </Link>
-        <Link
-          href="/login"
-          className="rounded-xl px-3 py-1.5 border border-white/20 text-slate-200 text-sm font-medium hover:bg-white/10 transition-colors"
-        >
+        <Link href="/login" className="btn-secondary text-sm py-2 px-4">
           Log in
         </Link>
       </div>

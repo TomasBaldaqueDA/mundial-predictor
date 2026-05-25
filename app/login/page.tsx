@@ -83,8 +83,8 @@ function LoginForm() {
 
   if (forgotSent) {
     return (
-      <div className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl text-center space-y-5">
-        <h1 className="text-2xl font-bold text-emerald-300">Check your email</h1>
+      <div className="auth-card glass text-center space-y-5">
+        <h1 className="page-title text-2xl">Check your email</h1>
         <p className="text-slate-400">
           We sent a password reset link to <strong className="text-slate-200">{email}</strong>. Click the link to set a new password.
         </p>
@@ -105,11 +105,9 @@ function LoginForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl">
-      <h1 className="text-2xl font-bold text-emerald-300 mb-2">Log in</h1>
-      <p className="text-slate-400 mb-6">
-        Enter your email and password.
-      </p>
+    <div className="auth-card glass">
+      <h1 className="page-title text-2xl mb-2">Log in</h1>
+      <p className="page-description mb-6">Enter your email and password to continue.</p>
       {next && (
         <p className="text-sm text-slate-400 mb-4">
           After logging in you’ll be taken back to the page you requested.
@@ -129,17 +127,12 @@ function LoginForm() {
         </svg>
         Continue with Google
       </button>
-      <div className="relative mb-5" aria-hidden>
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/10" />
-        </div>
-        <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-          <span className="bg-[#0a1320] px-3 text-white/40">or with email</span>
-        </div>
+      <div className="divider-or" aria-hidden>
+        <span>or with email</span>
       </div>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label htmlFor="email" className="label-field">
             Email
           </label>
           <input
@@ -149,12 +142,12 @@ function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="you@example.com"
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label htmlFor="password" className="label-field">
             Password
           </label>
           <input
@@ -164,7 +157,7 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="••••••••"
           />
         </div>
@@ -173,11 +166,7 @@ function LoginForm() {
             {displayError}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 px-4 bg-wc-gold text-white font-semibold rounded-xl hover:bg-wc-gold-dark disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200"
-        >
+        <button type="submit" disabled={loading} className="btn-primary w-full py-3 disabled:opacity-50">
           {loading ? "Logging in…" : "Log in"}
         </button>
       </form>

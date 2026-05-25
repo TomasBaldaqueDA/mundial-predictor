@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 
 export const metadata = {
   title: "Rules & scoring",
@@ -8,21 +8,12 @@ export const metadata = {
 export default function RulesPage() {
   return (
     <main className="space-y-8">
-      <div className="flex items-center justify-between gap-3 mb-2">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Rules & scoring
-        </h1>
-        <Link
-          href="/"
-          className="rounded-xl px-3 py-2 text-white/90 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
-        >
-          ← Back to home
-        </Link>
-      </div>
-      <p className="page-intro-on-stadium text-sm leading-relaxed max-w-2xl">
-        This page explains how predictions work, when they lock and how points are calculated in{" "}
-        <span className="page-intro-on-stadium-accent">WC26 Predictor</span>.
-      </p>
+      <PageHeader
+        title="Rules & scoring"
+        description="How predictions work, when they lock, and how points are calculated in WC26 Predictor."
+        backHref="/"
+        backLabel="Home"
+      />
 
       <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">1. Access & deadlines</h2>

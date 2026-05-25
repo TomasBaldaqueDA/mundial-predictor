@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { PageHeader } from "@/app/components/PageHeader"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { ResultIcon } from "@/app/components/ResultIcon"
 import { TEAMS_BY_GROUP } from "@/lib/team-flags"
@@ -161,21 +162,12 @@ export default function PerguntasPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Special questions
-        </h1>
-        <Link
-          href="/"
-          className="rounded-xl px-3 py-2 text-white/90 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
-        >
-          ← Back
-        </Link>
-      </div>
-
-      <p className="page-intro-on-stadium text-sm leading-relaxed max-w-2xl">
-        Answer before the tournament starts. Answers are locked when the first match kicks off.
-      </p>
+      <PageHeader
+        title="Special questions"
+        description="Answer before the tournament starts. Answers lock when the first match kicks off."
+        backHref="/"
+        backLabel="Home"
+      />
 
       {locked && (
         <div className="rounded-xl bg-wc-gold-light/50 border border-wc-gold/30 px-4 py-3 text-wc-gold-dark font-medium">

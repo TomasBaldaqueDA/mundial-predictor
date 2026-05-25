@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
+import { PageHeader } from "@/app/components/PageHeader"
 
 const GROUPS_ORDER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 
@@ -91,21 +92,12 @@ export default async function ThirdPlacePredictionsPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          8 third-place teams – Predictions
-        </h1>
-        <Link
-          href="/groups"
-          className="rounded-xl px-3 py-2 text-white/90 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all page-intro-on-stadium"
-        >
-          ← Back to groups
-        </Link>
-      </div>
-
-      <p className="page-intro-on-stadium text-sm leading-relaxed max-w-2xl">
-        Which 8 groups have their 3rd place advancing. Only users who saved exactly 8 are shown.
-      </p>
+      <PageHeader
+        title="8 third-place teams"
+        description="Which 8 groups have their 3rd place advancing. Only users who saved exactly 8 are shown."
+        backHref="/groups"
+        backLabel="Groups"
+      />
 
       {actualThirdPlaceTeams.length === 8 && (
         <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">

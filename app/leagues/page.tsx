@@ -8,6 +8,7 @@ import {
   computeMemberRanking,
   rankPosition,
 } from "@/lib/compute-member-ranking"
+import { PageHeader } from "@/app/components/PageHeader"
 
 type LeagueRow = {
   id: string
@@ -137,18 +138,21 @@ export default function LeaguesPage() {
 
   return (
     <main className="max-w-lg mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-black tracking-tight text-gradient-hero [font-family:var(--font-outfit)] mb-2">
-          Leagues
-        </h1>
-        <p className="page-intro-on-stadium text-sm leading-relaxed max-w-xl">
-          Global ranking and private groups — create a mini league, share an invite code, and compare points with friends.
-        </p>
-      </div>
+      <PageHeader
+        title="Leagues"
+        description="Global ranking and private groups — create a mini league, share an invite code, and compare points with friends."
+        badge={
+          !ranksLoading && globalRank ? (
+            <span className="badge-pill tabular-nums">
+              Global #{globalRank.rank} of {globalRank.total}
+            </span>
+          ) : undefined
+        }
+      />
 
       <Link
         href="/ranking"
-        className="card-on-stadium flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 rounded-2xl border-2 border-wc-gold/45 px-5 py-4 hover:border-wc-gold/65 transition-colors"
+        className="feature-card group glass flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 py-4 border border-wc-gold/20 hover:border-wc-gold/35"
       >
         <div>
           <p className="text-lg font-black text-wc-gold tracking-tight drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">Global</p>
@@ -163,12 +167,12 @@ export default function LeaguesPage() {
       </Link>
 
       <form onSubmit={createLeague} className="glass rounded-2xl p-5 border border-cyan-400/15 space-y-3">
-        <h2 className="text-sm font-bold text-slate-200 uppercase tracking-wider">Create league</h2>
+        <h2 className="section-kicker">Create league</h2>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="League name"
-          className="w-full px-4 py-2.5 rounded-xl border border-cyan-500/25 bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+          className="input-field"
         />
         <button type="submit" className="btn-primary w-full py-2.5 text-sm">
           Create
@@ -176,14 +180,14 @@ export default function LeaguesPage() {
       </form>
 
       <form onSubmit={joinLeague} className="glass rounded-2xl p-5 border border-cyan-400/15 space-y-3">
-        <h2 className="text-sm font-bold text-slate-200 uppercase tracking-wider">Join with code</h2>
+        <h2 className="section-kicker">Join with code</h2>
         <input
           value={joinCode}
           onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
           placeholder="Invite code"
-          className="w-full px-4 py-2.5 rounded-xl border border-cyan-500/25 bg-slate-900/70 text-slate-100 font-mono tracking-widest placeholder:text-slate-500"
+          className="input-field font-mono tracking-widest"
         />
-        <button type="submit" className="w-full py-2.5 rounded-xl border-2 border-wc-gold/45 font-semibold text-wc-gold hover:bg-white/8 transition-colors text-sm">
+        <button type="submit" className="btn-secondary w-full py-2.5 text-sm">
           Join league
         </button>
       </form>
@@ -195,7 +199,7 @@ export default function LeaguesPage() {
       )}
 
       <section>
-        <h2 className="text-sm font-bold text-white/90 uppercase tracking-wider mb-3">Your leagues</h2>
+        <h2 className="section-kicker mb-3">Your leagues</h2>
         {loading ? (
           <p className="text-white/40 text-sm">Loading…</p>
         ) : leagues.length === 0 ? (

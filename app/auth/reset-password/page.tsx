@@ -17,9 +17,6 @@ export default function ResetPasswordPage() {
   const [authed, setAuthed] = useState<boolean | null>(null)
 
   useEffect(() => {
-    // After Supabase emails the recovery link, the magic-link callback hands
-    // us a temporary session. If there's no session here, the user landed on
-    // this page directly without a recovery link — bounce them to /login.
     const supabase = createClient()
     supabase.auth.getUser().then(({ data: { user } }) => setAuthed(!!user))
   }, [])
@@ -50,12 +47,12 @@ export default function ResetPasswordPage() {
 
   if (authed === false) {
     return (
-      <main className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl space-y-4 text-center">
-        <h1 className="text-2xl font-bold text-emerald-300">Reset link expired</h1>
-        <p className="text-slate-400">
+      <main className="auth-card glass text-center space-y-4">
+        <h1 className="page-title text-2xl">Reset link expired</h1>
+        <p className="page-description mx-auto">
           The recovery link has already been used or is no longer valid. Request a new one from the login page.
         </p>
-        <Link href="/login" className="inline-block rounded-xl px-4 py-2 text-wc-gold font-medium hover:bg-white/10">
+        <Link href="/login" className="btn-primary inline-flex">
           Back to log in
         </Link>
       </main>
@@ -64,20 +61,20 @@ export default function ResetPasswordPage() {
 
   if (done) {
     return (
-      <main className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl text-center space-y-3">
-        <h1 className="text-2xl font-bold text-emerald-300">Password updated</h1>
-        <p className="text-slate-400">Redirecting you home…</p>
+      <main className="auth-card glass text-center space-y-3">
+        <h1 className="page-title text-2xl">Password updated</h1>
+        <p className="page-description">Redirecting you home…</p>
       </main>
     )
   }
 
   return (
-    <main className="max-w-md mx-auto glass rounded-2xl p-8 border border-cyan-400/20 shadow-xl">
-      <h1 className="text-2xl font-bold text-emerald-300 mb-2">Set a new password</h1>
-      <p className="text-slate-400 mb-6">Choose a new password (at least {MIN_PASSWORD_LENGTH} characters).</p>
+    <main className="auth-card glass">
+      <h1 className="page-title text-2xl mb-2">Set a new password</h1>
+      <p className="page-description mb-6">Choose a new password (at least {MIN_PASSWORD_LENGTH} characters).</p>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="pwd" className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label htmlFor="pwd" className="label-field">
             New password
           </label>
           <input
@@ -88,12 +85,12 @@ export default function ResetPasswordPage() {
             required
             autoComplete="new-password"
             minLength={MIN_PASSWORD_LENGTH}
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="••••••••"
           />
         </div>
         <div>
-          <label htmlFor="confirm" className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label htmlFor="confirm" className="label-field">
             Confirm new password
           </label>
           <input
@@ -104,7 +101,7 @@ export default function ResetPasswordPage() {
             required
             autoComplete="new-password"
             minLength={MIN_PASSWORD_LENGTH}
-            className="w-full px-4 py-2.5 border border-cyan-500/25 rounded-xl focus:ring-2 focus:ring-wc-gold/40 focus:border-wc-gold bg-slate-900/70 text-slate-100 placeholder:text-slate-500"
+            className="input-field"
             placeholder="••••••••"
           />
         </div>
@@ -113,11 +110,7 @@ export default function ResetPasswordPage() {
             {error}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 px-4 bg-wc-gold text-white font-semibold rounded-xl hover:bg-wc-gold-dark disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200"
-        >
+        <button type="submit" disabled={loading} className="btn-primary w-full py-3 disabled:opacity-50">
           {loading ? "Updating…" : "Update password"}
         </button>
       </form>

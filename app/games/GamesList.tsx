@@ -1184,7 +1184,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
 
       {(filter === "today" || filter === "all") && todayMatches.length > 0 && (
         <div className="mb-10">
-          <h2 className="text-lg font-bold text-white/80 mb-4">Today&apos;s matches</h2>
+          <h2 className="section-title mb-4">Today&apos;s matches</h2>
           {todayFiltered.length > 0
             ? renderSections(todaySections, (m) => new Date(m.kickoff_time) >= new Date())
             : <p className="text-white/40 text-sm">No matches today for this filter.</p>}
@@ -1196,7 +1196,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
 
       {showUpcoming && upcoming.length > 0 && (
         <div className="mb-10">
-          <h2 className="text-lg font-bold text-white/80 mb-4">Upcoming matches</h2>
+          <h2 className="section-title mb-4">Upcoming matches</h2>
           {upcomingFiltered.length > 0
             ? renderSections(upcomingSections, true)
             : <p className="text-white/40 text-sm">No upcoming matches for this filter.</p>}
@@ -1205,7 +1205,7 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
 
       {showPast && past.length > 0 && (
         <div>
-          <h2 className="text-lg font-bold text-white/80 mb-4">Past matches</h2>
+          <h2 className="section-title mb-4">Past matches</h2>
           {pastFiltered.length > 0
             ? renderSections(pastSections, true)
             : <p className="text-white/40 text-sm">No past matches for this filter.</p>}

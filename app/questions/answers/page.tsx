@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
+import { PageHeader } from "@/app/components/PageHeader"
 
 export default async function SpecialAnswersPage({
   searchParams,
@@ -58,20 +59,14 @@ export default async function SpecialAnswersPage({
 
   return (
     <main className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight text-gradient-hero [font-family:var(--font-outfit)]">
-          Special questions – answers
-        </h1>
-        <div className="flex flex-wrap items-center gap-3">
-          <LeagueFilter currentLeagueId={leagueId || undefined} />
-          <Link
-            href="/questions"
-            className="rounded-xl px-3 py-2 text-white/70 hover:text-wc-gold hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            ← Back to special questions
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title="Special questions — answers"
+        description="See how other players answered each question."
+        backHref="/questions"
+        backLabel="Questions"
+      >
+        <LeagueFilter currentLeagueId={leagueId || undefined} />
+      </PageHeader>
 
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">
@@ -106,7 +101,7 @@ export default async function SpecialAnswersPage({
             return (
               <section key={q.id} id={`q-${q.id}`} className="glass rounded-2xl overflow-hidden border border-white/10">
                 <div className="bg-white/5 border-b border-white/10 px-5 py-3">
-                  <h2 className="text-lg font-semibold text-emerald-300">
+                  <h2 className="section-title">
                     {q.question}
                     {q.points > 0 && (
                       <span className="text-slate-400 font-normal ml-1">({q.points} pts)</span>
