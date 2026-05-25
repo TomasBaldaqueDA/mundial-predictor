@@ -9,6 +9,7 @@ Apply in Supabase SQL Editor, in order:
 1. `supabase/sql/049_fix_recalc_trigger_and_guard.sql`
 2. `supabase/sql/050_qualifier_point.sql`
 3. `supabase/sql/052_ranking_match_points_rpc.sql`
+4. `supabase/sql/055_launch_cleanup.sql` (run once before launch if QA data was applied)
 
 Verify: `npm run verify:migrations` (expect calc_prediction_points = 6 and get_match_points_by_user exists).
 

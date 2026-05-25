@@ -11,7 +11,7 @@ WHERE id = 1;
 
 -- Also clear points from predictions for this match (no result anymore)
 UPDATE public.predictions
-SET points = NULL
+SET points = 0
 WHERE match_id = 1;
 
 -- 2. Delete all private leagues named 'teste' (case-insensitive)
