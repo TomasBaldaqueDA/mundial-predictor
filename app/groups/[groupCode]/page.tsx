@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
