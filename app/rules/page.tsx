@@ -171,11 +171,12 @@ export default function RulesPage() {
             <span className="font-semibold">MVP</span>: 3 pts per match where the player is named MVP
           </li>
           <li>
-            <span className="font-semibold">Win</span>: 2 pts per match the player&apos;s national team wins
+            <span className="font-semibold">Win</span>: 2 pts for each win by the player&apos;s national team
+            (including wins after extra time or on penalties) in matches where the player plays
           </li>
           <li>
             <span className="font-semibold">Clean sheet</span>: 4 pts for goalkeepers and defenders when their team
-            concedes 0 goals
+            concedes 0 goals in a match where the player plays. Minutes played do not matter
           </li>
         </ul>
         <p className="text-xs text-slate-400">

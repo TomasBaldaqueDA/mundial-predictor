@@ -425,8 +425,15 @@ export default function FiveASidePage() {
         </div>
       )}
 
-      <div className="text-center text-xs sm:text-sm text-stone-500 px-1">
-        Scoring: Goals {PTS_GOAL} | Assists {PTS_ASSIST} | MVP {PTS_MVP} | Win {PTS_WIN} | Clean sheet (GK/DF) {PTS_CLEAN_SHEET}. Card stats: G/A/CS/W/MVP from player rows; GP = finished World Cup matches for that nation. Lineup: each slot must be a different national team.
+      <div className="text-center text-xs sm:text-sm text-stone-500 px-1 space-y-1">
+        <p>
+          Scoring: Goals {PTS_GOAL} | Assists {PTS_ASSIST} | MVP {PTS_MVP} | Win {PTS_WIN} (player plays;
+          incl. AET/PEN) | Clean sheet (GK/DF) {PTS_CLEAN_SHEET} (0 conceded; player plays; minutes irrelevant).
+        </p>
+        <p>
+          Card stats: G/A/CS/W/MVP from player rows; GP = finished World Cup matches for that nation. Lineup: each
+          slot must be a different national team.
+        </p>
       </div>
 
       {/* Modal */}
