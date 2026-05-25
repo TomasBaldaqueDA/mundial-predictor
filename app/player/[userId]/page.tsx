@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server"
-import Link from "next/link"
 import { PageHeader } from "@/app/components/PageHeader"
 import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"

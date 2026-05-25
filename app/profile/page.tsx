@@ -9,7 +9,6 @@ import {
   userNeedsDisplayName,
 } from "@/lib/auth-profile-setup"
 import { safeRedirectPath } from "@/lib/safe-redirect"
-import Link from "next/link"
 import { PageHeader } from "@/app/components/PageHeader"
 import { useRouter, useSearchParams } from "next/navigation"
 
