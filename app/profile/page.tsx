@@ -1,23 +1,13 @@
 "use client"
 
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
 import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
-import {
-  hasCompletedDisplayNameSetup,
-  NEEDS_DISPLAY_NAME_KEY,
-  userNeedsDisplayName,
-} from "@/lib/auth-profile-setup"
+import { hasCompletedDisplayNameSetup, userNeedsDisplayName } from "@/lib/auth-profile-setup"
 import { safeRedirectPath } from "@/lib/safe-redirect"
 import { PageHeader } from "@/app/components/PageHeader"
 import { useRouter, useSearchParams } from "next/navigation"
-
-// Treat `_` and `%` as literal characters when checking display-name uniqueness
-// (Supabase ilike still treats them as wildcards otherwise).
-function escapeIlike(value: string): string {
-  return value.replace(/[\\%_]/g, "\\$&")
-}
 
 function ProfilePageContent() {
   const router = useRouter()
@@ -38,6 +28,7 @@ function ProfilePageContent() {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [deleteErr, setDeleteErr] = useState<string | null>(null)
+  const nameDirtyRef = useRef(false)
 
   useEffect(() => {
     async function load() {
@@ -54,7 +45,9 @@ function ProfilePageContent() {
         .eq("id", user.id)
         .maybeSingle()
       const name = profile?.display_name ?? ""
-      setEditingName(name)
+      if (!nameDirtyRef.current) {
+        setEditingName(name)
+      }
       const needsSetup =
         searchParams.get("setup") === "1" ||
         userNeedsDisplayName(user) ||
@@ -70,76 +63,69 @@ function ProfilePageContent() {
     e.preventDefault()
     setNameMsg(null)
     setSavingName(true)
+
     const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
       setSavingName(false)
       return
     }
+
     const trimmedName = editingName.trim()
     if (!trimmedName) {
       setSavingName(false)
       setNameMsg({ type: "error", text: "Display name cannot be empty." })
       return
     }
-    const { data: nameRows, error: nameCheckError } = await supabase
-      .from("profiles")
-      .select("id")
-      .ilike("display_name", escapeIlike(trimmedName))
-      .neq("id", user.id)
-      .limit(1)
-    if (nameCheckError) {
-      setSavingName(false)
-      setNameMsg({ type: "error", text: "Could not verify display name. Please try again." })
-      return
-    }
-    if (nameRows && nameRows.length > 0) {
-      setSavingName(false)
-      setNameMsg({ type: "error", text: "This display name is already taken. Please choose another one." })
-      return
-    }
-    const { data: saved, error } = await supabase
-      .from("profiles")
-      .upsert({ id: user.id, display_name: trimmedName }, { onConflict: "id" })
-      .select("id, display_name")
-      .single()
-    if (error) {
-      setSavingName(false)
-      setNameMsg({ type: "error", text: friendlyAuthError(error.message) })
-      return
-    }
-    if (!saved?.id) {
-      setSavingName(false)
-      setNameMsg({
-        type: "error",
-        text: "Could not save your display name. Please try again or contact support.",
-      })
-      return
-    }
 
-    setEditingName(saved.display_name ?? trimmedName)
+    const { data: profileRow } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .maybeSingle()
 
-    if (setupMode) {
-      const { error: metaError } = await supabase.auth.updateUser({
-        data: {
-          [NEEDS_DISPLAY_NAME_KEY]: false,
-          display_name: trimmedName,
-        },
+    const completingSetup =
+      searchParams.get("setup") === "1" ||
+      userNeedsDisplayName(user) ||
+      !hasCompletedDisplayNameSetup(profileRow?.display_name)
+
+    try {
+      const res = await fetch("/api/profile/display-name", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ displayName: trimmedName }),
       })
-      if (metaError) {
+      const body = (await res.json().catch(() => ({}))) as { error?: string; displayName?: string }
+
+      if (!res.ok) {
         setSavingName(false)
-        setNameMsg({ type: "error", text: friendlyAuthError(metaError.message) })
+        setNameMsg({
+          type: "error",
+          text: friendlyAuthError(body.error ?? "Could not save display name."),
+        })
         return
       }
-      await supabase.auth.refreshSession()
-      setSavingName(false)
-      setSetupMode(false)
-      window.location.assign(nextPath)
-      return
-    }
 
-    setSavingName(false)
-    setNameMsg({ type: "ok", text: "Profile updated." })
+      const savedName = body.displayName ?? trimmedName
+      nameDirtyRef.current = false
+      setEditingName(savedName)
+      await supabase.auth.refreshSession()
+
+      if (completingSetup) {
+        setSavingName(false)
+        setSetupMode(false)
+        window.location.replace(nextPath)
+        return
+      }
+
+      setSavingName(false)
+      setNameMsg({ type: "ok", text: "Profile updated." })
+    } catch {
+      setSavingName(false)
+      setNameMsg({ type: "error", text: "Network problem. Please try again." })
+    }
   }
 
   async function handlePasswordSubmit(e: React.FormEvent) {
@@ -249,7 +235,10 @@ function ProfilePageContent() {
             id="display_name"
             type="text"
             value={editingName}
-            onChange={(e) => setEditingName(e.target.value)}
+            onChange={(e) => {
+              nameDirtyRef.current = true
+              setEditingName(e.target.value)
+            }}
             maxLength={40}
             className="input-field"
             placeholder="Your name"
