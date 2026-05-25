@@ -2,11 +2,21 @@ import { createClient } from "@/lib/supabase/server"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
+import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
 
 const GROUPS_ORDER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 
-export default async function ThirdPlacePredictionsPage() {
+export default async function ThirdPlacePredictionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ league?: string }>
+}) {
+  const sp = await searchParams
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
+
   const supabase = await createClient()
+  const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
   const [
     { data: preds, error: predError },
     { data: profiles },
@@ -59,6 +69,7 @@ export default async function ThirdPlacePredictionsPage() {
   for (const row of preds ?? []) {
     const uid = row.user_id
     if (!uid) continue
+    if (!isUserInLeagueFilter(leagueMemberIds, uid)) continue
     if (!byUser.has(uid)) {
       byUser.set(uid, {
         userId: uid,
@@ -116,7 +127,11 @@ export default async function ThirdPlacePredictionsPage() {
 
       {rows.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-slate-400">No third-place predictions yet.</p>
+          <p className="text-slate-400">
+            {leagueMemberIds
+              ? "No third-place predictions from players in this league yet."
+              : "No third-place predictions yet."}
+          </p>
         </div>
       ) : (
         <div className="glass rounded-2xl overflow-x-auto border border-white/10">
