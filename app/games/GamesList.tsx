@@ -1092,7 +1092,7 @@ export function GamesList({
     if (!hasLiveMatches) return
     const t = window.setInterval(() => {
       if (document.visibilityState === "visible") router.refresh()
-    }, 30_000)
+    }, 120_000)
     return () => window.clearInterval(t)
   }, [hasLiveMatches, router])
 

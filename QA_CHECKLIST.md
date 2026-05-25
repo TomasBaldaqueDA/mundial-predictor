@@ -49,11 +49,15 @@ Verify: `npm run verify:migrations` (expect calc_prediction_points = 6 and get_m
 
 ## 6) Cron and data freshness
 
-- Vercel crons: `live-scores` every 15 min (10:00–23:59 UTC), `advance-matches` at :05/:20/:35/:50 in same window.
-- `live-scores` with `Authorization: Bearer $CRON_SECRET` returns `matched`, `unmatched`, `updated`, `update_failed`, `unmatched_examples`.
-- `advance-matches` endpoint returns `ok: true`.
-- Logs include cron run duration; warnings when `unmatched > 0` or `update_failed > 0`.
-- If unmatched > 0, inspect `unmatched_examples` and add `FOOTBALL_TEAM_ALIASES` entries.
+**Free-tier default (Vercel + API-Football):** one automatic sync per day.
+
+- Vercel crons: `live-scores` at **12:00 UTC**, `advance-matches` at **12:10 UTC** (1 API call/day from cron).
+- Manual sync when needed (uses 1 API call each time):
+  `curl -X POST "https://YOUR_APP/api/cron/live-scores?force=1" -H "Authorization: Bearer $CRON_SECRET"`
+- Or update scores/MVP/qualifier directly in Supabase — points recalc via DB trigger.
+- `live-scores` response should include `matched`, `unmatched`, `updated`, `update_failed`, `unmatched_examples`.
+- `advance-matches` returns `ok: true`.
+- If `unmatched > 0`, inspect `unmatched_examples` and add `FOOTBALL_TEAM_ALIASES` entries.
 
 ## 7) Final sanity
 

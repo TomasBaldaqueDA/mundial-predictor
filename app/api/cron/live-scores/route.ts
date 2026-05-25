@@ -293,9 +293,11 @@ function pickBestMatch(feed: LiveFixture, matches: MatchRow[]): MatchRow | null 
 
 /**
  * POST /api/cron/live-scores
- * - Requires Authorization: Bearer CRON_SECRET (or ?secret=)
+ * - Requires Authorization: Bearer CRON_SECRET (or ?secret= outside production)
  * - Source priority: LIVE_SCORES_API_URL (custom feed) -> API-Football (FOOTBALL_API_KEY)
- * - Maps fixtures by team names (+ nearest kickoff) and updates matches score/status/mvp.
+ * - Default schedule gate: 1 sync per 30 min between 10:00–24:00 UTC (see env LIVE_SCORES_*).
+ * - Vercel cron (free tier): once daily at 12:00 UTC — aligns with minute 0 → one API call/day.
+ * - Manual sync anytime: POST with ?force=1 (still uses API quota once per call).
  */
 export async function POST(request: NextRequest) {
   const startedAt = Date.now()
@@ -307,10 +309,9 @@ export async function POST(request: NextRequest) {
   const forceRun =
     request.nextUrl.searchParams.get("force") === "1" ||
     request.headers.get("x-force-live-sync") === "1"
-  const isVercelCron = request.headers.get("x-vercel-cron") === "1"
   const now = new Date()
   const decision = shouldRunExternalSync(now)
-  if (!forceRun && !isVercelCron && !decision.run) {
+  if (!forceRun && !decision.run) {
     return NextResponse.json({
       ok: true,
       skipped: true,
@@ -422,7 +423,6 @@ export async function POST(request: NextRequest) {
     ok: !advanceErr,
     skipped: false,
     forced: forceRun,
-    vercel_cron: isVercelCron,
     source: customUrl ? "custom" : "api-football",
     fixtures_received: fixtures.length,
     matched,
