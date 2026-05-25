@@ -50,6 +50,12 @@ type UserPrediction = {
   points_multiplier?: number | null
 }
 
+export type InitialPredictionData = {
+  matchIds: number[]
+  predictions: Record<number, UserPrediction>
+  rowIds: Record<number, number>
+}
+
 type Section = { title: string; stage: string; isKnockout: boolean; matches: Match[] }
 
 /** Single block, all matches sorted by kickoff (no Group A / Group B headings). */
@@ -844,15 +850,33 @@ function applySubFilter(matches: Match[], subFilter: string | null): Match[] {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[] }) {
+export function GamesList({
+  upcoming,
+  past,
+  initialPredictionData = null,
+}: {
+  upcoming: Match[]
+  past: Match[]
+  initialPredictionData?: InitialPredictionData | null
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [filter, setFilter] = useState<Filter>("all")
   const [subFilter, setSubFilter] = useState<string | null>(null)
-  const [matchIdsWithUserPrediction, setMatchIdsWithUserPrediction] = useState<Set<number>>(new Set())
-  const [predictionsByMatch, setPredictionsByMatch] = useState<Map<number, UserPrediction>>(new Map())
-  const [predictionRowIds, setPredictionRowIds] = useState<Map<number, number>>(new Map())
-  const [signedIn, setSignedIn] = useState(false)
+  const [matchIdsWithUserPrediction, setMatchIdsWithUserPrediction] = useState<Set<number>>(() =>
+    initialPredictionData ? new Set(initialPredictionData.matchIds) : new Set()
+  )
+  const [predictionsByMatch, setPredictionsByMatch] = useState<Map<number, UserPrediction>>(() =>
+    initialPredictionData
+      ? new Map(Object.entries(initialPredictionData.predictions).map(([k, v]) => [Number(k), v]))
+      : new Map()
+  )
+  const [predictionRowIds, setPredictionRowIds] = useState<Map<number, number>>(() =>
+    initialPredictionData
+      ? new Map(Object.entries(initialPredictionData.rowIds).map(([k, v]) => [Number(k), v]))
+      : new Map()
+  )
+  const [signedIn, setSignedIn] = useState(!!initialPredictionData)
   const [powerUpIntent, setPowerUpIntent] = useState<Map<number, boolean>>(new Map())
   const [powerUpBusyId, setPowerUpBusyId] = useState<number | null>(null)
   const [powerUpErr, setPowerUpErr] = useState<{ mid: number; msg: string } | null>(null)
@@ -1017,6 +1041,8 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
   }
 
   useEffect(() => {
+    if (initialPredictionData) return
+
     async function load() {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -1055,14 +1081,20 @@ export function GamesList({ upcoming, past }: { upcoming: Match[]; past: Match[]
       setPredictionRowIds(rowIds)
     }
     load()
-  }, [])
+  }, [initialPredictionData])
+
+  const hasLiveMatches = useMemo(
+    () => [...upcoming, ...past].some((m) => m.status === "started"),
+    [upcoming, past]
+  )
 
   useEffect(() => {
+    if (!hasLiveMatches) return
     const t = window.setInterval(() => {
       if (document.visibilityState === "visible") router.refresh()
-    }, 60_000)
+    }, 30_000)
     return () => window.clearInterval(t)
-  }, [router])
+  }, [hasLiveMatches, router])
 
   function handlePredictionSaved(matchId: number, pred: UserPrediction, rowId: number) {
     setPredictionsByMatch(prev => new Map(prev).set(matchId, pred))

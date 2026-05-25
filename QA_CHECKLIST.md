@@ -49,10 +49,11 @@ Verify: `npm run verify:migrations` (expect calc_prediction_points = 6 and get_m
 
 ## 6) Cron and data freshness
 
+- Vercel crons: `live-scores` every 15 min (10:00–23:59 UTC), `advance-matches` at :05/:20/:35/:50 in same window.
+- `live-scores` with `Authorization: Bearer $CRON_SECRET` returns `matched`, `unmatched`, `updated`, `update_failed`, `unmatched_examples`.
 - `advance-matches` endpoint returns `ok: true`.
-- `live-scores` endpoint returns counts for `matched`, `unmatched`, `updated`.
-- Logs include cron run duration.
-- If unmatched > 0, inspect `unmatched_examples` and add aliases.
+- Logs include cron run duration; warnings when `unmatched > 0` or `update_failed > 0`.
+- If unmatched > 0, inspect `unmatched_examples` and add `FOOTBALL_TEAM_ALIASES` entries.
 
 ## 7) Final sanity
 

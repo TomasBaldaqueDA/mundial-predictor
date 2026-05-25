@@ -6,12 +6,22 @@ const gamesListSpy = vi.fn()
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
+    auth: {
+      getUser: vi.fn(async () => ({ data: { user: null }, error: null })),
+    },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: orderMock,
+        eq: vi.fn(() => ({
+          select: vi.fn(),
+        })),
       })),
     })),
   })),
+}))
+
+vi.mock("@/app/components/TodayTasksCard", () => ({
+  TodayTasksCard: () => null,
 }))
 
 vi.mock("@/app/games/GamesList", () => ({

@@ -10,6 +10,8 @@ type LiveFixture = {
   scoreAway?: number | null
   status?: "scheduled" | "started" | "finished" | null
   mvp?: string | null
+  /** Winning side after ET/penalties (API-Football teams.winner) */
+  winnerTeam?: string | null
 }
 
 type MatchRow = {
@@ -255,6 +257,7 @@ async function fetchFromApiFootball(): Promise<LiveFixture[]> {
     const awayName = String((teams?.away as Record<string, unknown> | undefined)?.name ?? "")
     if (!homeName || !awayName) continue
     const statusShort = String((fixture?.status as Record<string, unknown> | undefined)?.short ?? "")
+    const winnerName = String((teams?.winner as Record<string, unknown> | undefined)?.name ?? "").trim() || null
     const id = String(fixture?.id ?? `${homeName}-${awayName}-${fixture?.date ?? ""}`)
     dedupe.set(id, {
       homeTeam: homeName,
@@ -264,6 +267,7 @@ async function fetchFromApiFootball(): Promise<LiveFixture[]> {
       scoreAway: toInt(goals?.away ?? null),
       status: mapStatus(statusShort),
       mvp: null,
+      winnerTeam: winnerName,
     })
   }
   return [...dedupe.values()]
@@ -303,9 +307,10 @@ export async function POST(request: NextRequest) {
   const forceRun =
     request.nextUrl.searchParams.get("force") === "1" ||
     request.headers.get("x-force-live-sync") === "1"
+  const isVercelCron = request.headers.get("x-vercel-cron") === "1"
   const now = new Date()
   const decision = shouldRunExternalSync(now)
-  if (!forceRun && !decision.run) {
+  if (!forceRun && !isVercelCron && !decision.run) {
     return NextResponse.json({
       ok: true,
       skipped: true,
@@ -352,9 +357,11 @@ export async function POST(request: NextRequest) {
 
   const candidates = (rows ?? []) as MatchRow[]
   let updated = 0
+  let updateFailed = 0
   let matched = 0
   let unmatched = 0
   const unmatchedExamples: string[] = []
+  const updateErrors: string[] = []
 
   for (const f of fixtures) {
     const match = pickBestMatch(f, candidates)
@@ -379,29 +386,53 @@ export async function POST(request: NextRequest) {
     if (nextStatus && nextStatus !== match.status) patch.status = nextStatus
     if (f.mvp && f.mvp !== match.mvp) patch.mvp = f.mvp
 
+    if (f.winnerTeam && (nextStatus === "finished" || match.status === "finished")) {
+      const w = f.winnerTeam.trim()
+      const qualifies =
+        normalizeTeam(w) === normalizeTeam(match.team1)
+          ? match.team1
+          : normalizeTeam(w) === normalizeTeam(match.team2)
+            ? match.team2
+            : null
+      if (qualifies) patch.qualifier = qualifies
+    }
+
     if (Object.keys(patch).length === 0) continue
     const { error } = await db.from("matches").update(patch).eq("id", match.id)
-    if (!error) updated++
+    if (error) {
+      updateFailed++
+      if (updateErrors.length < 5) updateErrors.push(`match ${match.id}: ${error.message}`)
+    } else {
+      updated++
+    }
   }
 
   const { data: advanceResult, error: advanceErr } = await db.rpc("advance_match_statuses")
 
   const durationMs = Date.now() - startedAt
+  const hasIssues = unmatched > 0 || updateFailed > 0 || !!advanceErr
   console.info(
-    `[live-scores] source=${customUrl ? "custom" : "api-football"} fixtures=${fixtures.length} matched=${matched} unmatched=${unmatched} updated=${updated} duration_ms=${durationMs}`
+    `[live-scores] source=${customUrl ? "custom" : "api-football"} fixtures=${fixtures.length} matched=${matched} unmatched=${unmatched} updated=${updated} failed=${updateFailed} duration_ms=${durationMs}${hasIssues ? " ATTENTION" : ""}`
   )
+  if (unmatched > 0) {
+    console.warn(`[live-scores] unmatched_examples=${unmatchedExamples.join("; ")}`)
+  }
 
   return NextResponse.json({
-    ok: true,
+    ok: !advanceErr,
     skipped: false,
     forced: forceRun,
+    vercel_cron: isVercelCron,
     source: customUrl ? "custom" : "api-football",
     fixtures_received: fixtures.length,
     matched,
     unmatched,
     unmatched_examples: unmatchedExamples,
     updated,
+    update_failed: updateFailed,
+    update_errors: updateErrors,
     advanced: advanceErr ? { error: advanceErr.message } : advanceResult,
+    schedule: decision,
     duration_ms: durationMs,
   })
 }

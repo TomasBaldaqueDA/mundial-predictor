@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { RankingBoard } from "@/app/components/RankingBoard"
 import { PageHeader } from "@/app/components/PageHeader"
+import { ShareLeagueButton } from "@/app/components/ShareLeagueButton"
+import { EmptyState } from "@/app/components/EmptyState"
 import { computeMemberRanking, rankPosition, type RankedRow } from "@/lib/compute-member-ranking"
 
 export default function LeagueDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -107,21 +109,22 @@ export default function LeagueDetailPage({ params }: { params: Promise<{ id: str
         }
       >
         {code && (
-          <button
-            type="button"
-            onClick={copyCode}
-            title="Copy invite code"
-            className={`btn-ghost ${copied ? "text-emerald-300 border-emerald-400/30 bg-emerald-500/10" : ""}`}
-          >
-            {copied ? "Copied!" : "Copy code"}
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={copyCode}
+              title="Copy invite code"
+              className={`btn-ghost ${copied ? "text-emerald-300 border-emerald-400/30 bg-emerald-500/10" : ""}`}
+            >
+              {copied ? "Copied!" : "Copy code"}
+            </button>
+            <ShareLeagueButton leagueName={name} inviteCode={code} />
+          </>
         )}
       </PageHeader>
 
       {rows.length === 0 ? (
-        <div className="glass-dark rounded-2xl p-12 text-center border border-white/8">
-          <p className="text-white/40">No members yet.</p>
-        </div>
+        <EmptyState title="No members yet" description="Share the invite code so friends can join this league." />
       ) : (
         <RankingBoard rows={rows} currentUserId={currentUserId} scrollToUser />
       )}

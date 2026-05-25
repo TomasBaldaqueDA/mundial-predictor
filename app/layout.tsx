@@ -27,18 +27,26 @@ export const metadata: Metadata = {
   },
   description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
   applicationName: "WC26 Predictor",
+  manifest: "/manifest.webmanifest",
   openGraph: {
     title: "WC26 Predictor",
     description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
     type: "website",
     siteName: "WC26 Predictor",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "WC26 Predictor" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "WC26 Predictor",
     description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
+    images: ["/opengraph-image"],
   },
-  icons: { icon: "/favicon.ico" },
+  icons: { icon: "/favicon.ico", apple: "/favicon.ico" },
+  appleWebApp: {
+    capable: true,
+    title: "WC26",
+    statusBarStyle: "black-translucent",
+  },
 }
 
 export const viewport = {

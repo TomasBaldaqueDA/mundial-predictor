@@ -8,17 +8,14 @@ export default function NotFound() {
         Page not found
       </h1>
       <p className="text-slate-300/90">
-        This route doesn&apos;t exist. Try the games board or head back home.
+        This route doesn&apos;t exist. Head home or read the rules.
       </p>
       <div className="flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn-primary inline-flex items-center justify-center px-6 py-3 text-sm">
           Back to home
         </Link>
-        <Link
-          href="/games"
-          className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/15 text-slate-200 hover:bg-white/8 text-sm font-medium transition-all"
-        >
-          View games
+        <Link href="/rules" className="btn-secondary inline-flex items-center justify-center px-6 py-3 text-sm">
+          View rules
         </Link>
       </div>
     </main>

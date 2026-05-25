@@ -82,7 +82,15 @@ export function NavLinks() {
     return () => subscription.unsubscribe()
   }, [])
 
-  if (!signedIn) return null
+  if (!signedIn) {
+    return (
+      <nav className="flex items-center gap-0.5" aria-label="Main">
+        <Link href="/rules" className={`nav-pill ${pathname === "/rules" ? "nav-pill-active" : ""}`}>
+          Rules
+        </Link>
+      </nav>
+    )
+  }
 
   return (
     <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-none py-0.5" aria-label="Main">

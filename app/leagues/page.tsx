@@ -9,6 +9,8 @@ import {
   rankPosition,
 } from "@/lib/compute-member-ranking"
 import { PageHeader } from "@/app/components/PageHeader"
+import { EmptyState } from "@/app/components/EmptyState"
+import { SaveFeedback } from "@/app/components/SaveFeedback"
 
 type LeagueRow = {
   id: string
@@ -192,18 +194,17 @@ export default function LeaguesPage() {
         </button>
       </form>
 
-      {msg && (
-        <p className={`text-sm rounded-xl px-4 py-2 border ${msg.type === "ok" ? "text-emerald-300 bg-emerald-950/40 border-emerald-500/30" : "text-amber-200/90 bg-amber-950/40 border-amber-500/30"}`}>
-          {msg.text}
-        </p>
-      )}
+      {msg && <SaveFeedback message={msg.text} variant={msg.type === "ok" ? "success" : "error"} className="mb-4" />}
 
       <section>
         <h2 className="section-kicker mb-3">Your leagues</h2>
         {loading ? (
           <p className="text-white/40 text-sm">Loading…</p>
         ) : leagues.length === 0 ? (
-          <p className="text-white/40 text-sm">You’re not in any league yet.</p>
+          <EmptyState
+            title="You're not in any league yet"
+            description="Create a league for your friends or join with an invite code above."
+          />
         ) : (
           <ul className="space-y-2">
             {leagues.map((l) => (
