@@ -109,6 +109,8 @@ export default async function ThirdPlacePredictionsPage({
         backLabel="Groups"
       />
 
+      <LeagueFilterBar title="All predictions" currentLeagueId={leagueId || undefined} />
+
       {actualThirdPlaceTeams.length === 8 && (
         <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">
           <p className="text-xs font-semibold text-emerald-300 mb-3 uppercase tracking-wider">Actual 8 third-place (qualified)</p>
