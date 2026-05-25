@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
-import { LeagueFilter } from "@/app/components/LeagueFilter"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
+import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
 
 export default async function SpecialAnswersPage({
   searchParams,
@@ -12,18 +13,7 @@ export default async function SpecialAnswersPage({
   const leagueId = typeof sp?.league === "string" ? sp.league : ""
 
   const supabase = await createClient()
-
-  // Filter to league members if active
-  let leagueMemberIds: Set<string> | null = null
-  if (leagueId) {
-    const { data: members } = await supabase
-      .from("private_league_members")
-      .select("user_id")
-      .eq("league_id", leagueId)
-    if (members && members.length > 0) {
-      leagueMemberIds = new Set(members.map((m: { user_id: string }) => m.user_id))
-    }
-  }
+  const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
 
   const [
     { data: firstMatch },
@@ -50,7 +40,7 @@ export default async function SpecialAnswersPage({
   const byQuestion = new Map<string, { userId: string; answer: string }[]>()
   for (const a of answers ?? []) {
     const row = a as { question_id: string; user_id: string; answer: string }
-    if (leagueMemberIds && !leagueMemberIds.has(row.user_id)) continue
+    if (!isUserInLeagueFilter(leagueMemberIds, row.user_id)) continue
     const list = byQuestion.get(row.question_id) ?? []
     list.push({ userId: row.user_id, answer: row.answer.trim() })
     byQuestion.set(row.question_id, list)
@@ -63,9 +53,9 @@ export default async function SpecialAnswersPage({
         description="See how other players answered each question."
         backHref="/questions"
         backLabel="Questions"
-      >
-        <LeagueFilter currentLeagueId={leagueId || undefined} />
-      </PageHeader>
+      />
+
+      {tournamentStarted && <LeagueFilterBar title="All answers" currentLeagueId={leagueId || undefined} />}
 
       {!tournamentStarted && (
         <div className="glass rounded-2xl p-8 text-center">
@@ -114,7 +104,9 @@ export default async function SpecialAnswersPage({
                   </div>
                 )}
                 {rows.length === 0 ? (
-                  <p className="px-5 py-4 text-slate-500 text-sm">No answers yet.</p>
+                  <p className="px-5 py-4 text-slate-500 text-sm">
+                    {leagueMemberIds ? "No answers from players in this league yet." : "No answers yet."}
+                  </p>
                 ) : (
                   <table className="min-w-full text-sm">
                     <thead className="bg-white/5 border-b border-white/10">

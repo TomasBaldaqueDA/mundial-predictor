@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
+import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
 import {
   hasAnyPick,
   normalizePlayer,
@@ -15,8 +17,16 @@ export const metadata = {
   description: "View other players' 5-A-SIDE fantasy teams.",
 }
 
-export default async function FiveASideTeamsPage() {
+export default async function FiveASideTeamsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ league?: string }>
+}) {
+  const sp = await searchParams
+  const leagueId = typeof sp?.league === "string" ? sp.league : ""
+
   const supabase = await createClient()
+  const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
 
   const [{ data: picksRows }, { data: playersRows }, { data: profiles }] = await Promise.all([
     supabase
@@ -42,6 +52,7 @@ export default async function FiveASideTeamsPage() {
     .map((row) => {
       const picks = row as FiveASidePicks & { user_id: string; submitted_at: string | null }
       if (!hasAnyPick(picks)) return null
+      if (!isUserInLeagueFilter(leagueMemberIds, picks.user_id)) return null
       const pts = teamFantasyPoints(picks, playersById)
       const filled = [picks.gk_player_id, picks.df_player_id, picks.md1_player_id, picks.md2_player_id, picks.st_player_id].filter(
         Boolean
@@ -58,6 +69,8 @@ export default async function FiveASideTeamsPage() {
     .filter((t): t is NonNullable<typeof t> => t !== null)
     .sort((a, b) => b.pts - a.pts || a.name.localeCompare(b.name))
 
+  const leagueQuery = leagueId ? `?league=${encodeURIComponent(leagueId)}` : ""
+
   return (
     <main className="space-y-6">
       <PageHeader
@@ -67,9 +80,15 @@ export default async function FiveASideTeamsPage() {
         backLabel="My team"
       />
 
+      <LeagueFilterBar title="All teams" currentLeagueId={leagueId || undefined} />
+
       {teams.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="text-slate-400">No 5-A-SIDE teams saved yet.</p>
+          <p className="text-slate-400">
+            {leagueMemberIds
+              ? "No 5-A-SIDE teams from players in this league yet."
+              : "No 5-A-SIDE teams saved yet."}
+          </p>
         </div>
       ) : (
         <div className="glass rounded-2xl overflow-hidden border border-white/10">
@@ -95,7 +114,7 @@ export default async function FiveASideTeamsPage() {
                   <td className="px-5 py-3 text-right font-bold tabular-nums text-wc-gold">{t.pts}</td>
                   <td className="px-5 py-3 text-right">
                     <Link
-                      href={`/five-a-side/view/${t.userId}`}
+                      href={`/five-a-side/view/${t.userId}${leagueQuery}`}
                       className="inline-flex rounded-lg px-3 py-1.5 text-xs font-semibold bg-wc-green/90 text-white hover:bg-wc-green-dark transition-colors"
                     >
                       View team
