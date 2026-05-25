@@ -40,7 +40,10 @@ function pathnameToBgKey(pathname: string): AppBgKey {
 /** Inline --stadium-photo fixes cases where the ::before layer stayed on the root fallback only. */
 const STADIUM_LAYER: Partial<Record<AppBgKey, CSSProperties>> = {
   matches: { "--stadium-photo": 'url("/images/bg-games.jpg")' } as CSSProperties,
-  leagues: { "--stadium-photo": 'url("/images/bg-leagues.jpg")' } as CSSProperties,
+  leagues: {
+    "--stadium-photo":
+      'url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/FIFA_World_Cup_Trophy_cropped.jpg/1400px-FIFA_World_Cup_Trophy_cropped.jpg")',
+  } as CSSProperties,
 }
 
 export function AppBackground() {
