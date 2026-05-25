@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## 5-A-SIDE squads (convocatorias)
+
+Each nation has **26 players** in `five_a_side_players`: `name`, `team`, `position` (`gk` / `df` / `md` / `st`). **No player photos** — the UI uses national kit colours only.
+
+To update one country, add `supabase/sql/NNN_<team>_squad.sql` or run:
+
+```bash
+node scripts/upsert-squad-sql.mjs Spain gk:"Unai Simón,David Raya,Joan García" df:"Marc Cucurella,..." md:"..." st:"..."
+```
+
+Then apply in Supabase SQL Editor. Spain: `056_spain_squad.sql`.
+
 ## Live scores (real API)
 
 This project supports real-time score sync into `public.matches` through:

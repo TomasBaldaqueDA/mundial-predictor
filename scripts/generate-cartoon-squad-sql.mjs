@@ -1,6 +1,6 @@
 /**
- * Writes supabase/sql/047_sync_cartoon_squads.sql from imgs_cartoons/ (no network).
- * Run in Supabase SQL Editor or via MCP execute_sql after review.
+ * @deprecated Squads no longer use player photos. Use scripts/upsert-squad-sql.mjs instead.
+ * Legacy: writes 047_sync_cartoon_squads.sql from imgs_cartoons/ (not used in production UI).
  */
 import fs from "node:fs"
 import path from "node:path"
