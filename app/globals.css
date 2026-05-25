@@ -121,9 +121,8 @@ body {
     linear-gradient(180deg, rgba(240, 180, 41, 0.05) 0%, transparent 42%);
 }
 
-/* Jogos / Leagues — very light veil so stadium photos read clearly (local /public JPGs) */
-.app-bg-stadium.app-bg--matches::after,
-.app-bg-stadium.app-bg--leagues::after {
+/* Jogos — light veil so stadium photos read clearly */
+.app-bg-stadium.app-bg--matches::after {
   background:
     radial-gradient(ellipse 90% 75% at 50% 35%, transparent 0%, rgba(4, 10, 20, 0.12) 48%, rgba(2, 5, 12, 0.42) 100%),
     linear-gradient(
@@ -188,36 +187,35 @@ body {
   background-position: center 28%;
 }
 
+/* Leagues + global ranking + private leagues — World Cup trophy (hosted under /public) */
 .app-bg--leagues,
 .app-bg--leagues.app-bg-stadium {
-  /* FIFA World Cup trophy (same asset family as /questions, tuned for leagues) */
-  --stadium-photo: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/FIFA_World_Cup_Trophy_cropped.jpg/1400px-FIFA_World_Cup_Trophy_cropped.jpg"),
-    url("https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=2400&q=80");
+  --stadium-photo: url("/images/world-cup-trophy.jpg");
 }
 .app-bg-stadium.app-bg--leagues::before {
-  background-image: var(--stadium-photo) !important;
-  background-position: center 32%;
+  background-image: url("/images/world-cup-trophy.jpg") !important;
+  background-position: center 28%;
   background-size: cover;
-  filter: blur(0.4px) saturate(1.12) brightness(0.92);
+  filter: blur(0.35px) saturate(1.15) brightness(0.95);
 }
 .app-bg-stadium.app-bg--leagues::after {
   background:
-    radial-gradient(ellipse 88% 70% at 50% 30%, transparent 0%, rgba(4, 10, 20, 0.1) 45%, rgba(2, 5, 12, 0.5) 100%),
+    radial-gradient(ellipse 75% 65% at 50% 32%, transparent 0%, rgba(4, 10, 20, 0.18) 55%, rgba(2, 5, 12, 0.72) 100%),
     linear-gradient(
       180deg,
-      rgba(2, 4, 10, 0.22) 0%,
-      rgba(4, 10, 20, 0.05) 40%,
-      rgba(4, 10, 20, 0.12) 58%,
-      rgba(2, 6, 14, 0.45) 100%
+      rgba(2, 4, 10, 0.45) 0%,
+      rgba(4, 10, 20, 0.08) 38%,
+      rgba(4, 10, 20, 0.15) 55%,
+      rgba(2, 6, 14, 0.55) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(2, 5, 12, 0.2) 0%,
-      transparent 20%,
-      transparent 80%,
-      rgba(2, 5, 12, 0.2) 100%
+      rgba(2, 5, 12, 0.28) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(2, 5, 12, 0.28) 100%
     ),
-    linear-gradient(180deg, rgba(232, 184, 74, 0.1) 0%, transparent 48%);
+    linear-gradient(180deg, rgba(232, 184, 74, 0.08) 0%, transparent 42%);
 }
 .app-bg--groups {
   --stadium-photo: url("https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=2400&q=80");
@@ -246,12 +244,6 @@ body {
   --stadium-photo: url("https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=2400&q=80");
 }
 .app-bg--predict::before {
-  background-image: var(--stadium-photo);
-}
-.app-bg--ranking {
-  --stadium-photo: url("https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?auto=format&fit=crop&w=2400&q=80");
-}
-.app-bg--ranking::before {
   background-image: var(--stadium-photo);
 }
 .app-bg--rules {

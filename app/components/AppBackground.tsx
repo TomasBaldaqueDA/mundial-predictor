@@ -11,7 +11,6 @@ type AppBgKey =
   | "five"
   | "matches"
   | "predict"
-  | "ranking"
   | "rules"
   | "account"
 
@@ -19,12 +18,11 @@ function pathnameToBgKey(pathname: string): AppBgKey {
   const p = pathname || "/"
   if (p === "/") return "home"
   if (p.startsWith("/questions")) return "perguntas"
-  if (p.startsWith("/leagues")) return "leagues"
+  if (p.startsWith("/leagues") || p.startsWith("/ranking")) return "leagues"
   if (p.startsWith("/groups")) return "groups"
   if (p.startsWith("/five-a-side")) return "five"
   if (p.startsWith("/games") || p.startsWith("/match")) return "matches"
   if (p.startsWith("/predict")) return "predict"
-  if (p.startsWith("/ranking")) return "ranking"
   if (p.startsWith("/rules")) return "rules"
   if (
     p.startsWith("/profile") ||
@@ -40,10 +38,7 @@ function pathnameToBgKey(pathname: string): AppBgKey {
 /** Inline --stadium-photo fixes cases where the ::before layer stayed on the root fallback only. */
 const STADIUM_LAYER: Partial<Record<AppBgKey, CSSProperties>> = {
   matches: { "--stadium-photo": 'url("/images/bg-games.jpg")' } as CSSProperties,
-  leagues: {
-    "--stadium-photo":
-      'url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/FIFA_World_Cup_Trophy_cropped.jpg/1400px-FIFA_World_Cup_Trophy_cropped.jpg")',
-  } as CSSProperties,
+  leagues: { "--stadium-photo": 'url("/images/world-cup-trophy.jpg")' } as CSSProperties,
 }
 
 export function AppBackground() {
