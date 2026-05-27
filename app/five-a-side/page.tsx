@@ -207,10 +207,10 @@ export default function FiveASidePage() {
   const teamComplete = !!(getPlayerId("gk") && getPlayerId("df") && getPlayerId("md1") && getPlayerId("md2") && getPlayerId("st"))
   const tournamentStarted = lockedByTime
   const slotsLocked = tournamentStarted || !isEditing
-  const captainLocked = isCaptainLocked(picks)
+  const captainLocked = isCaptainLocked(tournamentStarted)
   const supersubApplied = !!picks?.supersub_applied_at
   const supersubWindowOpen = isSupersubWindowOpen(tournamentMatches) && teamComplete && !supersubApplied
-  const canPickCaptain = teamComplete && !captainLocked && !tournamentStarted
+  const canPickCaptain = teamComplete && !tournamentStarted
   const captainId = picks?.captain_player_id ?? null
 
   const getPointsForSlot = (slot: SlotKey): number => slotFantasyPoints(picks, slot, playersById)
@@ -220,10 +220,6 @@ export default function FiveASidePage() {
     if (!user || tournamentStarted) return
     const chosen = players.find((x) => x.id === playerId)
     if (!chosen) return
-    if (captainLocked && picks?.captain_player_id === getPlayerId(slot) && playerId !== getPlayerId(slot)) {
-      setMessage({ type: "error", text: "Cannot replace your captain — locked for the tournament." })
-      return
-    }
     if (teamsUsedExceptSlot(slot, picks, players).has(chosen.team)) {
       setMessage({ type: "error", text: "Only one player per nation. Pick someone from a country you have not used yet." })
       return
@@ -232,6 +228,7 @@ export default function FiveASidePage() {
     setMessage(null)
     const supabase = createClient()
     const key = slot === "md1" ? "md1_player_id" : slot === "md2" ? "md2_player_id" : `${slot}_player_id`
+    const clearsCaptain = picks?.captain_player_id === getPlayerId(slot) && playerId !== getPlayerId(slot)
     const payload = {
       user_id: user.id,
       gk_player_id: getPlayerId("gk"),
@@ -241,6 +238,7 @@ export default function FiveASidePage() {
       st_player_id: getPlayerId("st"),
       updated_at: new Date().toISOString(),
       ...{ [key]: playerId },
+      ...(clearsCaptain ? { captain_player_id: null, captain_set_at: null } : {}),
     }
     const { error } = await supabase.from("five_a_side_picks").upsert(payload, { onConflict: "user_id" })
     if (error) {
@@ -249,6 +247,7 @@ export default function FiveASidePage() {
       setPicks((prev) => ({
         ...(prev ?? { gk_player_id: null, df_player_id: null, md1_player_id: null, md2_player_id: null, st_player_id: null, submitted_at: null }),
         [key]: playerId,
+        ...(clearsCaptain ? { captain_player_id: null, captain_set_at: null } : {}),
       }))
       setModalSlot(null)
     }
@@ -343,7 +342,36 @@ export default function FiveASidePage() {
               captain_set_at: now,
             }
       )
-      setMessage({ type: "ok", text: "Captain set — locked for the whole tournament." })
+      setMessage({ type: "ok", text: "Captain updated — locked at first match kickoff." })
+    }
+    setSaving(false)
+  }
+
+  async function clearCaptain() {
+    if (!user || tournamentStarted || !picks?.captain_player_id) return
+    setSaving(true)
+    setMessage(null)
+    const supabase = createClient()
+    const now = new Date().toISOString()
+    const { error } = await supabase.from("five_a_side_picks").upsert(
+      {
+        user_id: user.id,
+        gk_player_id: getPlayerId("gk"),
+        df_player_id: getPlayerId("df"),
+        md1_player_id: getPlayerId("md1"),
+        md2_player_id: getPlayerId("md2"),
+        st_player_id: getPlayerId("st"),
+        captain_player_id: null,
+        captain_set_at: null,
+        updated_at: now,
+      },
+      { onConflict: "user_id" }
+    )
+    if (error) {
+      setMessage({ type: "error", text: error.message })
+    } else {
+      setPicks((prev) => (prev ? { ...prev, captain_player_id: null, captain_set_at: null } : null))
+      setMessage({ type: "ok", text: "Captain removed." })
     }
     setSaving(false)
   }
@@ -476,7 +504,8 @@ export default function FiveASidePage() {
           <span className="font-medium text-wc-green-dark">Total points: {totalPoints}</span>
           {captainId && (
             <p className="text-xs text-slate-400">
-              Captain: {playersById.get(captainId)?.name ?? "—"} (×2 pts, locked)
+              Captain: {playersById.get(captainId)?.name ?? "—"} (×2 pts
+              {captainLocked ? ", locked" : " — change until first match"})
             </p>
           )}
           {supersubApplied && picks?.supersub_out_player_id && picks?.supersub_in_player_id && (
@@ -488,10 +517,12 @@ export default function FiveASidePage() {
         </div>
       )}
 
-      {user && teamComplete && !captainLocked && !tournamentStarted && (
+      {user && teamComplete && canPickCaptain && (
         <div className="glass rounded-xl px-4 py-3 mb-4 border border-amber-400/30 text-center">
           <p className="text-sm text-amber-100/90 mb-1">Choose your captain (×2 points for the whole tournament)</p>
-          <p className="text-xs text-slate-400">Tap a player card below, then use &quot;Set captain&quot; — cannot be changed later.</p>
+          <p className="text-xs text-slate-400">
+            Set or change captain on any player below until the first match. Use &quot;Remove captain&quot; to clear.
+          </p>
         </div>
       )}
 
@@ -573,6 +604,16 @@ export default function FiveASidePage() {
                     className="rounded-lg border border-amber-400/50 bg-amber-500/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-100 hover:bg-amber-500/25"
                   >
                     Set captain
+                  </button>
+                )}
+                {canPickCaptain && player && isCaptain && (
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={clearCaptain}
+                    className="rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-200 hover:bg-white/15"
+                  >
+                    Remove captain
                   </button>
                 )}
                 <PointsBadge points={points} filled={!!player} />

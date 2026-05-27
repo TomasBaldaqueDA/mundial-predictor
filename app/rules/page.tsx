@@ -176,9 +176,9 @@ export default function RulesPage() {
         <h3 className="text-sm font-semibold text-wc-green-dark pt-1">Power-ups</h3>
         <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
           <li>
-            <span className="font-semibold">Captain</span>: choose one of your five players before the tournament
-            starts. That player&apos;s fantasy points count <span className="font-semibold">double (×2)</span> for the
-            whole tournament. Once set, the captain cannot be changed.
+            <span className="font-semibold">Captain</span>: choose one of your five players. That player&apos;s
+            fantasy points count <span className="font-semibold">double (×2)</span> for the whole tournament. You can
+            change or remove the captain until the first match kickoff; after that it is locked.
           </li>
           <li>
             <span className="font-semibold">Supersub</span>: one substitution for the whole tournament, available only

@@ -178,8 +178,8 @@ export function hasAnyPick(picks: FiveASidePicks | null): boolean {
   return SLOT_KEYS.some((slot) => !!pickIdForSlot(picks, slot))
 }
 
-export function isCaptainLocked(picks: FiveASidePicks | null): boolean {
-  return !!(picks?.captain_set_at && picks.captain_player_id)
+export function isCaptainLocked(tournamentStarted: boolean): boolean {
+  return tournamentStarted
 }
 
 export function normalizePlayer(row: Record<string, unknown>): FiveASidePlayer {
