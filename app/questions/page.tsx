@@ -226,7 +226,7 @@ export default function PerguntasPage() {
           </div>
           <div className="relative z-[1]">
             <p
-              className={`text-4xl sm:text-5xl font-black mb-4 uppercase tracking-[0.12em] ${
+              className={`text-3xl sm:text-5xl font-black mb-4 uppercase tracking-[0.08em] sm:tracking-[0.12em] ${
                 locked
                   ? "text-amber-900 drop-shadow-sm"
                   : "text-amber-100 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95),0_0_28px_rgba(251,191,36,0.35)]"
