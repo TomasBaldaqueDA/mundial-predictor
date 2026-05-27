@@ -9,7 +9,7 @@ export function getAppOrigin(fallbackOrigin?: string): string {
   if (fromEnv) return fromEnv
   if (fallbackOrigin) return fallbackOrigin.replace(/\/$/, "")
   if (typeof window !== "undefined") return window.location.origin
-  return "http://localhost:3000"
+  return "https://www.wcup26predictor.com"
 }
 
 type AuthCallbackOptions = {

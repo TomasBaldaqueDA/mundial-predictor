@@ -7,9 +7,9 @@ O código já suporta **Continue with Google** em `/login` e `/register`. Falta 
 | Onde | URL |
 |------|-----|
 | Supabase Auth callback (Google Cloud) | `https://hmhzeyfuruemdqmdgqxt.supabase.co/auth/v1/callback` |
-| App callback (Supabase → URL Configuration) | `https://mundial-predictor.vercel.app/auth/callback` |
+| App callback (Supabase → URL Configuration) | `https://www.wcup26predictor.com/auth/callback` |
 | Local dev | `http://localhost:3000/auth/callback` |
-| Site URL (Supabase) | `https://mundial-predictor.vercel.app` |
+| Site URL (Supabase) | `https://www.wcup26predictor.com` |
 
 ---
 
@@ -42,8 +42,10 @@ https://supabase.com/dashboard/project/hmhzeyfuruemdqmdgqxt/auth/url-configurati
 
 | Campo | Valor |
 |-------|--------|
-| Site URL | `https://mundial-predictor.vercel.app` |
-| Redirect URLs (uma por linha) | `https://mundial-predictor.vercel.app/auth/callback` |
+| Site URL | `https://www.wcup26predictor.com` |
+| Redirect URLs (uma por linha) | `https://www.wcup26predictor.com/auth/callback` |
+| | `https://wcup26predictor.com/auth/callback` |
+| | `https://mundial-predictor.vercel.app/auth/callback` |
 | | `http://localhost:3000/auth/callback` |
 
 ---
@@ -53,7 +55,7 @@ https://supabase.com/dashboard/project/hmhzeyfuruemdqmdgqxt/auth/url-configurati
 Em **Environment Variables**:
 
 ```
-NEXT_PUBLIC_SITE_URL=https://mundial-predictor.vercel.app
+NEXT_PUBLIC_SITE_URL=https://www.wcup26predictor.com
 ```
 
 Redeploy após guardar.
@@ -62,7 +64,7 @@ Redeploy após guardar.
 
 ## Testar
 
-1. Produção: https://mundial-predictor.vercel.app/login → **Continue with Google**  
+1. Produção: https://www.wcup26predictor.com/login → **Continue with Google**  
 2. Local: `npm run dev` → http://localhost:3000/login  
 
 Fluxo esperado: Google → Supabase → `/auth/callback` → home (ou `?next=` se vinhas de uma página protegida).

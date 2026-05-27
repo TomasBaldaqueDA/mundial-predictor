@@ -20,7 +20,7 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://mundial-predictor.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.wcup26predictor.com"),
   title: {
     default: "WC26 Predictor",
     template: "%s · WC26 Predictor",
