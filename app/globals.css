@@ -931,7 +931,7 @@ select.select-modern {
 
 .leaderboard-header {
   display: grid;
-  grid-template-columns: 3rem 1fr repeat(4, 5rem) 6rem;
+  grid-template-columns: 2.5rem 1fr auto;
   padding: 0.875rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.03);
@@ -940,6 +940,12 @@ select.select-modern {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.35);
+}
+
+@media (min-width: 640px) {
+  .leaderboard-header {
+    grid-template-columns: 3rem 1fr repeat(4, 5rem) 6rem;
+  }
 }
 
 .rank-highlight {

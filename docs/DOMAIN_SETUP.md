@@ -23,9 +23,13 @@ Or add `SUPABASE_ACCESS_TOKEN` to `.env.local` and run:
 npm run update:supabase-auth-urls
 ```
 
-## Google OAuth
+## Google OAuth — «Continuar para supabase.co»
 
-No change needed — redirect URI stays:
+Por defeito o Google mostra o domínio `*.supabase.co`. Para mostrar o teu domínio (ex. `auth.wcup26predictor.com`), segue:
+
+**[docs/SUPABASE_AUTH_CUSTOM_DOMAIN.md](./SUPABASE_AUTH_CUSTOM_DOMAIN.md)**
+
+Enquanto não ativares custom domain, o callback no Google Cloud mantém-se:
 
 `https://hmhzeyfuruemdqmdgqxt.supabase.co/auth/v1/callback`
 

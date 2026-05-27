@@ -16,14 +16,14 @@ export function RankingBoard({ rows, currentUserId, scrollToUser = true }: Props
     <>
       {scrollToUser && <ScrollToRankRow userId={currentUserId} />}
       <div className="leaderboard-shell">
-        <div className="leaderboard-header max-sm:grid-cols-[2.5rem_1fr_4.5rem]">
+        <div className="leaderboard-header">
           <div className="text-center">#</div>
           <div className="pl-1">Player</div>
           <div className="text-right hidden sm:block">Games</div>
           <div className="text-right hidden sm:block">Quest.</div>
           <div className="text-right hidden sm:block">Groups</div>
           <div className="text-right hidden sm:block">5-A-Side</div>
-          <div className="text-right text-wc-gold/80">Total</div>
+          <div className="text-right text-wc-gold/80 sm:col-auto col-start-3 row-start-1">Total</div>
         </div>
 
         <div className="divide-y divide-white/[0.04]">

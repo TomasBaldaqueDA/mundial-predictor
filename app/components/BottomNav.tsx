@@ -36,16 +36,21 @@ const authTabs = [
     href: "/groups",
     label: "Groups",
     icon: (active: boolean) => (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5" />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5 shrink-0" aria-hidden>
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75A2.25 2.25 0 0 1 15.75 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25v2.25a2.25 2.25 0 0 1-2.25 2.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25ZM13.5 6A2.25 2.25 0 0 1 15.75 3.75h2.25A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25A2.25 2.25 0 0 1 13.5 8.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25v2.25A2.25 2.25 0 0 1 8.25 20.25H6A2.25 2.25 0 0 1 3.75 18v-2.25Z"
+        />
       </svg>
     ),
   },
   {
     href: "/questions",
-    label: "Q&A",
+    label: "Questions",
+    activeAlso: ["/questions/answers", "/questions/winners"],
     icon: (active: boolean) => (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5" aria-hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5 shrink-0" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
       </svg>
     ),
@@ -60,9 +65,17 @@ const authTabs = [
     ),
   },
   {
+    href: "/rules",
+    label: "Rules",
+    icon: (active: boolean) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5 shrink-0" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+      </svg>
+    ),
+  },
+  {
     href: "/profile",
     label: "Profile",
-    activeAlso: ["/rules"],
     icon: (active: boolean) => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -101,7 +114,7 @@ export function BottomNav() {
       className="sm:hidden fixed bottom-0 left-0 right-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
       aria-label="Main navigation"
     >
-      <div className="flex items-stretch rounded-2xl border border-white/[0.1] bg-[#02060f]/90 backdrop-blur-2xl shadow-[0_-8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]">
+      <div className="flex items-stretch overflow-x-auto scrollbar-none rounded-2xl border border-white/[0.1] bg-[#02060f]/90 backdrop-blur-2xl shadow-[0_-8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]">
         {signedIn
           ? authTabs.map(({ href, label, icon, activeAlso }) => {
               const also = activeAlso ?? []
@@ -110,7 +123,7 @@ export function BottomNav() {
                 <Link
                   key={href}
                   href={href}
-                  className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 transition-all duration-200 relative min-w-0 ${
+                  className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 px-1 transition-all duration-200 relative min-w-[3.4rem] shrink-0 ${
                     active ? "text-wc-gold" : "text-white/40"
                   }`}
                   aria-label={label}
@@ -120,7 +133,7 @@ export function BottomNav() {
                     <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-gradient-to-r from-transparent via-wc-gold to-transparent" />
                   )}
                   <span className={active ? "scale-110 transition-transform" : ""}>{icon(active)}</span>
-                  <span className={`text-[9px] font-bold tracking-wide uppercase truncate max-w-full px-0.5 ${active ? "text-wc-gold" : "text-white/30"}`}>
+                  <span className={`text-[8px] font-bold tracking-wide uppercase text-center leading-tight max-w-[4.25rem] ${active ? "text-wc-gold" : "text-white/30"}`}>
                     {label}
                   </span>
                 </Link>

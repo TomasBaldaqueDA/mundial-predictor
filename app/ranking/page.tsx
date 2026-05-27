@@ -155,16 +155,16 @@ export default async function RankingPage() {
       )}
 
       {/* Legend */}
-      <div className="mt-5 flex flex-wrap gap-4 px-1">
+      <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 px-1 sm:flex sm:flex-wrap sm:gap-4">
         {[
-          { label: "Games", desc: "Match predictions" },
-          { label: "Quest.", desc: "Special questions" },
-          { label: "Groups", desc: "Group stage" },
-          { label: "5-A-Side", desc: "Fantasy team" },
+          { label: "Gms", desc: "Match predictions" },
+          { label: "Q", desc: "Special questions" },
+          { label: "Grp", desc: "Group stage" },
+          { label: "5v5", desc: "Fantasy team" },
         ].map(({ label, desc }) => (
-          <div key={label} className="flex items-center gap-1.5">
+          <div key={label} className="min-w-0">
             <span className="text-xs font-semibold text-white/40">{label}</span>
-            <span className="text-xs text-white/20">·</span>
+            <span className="text-xs text-white/20 mx-1">·</span>
             <span className="text-xs text-white/25">{desc}</span>
           </div>
         ))}
