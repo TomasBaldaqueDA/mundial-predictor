@@ -7,7 +7,7 @@ import {
   type FiveASidePicks,
   type FiveASidePlayer,
 } from "@/lib/five-a-side"
-import { isSupersubWindowOpen } from "@/lib/five-a-side-window"
+import { getSupersubButtonState, isSupersubWindowOpen } from "@/lib/five-a-side-window"
 
 const mkPlayer = (id: string, stats: Partial<FiveASidePlayer> = {}): FiveASidePlayer => ({
   id,
@@ -90,6 +90,50 @@ describe("five-a-side scoring", () => {
       supersub_in_baseline: statsFromPlayer(mkPlayer("in", { goals: 0, position: "st" })),
     }
     expect(slotFantasyPoints(picks, "st", players)).toBe(4 * 2 + 4 * 2)
+  })
+})
+
+describe("getSupersubButtonState", () => {
+  const finishedThirdRoundMatches = [
+    { id: 1, stage: "First Stage", group: "A", kickoff_time: "2026-06-01T12:00:00.000Z", status: "finished" },
+    { id: 2, stage: "First Stage", group: "A", kickoff_time: "2026-06-02T12:00:00.000Z", status: "finished" },
+    { id: 3, stage: "First Stage", group: "A", kickoff_time: "2026-06-03T12:00:00.000Z", status: "finished" },
+    { id: 4, stage: "First Stage", group: "A", kickoff_time: "2026-06-04T12:00:00.000Z", status: "finished" },
+    { id: 5, stage: "First Stage", group: "A", kickoff_time: "2026-06-05T12:00:00.000Z", status: "finished" },
+    { id: 6, stage: "Round of 32", kickoff_time: "2026-07-01T12:00:00.000Z", status: "scheduled" },
+  ]
+
+  it("locks before round 3 is complete", () => {
+    const matches = finishedThirdRoundMatches.map((m, i) =>
+      i === 4 ? { ...m, status: "scheduled" } : m
+    )
+    const state = getSupersubButtonState(
+      matches,
+      { teamComplete: true, supersubApplied: false },
+      new Date("2026-06-20T00:00:00.000Z")
+    )
+    expect(state.canUse).toBe(false)
+    expect(state.lockCode).toBe("before_third_round")
+  })
+
+  it("opens between round 3 end and R32", () => {
+    const state = getSupersubButtonState(
+      finishedThirdRoundMatches,
+      { teamComplete: true, supersubApplied: false },
+      new Date("2026-06-20T00:00:00.000Z")
+    )
+    expect(state.canUse).toBe(true)
+    expect(state.lockCode).toBe("open")
+  })
+
+  it("locks after round of 32 starts", () => {
+    const state = getSupersubButtonState(
+      finishedThirdRoundMatches,
+      { teamComplete: true, supersubApplied: false },
+      new Date("2026-07-02T00:00:00.000Z")
+    )
+    expect(state.canUse).toBe(false)
+    expect(state.lockCode).toBe("after_round_of_32")
   })
 })
 

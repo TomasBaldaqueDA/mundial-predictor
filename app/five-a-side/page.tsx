@@ -16,7 +16,7 @@ import {
   type FiveASidePicks,
   type SlotKey,
 } from "@/lib/five-a-side"
-import { isSupersubWindowOpen, type MatchForSupersubWindow } from "@/lib/five-a-side-window"
+import { getSupersubButtonState, type MatchForSupersubWindow } from "@/lib/five-a-side-window"
 
 type Player = {
   id: string
@@ -107,6 +107,7 @@ export default function FiveASidePage() {
   const [teamGpByTeam, setTeamGpByTeam] = useState<Record<string, number>>({})
   const [tournamentMatches, setTournamentMatches] = useState<MatchForSupersubWindow[]>([])
   const [supersubModalSlot, setSupersubModalSlot] = useState<SlotKey | null>(null)
+  const [supersubSlotPickerOpen, setSupersubSlotPickerOpen] = useState(false)
 
   const hasAnyPick = (row: Picks | null): boolean => {
     if (!row) return false
@@ -209,7 +210,11 @@ export default function FiveASidePage() {
   const slotsLocked = tournamentStarted || !isEditing
   const captainLocked = isCaptainLocked(tournamentStarted)
   const supersubApplied = !!picks?.supersub_applied_at
-  const supersubWindowOpen = isSupersubWindowOpen(tournamentMatches) && teamComplete && !supersubApplied
+  const supersubState = getSupersubButtonState(tournamentMatches, {
+    teamComplete,
+    supersubApplied,
+  })
+  const supersubWindowOpen = supersubState.canUse
   const canPickCaptain = teamComplete && !tournamentStarted
   const showCaptainButtons = canPickCaptain && isEditing
   const captainId = picks?.captain_player_id ?? null
@@ -527,25 +532,45 @@ export default function FiveASidePage() {
         </div>
       )}
 
-      {user && supersubWindowOpen && (
-        <div className="glass rounded-xl px-4 py-3 mb-4 border border-cyan-400/30 text-center">
-          <p className="text-sm font-medium text-cyan-100">Supersub window open</p>
-          <p className="text-xs text-slate-400 mt-1">
-            One substitution between group stage and Round of 32. Pick a slot to replace.
+      {user && (teamComplete || supersubApplied) && (
+        <div
+          className={`glass rounded-xl px-4 py-3 mb-4 text-center border ${
+            supersubWindowOpen
+              ? "border-cyan-400/40"
+              : supersubApplied
+                ? "border-emerald-400/30"
+                : "border-white/10"
+          }`}
+        >
+          <p className="text-sm font-semibold text-cyan-100">Supersub</p>
+          <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+            One substitution for the whole tournament — same position, new nation. Available only after group stage
+            round 3 ends and before Round of 32 kicks off.
           </p>
-          <div className="mt-3 flex flex-wrap justify-center gap-2">
-            {LINEUP_SLOTS.map(({ slot, badge }) => (
+          {supersubApplied && picks?.supersub_out_player_id && picks?.supersub_in_player_id ? (
+            <p className="mt-3 text-sm font-medium text-emerald-200">
+              Used: {playersById.get(picks.supersub_out_player_id)?.name ?? "—"} →{" "}
+              {playersById.get(picks.supersub_in_player_id)?.name ?? "—"}
+            </p>
+          ) : (
+            <>
+              {supersubState.lockReason && (
+                <p className="mt-2 text-xs text-amber-200/90">{supersubState.lockReason}</p>
+              )}
               <button
-                key={slot}
                 type="button"
-                disabled={saving}
-                onClick={() => setSupersubModalSlot(slot)}
-                className="rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-100 hover:bg-cyan-500/20"
+                disabled={!supersubWindowOpen || saving}
+                onClick={() => setSupersubSlotPickerOpen(true)}
+                className={`mt-3 rounded-xl px-5 py-2.5 text-sm font-bold uppercase tracking-wide transition-all ${
+                  supersubWindowOpen
+                    ? "bg-gradient-to-b from-cyan-400 to-cyan-600 text-slate-950 shadow-lg shadow-cyan-900/30 hover:from-cyan-300 hover:to-cyan-500"
+                    : "bg-white/5 text-white/35 cursor-not-allowed border border-white/10"
+                }`}
               >
-                Replace {badge}
+                Use supersub
               </button>
-            ))}
-          </div>
+            </>
+          )}
         </div>
       )}
 
@@ -654,6 +679,54 @@ export default function FiveASidePage() {
           slot must be a different national team.
         </p>
       </div>
+
+      {/* Supersub — pick which lineup slot to replace */}
+      {supersubSlotPickerOpen && supersubWindowOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+          onClick={() => !saving && setSupersubSlotPickerOpen(false)}
+        >
+          <div
+            className="glass rounded-2xl w-full max-w-sm border border-cyan-400/30 shadow-xl p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-bold text-wc-green-dark">Choose position to replace</h2>
+              <button
+                type="button"
+                onClick={() => setSupersubSlotPickerOpen(false)}
+                className="text-stone-500 hover:text-stone-700"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {LINEUP_SLOTS.map(({ slot, badge }) => (
+                <button
+                  key={slot}
+                  type="button"
+                  disabled={saving || !getPlayer(slot)}
+                  onClick={() => {
+                    setSupersubSlotPickerOpen(false)
+                    setSupersubModalSlot(slot)
+                  }}
+                  className="rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-3 py-2.5 text-sm font-semibold text-cyan-900 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-cyan-500/20"
+                >
+                  {badge}
+                  {getPlayer(slot) ? (
+                    <span className="block text-[10px] font-normal truncate mt-0.5 opacity-80">
+                      {getPlayer(slot)?.name}
+                    </span>
+                  ) : (
+                    <span className="block text-[10px] font-normal mt-0.5 opacity-60">Empty slot</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Supersub modal */}
       {supersubModalSlot && (
