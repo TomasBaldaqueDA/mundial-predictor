@@ -125,6 +125,23 @@ export function playerFantasyPoints(p: PlayerStats): number {
   )
 }
 
+/** Player + fantasy points frozen at supersub time (outgoing player). */
+export function supersubOutFrozenDisplay(
+  picks: FiveASidePicks | null,
+  playersById: Map<string, FiveASidePlayer>
+): { player: FiveASidePlayer; points: number } | null {
+  if (!picks?.supersub_applied_at || !picks.supersub_out_player_id) return null
+  const base = playersById.get(picks.supersub_out_player_id)
+  if (!base) return null
+  const frozen = parsePlayerStats(picks.supersub_out_stats) ?? statsFromPlayer(base)
+  const player: FiveASidePlayer = { ...base, ...frozen }
+  let points = playerFantasyPoints(frozen)
+  if (picks.captain_player_id && picks.captain_player_id === picks.supersub_out_player_id) {
+    points *= 2
+  }
+  return { player, points }
+}
+
 export function slotFantasyPoints(
   picks: FiveASidePicks | null,
   slot: SlotKey,

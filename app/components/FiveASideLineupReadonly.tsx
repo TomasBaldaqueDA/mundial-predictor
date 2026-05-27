@@ -7,6 +7,7 @@ import {
   LINEUP_SLOTS,
   pickIdForSlot,
   slotFantasyPoints,
+  supersubOutFrozenDisplay,
   type FiveASidePicks,
   type FiveASidePlayer,
   type SlotKey,
@@ -55,6 +56,8 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
           {LINEUP_SLOTS.map(({ slot, badge, label }) => {
             const player = getPlayer(slot)
             const points = slotFantasyPoints(picks, slot, playersById)
+            const supersubOnSlot = supersubApplied && picks.supersub_slot === slot
+            const subbedOut = supersubOnSlot ? supersubOutFrozenDisplay(picks, playersById) : null
             const gp = player ? (teamGpByTeam[player.team] ?? 0) : 0
             const shirt = player ? (shirtNumberByPlayerId.get(player.id) ?? 1) : 0
             const isCaptain = !!(player && captainId === player.id)
@@ -62,7 +65,29 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
               supersubApplied && picks.supersub_slot === slot && picks.supersub_out_player_id === captainId
             return (
               <div key={slot} className="flex flex-col items-center gap-2 shrink-0 snap-center">
-                <div className="w-[9.25rem] sm:w-40 rounded-2xl border-2 border-cyan-400/22 bg-gradient-to-b from-[#28344e]/95 to-[#0e1628] overflow-hidden">
+                {subbedOut && (
+                  <>
+                    <ReadonlyMiniCard
+                      player={subbedOut.player}
+                      badge={badge}
+                      shirt={shirtNumberByPlayerId.get(subbedOut.player.id) ?? 1}
+                      gp={teamGpByTeam[subbedOut.player.team] ?? 0}
+                      isCaptain={captainId === subbedOut.player.id}
+                      substitutedOut
+                    />
+                    <span className="text-[10px] font-black tabular-nums text-white/45 border border-white/10 rounded-full px-2 py-0.5">
+                      {subbedOut.points} pts until sub
+                    </span>
+                    <span className="text-cyan-400/60 text-[10px]" aria-hidden>
+                      ↓
+                    </span>
+                  </>
+                )}
+                <div
+                  className={`w-[9.25rem] sm:w-40 rounded-2xl border-2 bg-gradient-to-b from-[#28344e]/95 to-[#0e1628] overflow-hidden ${
+                    supersubOnSlot ? "border-cyan-400/35 ring-1 ring-cyan-400/20" : "border-cyan-400/22"
+                  }`}
+                >
                   <div className="flex items-center justify-between px-2 pt-1.5 pb-1 text-[8px] font-bold uppercase tracking-wider text-slate-400/90">
                     <span>WC26</span>
                     <span className="flex items-center gap-1">
@@ -118,7 +143,7 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
                   {player ? (
                     <>
                       {points > 0 ? "+" : ""}
-                      {points} pts
+                      {points} pts{supersubOnSlot ? " total" : ""}
                     </>
                   ) : null}
                 </div>
@@ -127,6 +152,65 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
           })}
         </div>
         <p className="pb-4 text-center text-[11px] text-slate-400 md:hidden">Swipe horizontally to view all 5 players.</p>
+      </div>
+    </div>
+  )
+}
+
+function ReadonlyMiniCard({
+  player,
+  badge,
+  shirt,
+  gp,
+  isCaptain,
+  substitutedOut,
+}: {
+  player: FiveASidePlayer
+  badge: string
+  shirt: number
+  gp: number
+  isCaptain: boolean
+  substitutedOut?: boolean
+}) {
+  return (
+    <div
+      className={`relative w-[9.25rem] sm:w-40 rounded-2xl border-2 overflow-hidden scale-[0.88] opacity-50 grayscale-[0.35] ${
+        substitutedOut ? "border-white/10" : "border-cyan-400/22"
+      }`}
+    >
+      {substitutedOut && (
+        <div className="absolute -top-2 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
+          Substituted
+        </div>
+      )}
+      <div className="flex items-center justify-between px-2 pt-1.5 pb-1 text-[8px] font-bold uppercase tracking-wider text-slate-400/90">
+        <span>WC26</span>
+        <span className="flex items-center gap-1">
+          {isCaptain && (
+            <span className="rounded bg-amber-500/90 px-1 py-0.5 text-[7px] font-black text-black">C</span>
+          )}
+          <span className="rounded bg-black/25 px-1 py-0.5 text-[7px] text-white/90">{badge}</span>
+        </span>
+      </div>
+      <div className="px-2 pb-3 text-center">
+        <div className="flex justify-center mb-1">
+          <FlagImage
+            src={getFlagSrc(player.team)}
+            alt=""
+            className="h-8 w-12 rounded-sm object-cover ring-1 ring-white/20"
+          />
+        </div>
+        <p className="text-[10px] font-bold text-slate-100 leading-tight line-clamp-2 min-h-[2rem]">{player.name}</p>
+        <p className="text-[9px] text-slate-400 mt-0.5 truncate">{player.team}</p>
+        <p className="text-[9px] text-slate-500 mt-1 tabular-nums">
+          #{shirt} · GP {gp}
+        </p>
+        <div className="mt-2 grid grid-cols-4 gap-0.5 text-[8px] text-slate-400">
+          <span>G {player.goals}</span>
+          <span>A {player.assists}</span>
+          {(player.position === "gk" || player.position === "df") && <span>CS {player.clean_sheets}</span>}
+          <span>MVP {player.mvp}</span>
+        </div>
       </div>
     </div>
   )

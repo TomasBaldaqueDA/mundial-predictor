@@ -12,6 +12,7 @@ import {
   isCaptainLocked,
   slotFantasyPoints,
   statsFromPlayer,
+  supersubOutFrozenDisplay,
   teamFantasyPoints,
   type FiveASidePicks,
   type SlotKey,
@@ -601,6 +602,8 @@ export default function FiveASidePage() {
             const player = getPlayer(slot)
             const points = getPointsForSlot(slot)
             const isCaptain = !!(player && captainId === player.id)
+            const supersubOnSlot = supersubApplied && picks?.supersub_slot === slot
+            const subbedOut = supersubOnSlot ? supersubOutFrozenDisplay(picks, playersById) : null
             const status: "empty" | "editing" | "filled" | "locked" = !player
               ? "empty"
               : tournamentStarted
@@ -610,6 +613,27 @@ export default function FiveASidePage() {
                   : "filled"
             return (
               <div key={slot} className="flex flex-col items-center gap-2.5 shrink-0 snap-center first:pl-1 last:pr-1">
+                {subbedOut && (
+                  <>
+                    <FantasyPlayerCard
+                      slot={slot}
+                      badge={badge}
+                      player={subbedOut.player}
+                      shirtNumber={shirtNumberByPlayerId.get(subbedOut.player.id) ?? 1}
+                      teamGamesPlayed={teamGpByTeam[subbedOut.player.team] ?? 0}
+                      locked
+                      status="locked"
+                      isPickerOpen={false}
+                      isCaptain={captainId === subbedOut.player.id}
+                      variant="substituted-out"
+                      onChoose={() => {}}
+                    />
+                    <PointsBadge points={subbedOut.points} filled caption="until sub" subdued />
+                    <span className="text-cyan-400/60 text-[10px] leading-none" aria-hidden>
+                      ↓
+                    </span>
+                  </>
+                )}
                 <FantasyPlayerCard
                   slot={slot}
                   badge={badge}
@@ -620,6 +644,7 @@ export default function FiveASidePage() {
                   status={status}
                   isPickerOpen={modalSlot === slot}
                   isCaptain={isCaptain}
+                  variant={supersubOnSlot ? "supersub-in" : "active"}
                   onChoose={() => setModalSlot(slot)}
                 />
                 {showCaptainButtons && player && !isCaptain && (
@@ -642,7 +667,11 @@ export default function FiveASidePage() {
                     Remove captain
                   </button>
                 )}
-                <PointsBadge points={points} filled={!!player} />
+                <PointsBadge
+                  points={points}
+                  filled={!!player}
+                  caption={supersubOnSlot ? "slot total" : undefined}
+                />
               </div>
             )
           })}
@@ -960,7 +989,17 @@ function KitShirtPlaceholder() {
   )
 }
 
-function PointsBadge({ points, filled }: { points: number; filled: boolean }) {
+function PointsBadge({
+  points,
+  filled,
+  caption,
+  subdued,
+}: {
+  points: number
+  filled: boolean
+  caption?: string
+  subdued?: boolean
+}) {
   if (!filled) {
     return (
       <div className="min-h-[1.75rem] min-w-[4.5rem] rounded-full border border-white/10 bg-white/5" aria-hidden />
@@ -968,16 +1007,21 @@ function PointsBadge({ points, filled }: { points: number; filled: boolean }) {
   }
   const positive = points > 0
   return (
-    <div
-      className={`rounded-full px-2.5 py-1 text-[11px] font-black tabular-nums shadow-lg border backdrop-blur-sm ${
-        positive
-          ? "bg-emerald-500/25 text-emerald-100 border-emerald-400/45"
-          : "bg-white/92 text-slate-800 border-white/60"
-      }`}
-    >
-      {positive ? "+" : ""}
-      {points}
-      <span className="font-semibold opacity-75 ml-0.5">pts</span>
+    <div className="flex flex-col items-center gap-0.5">
+      <div
+        className={`rounded-full px-2.5 py-1 text-[11px] font-black tabular-nums shadow-lg border backdrop-blur-sm ${
+          subdued
+            ? "bg-white/10 text-white/50 border-white/15"
+            : positive
+              ? "bg-emerald-500/25 text-emerald-100 border-emerald-400/45"
+              : "bg-white/92 text-slate-800 border-white/60"
+        }`}
+      >
+        {positive ? "+" : ""}
+        {points}
+        <span className="font-semibold opacity-75 ml-0.5">pts</span>
+      </div>
+      {caption && <span className="text-[9px] uppercase tracking-wide text-white/35">{caption}</span>}
     </div>
   )
 }
@@ -992,6 +1036,7 @@ function FantasyPlayerCard({
   status,
   isPickerOpen,
   isCaptain,
+  variant = "active",
   onChoose,
 }: {
   slot: SlotKey
@@ -1004,8 +1049,11 @@ function FantasyPlayerCard({
   status: "empty" | "editing" | "filled" | "locked"
   isPickerOpen: boolean
   isCaptain?: boolean
+  variant?: "active" | "substituted-out" | "supersub-in"
   onChoose: () => void
 }) {
+  const isSubbedOut = variant === "substituted-out"
+  const isSubIn = variant === "supersub-in"
   const posLabel = POSITION_LABELS[SLOT_POSITION[slot]]
   const isGk = slot === "gk"
   const lightKit = isGk && !!player
@@ -1022,7 +1070,19 @@ function FantasyPlayerCard({
   const statVal = "tabular-nums text-[9px] sm:text-[10px]"
 
   return (
-    <div className="relative w-[9.25rem] sm:w-40">
+    <div
+      className={`relative w-[9.25rem] sm:w-40 ${isSubbedOut ? "scale-[0.88] opacity-[0.55] grayscale-[0.35]" : ""} ${isSubIn ? "ring-1 ring-cyan-400/35 rounded-2xl" : ""}`}
+    >
+      {isSubbedOut && (
+        <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
+          Substituted
+        </div>
+      )}
+      {isSubIn && (
+        <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan-400/40 bg-cyan-950/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-cyan-200">
+          In
+        </div>
+      )}
       {isPickerOpen && (
         <div className="pointer-events-none absolute -inset-1 z-20" aria-hidden>
           <span className="absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-cyan-400/70 rounded-tl-sm" />
@@ -1037,7 +1097,11 @@ function FantasyPlayerCard({
         onClick={locked ? undefined : onChoose}
         aria-label={player ? `${player.name}, ${badge}` : `Pick ${posLabel}`}
         className={`relative w-full overflow-hidden rounded-2xl border-2 text-left transition-all duration-200 ${shell} ${
-          locked ? "cursor-default opacity-95" : "cursor-pointer hover:border-wc-gold/80 hover:scale-[1.02] active:scale-[0.99]"
+          isSubbedOut
+            ? "cursor-default border-white/10"
+            : locked
+              ? "cursor-default opacity-95"
+              : "cursor-pointer hover:border-wc-gold/80 hover:scale-[1.02] active:scale-[0.99]"
         } ${status === "empty" ? "border-dashed opacity-90" : ""}`}
       >
         <div className={hexBg} />

@@ -3,6 +3,7 @@ import {
   playerFantasyPoints,
   slotFantasyPoints,
   statsFromPlayer,
+  supersubOutFrozenDisplay,
   teamFantasyPoints,
   type FiveASidePicks,
   type FiveASidePlayer,
@@ -40,6 +41,30 @@ describe("five-a-side scoring", () => {
       captain_player_id: "p1",
     }
     expect(teamFantasyPoints(picks, players)).toBe(8)
+  })
+
+  it("exposes frozen out player points at supersub time", () => {
+    const players = new Map([
+      ["out", mkPlayer("out", { goals: 2, position: "st", name: "Depay" })],
+      ["in", mkPlayer("in", { goals: 5, position: "st" })],
+    ])
+    const picks: FiveASidePicks = {
+      gk_player_id: "p2",
+      df_player_id: "p3",
+      md1_player_id: "p4",
+      md2_player_id: "p5",
+      st_player_id: "in",
+      supersub_slot: "st",
+      supersub_out_player_id: "out",
+      supersub_in_player_id: "in",
+      supersub_applied_at: "2026-06-20T00:00:00.000Z",
+      supersub_out_stats: statsFromPlayer(mkPlayer("out", { goals: 2, position: "st" })),
+      supersub_in_baseline: statsFromPlayer(mkPlayer("in", { goals: 1, position: "st" })),
+    }
+    const frozen = supersubOutFrozenDisplay(picks, players)
+    expect(frozen?.player.name).toBe("Depay")
+    expect(frozen?.player.goals).toBe(2)
+    expect(frozen?.points).toBe(8)
   })
 
   it("splits supersub slot between frozen out stats and incoming delta", () => {
