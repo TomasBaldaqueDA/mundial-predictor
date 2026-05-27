@@ -1,8 +1,7 @@
 import { Suspense } from "react"
 import { createClient } from "@/lib/supabase/server"
 import { PageHeader } from "@/app/components/PageHeader"
-import { TodayTasksCard } from "@/app/components/TodayTasksCard"
-import { OnboardingChecklist } from "@/app/components/OnboardingChecklist"
+import { TournamentProgressBar } from "@/app/components/TournamentProgressBar"
 import { ListSkeleton } from "@/app/components/Skeleton"
 import { GamesList, type InitialPredictionData } from "./GamesList"
 
@@ -62,8 +61,7 @@ export default async function JogosPage() {
         title="Games"
         description="Every match of the 2026 World Cup — predict scores, MVPs and qualifiers before kickoff."
       />
-      <TodayTasksCard />
-      <OnboardingChecklist />
+      <TournamentProgressBar matches={allMatches} />
       <Suspense fallback={<ListSkeleton rows={8} />}>
         <GamesList upcoming={upcoming} past={past} initialPredictionData={initialPredictionData} />
       </Suspense>

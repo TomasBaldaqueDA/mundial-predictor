@@ -20,8 +20,8 @@ vi.mock("@/lib/supabase/server", () => ({
   })),
 }))
 
-vi.mock("@/app/components/TodayTasksCard", () => ({
-  TodayTasksCard: () => null,
+vi.mock("@/app/components/TournamentProgressBar", () => ({
+  TournamentProgressBar: () => null,
 }))
 
 vi.mock("@/app/games/GamesList", () => ({
