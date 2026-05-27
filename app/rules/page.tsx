@@ -173,6 +173,20 @@ export default function RulesPage() {
         <p className="text-xs text-slate-400">
           The 5-A-SIDE total appears in the <span className="font-semibold">“5-A-SIDE”</span> column of the ranking.
         </p>
+        <h3 className="text-sm font-semibold text-wc-green-dark pt-1">Power-ups</h3>
+        <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
+          <li>
+            <span className="font-semibold">Captain</span>: choose one of your five players before the tournament
+            starts. That player&apos;s fantasy points count <span className="font-semibold">double (×2)</span> for the
+            whole tournament. Once set, the captain cannot be changed.
+          </li>
+          <li>
+            <span className="font-semibold">Supersub</span>: one substitution for the whole tournament, available only
+            between the end of the group stage (3rd round) and the start of the Round of 32. Replace one player with
+            another from the same position (still max one player per nation). Points from the player who leaves only
+            count up to the moment of the swap; the incoming player&apos;s points count from that moment onward.
+          </li>
+        </ul>
       </section>
 
       <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">

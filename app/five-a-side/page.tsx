@@ -7,12 +7,22 @@ import { PageHeader } from "@/app/components/PageHeader"
 import { getFlagSrc } from "@/lib/team-flags"
 import { FlagImage } from "@/app/components/FlagImage"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
+import {
+  isCaptainLocked,
+  slotFantasyPoints,
+  statsFromPlayer,
+  teamFantasyPoints,
+  type FiveASidePicks,
+  type SlotKey,
+} from "@/lib/five-a-side"
+import { isSupersubWindowOpen, type MatchForSupersubWindow } from "@/lib/five-a-side-window"
 
 type Player = {
   id: string
   name: string
   team: string
   position: string
+  jersey_number?: number | null
   goals: number
   assists: number
   wins: number
@@ -20,14 +30,7 @@ type Player = {
   mvp: number
 }
 
-type Picks = {
-  gk_player_id: string | null
-  df_player_id: string | null
-  md1_player_id: string | null
-  md2_player_id: string | null
-  st_player_id: string | null
-  submitted_at: string | null
-}
+type Picks = FiveASidePicks
 
 const POSITION_LABELS: Record<string, string> = {
   gk: "Goalkeeper",
@@ -37,7 +40,6 @@ const POSITION_LABELS: Record<string, string> = {
 }
 
 const SLOT_KEYS = ["gk", "df", "md1", "md2", "st"] as const
-type SlotKey = (typeof SLOT_KEYS)[number]
 
 const SLOT_POSITION: Record<SlotKey, string> = {
   gk: "gk",
@@ -102,6 +104,8 @@ export default function FiveASidePage() {
   const [isEditing, setIsEditing] = useState(false)
   /** Finished matches per national team (for GP). */
   const [teamGpByTeam, setTeamGpByTeam] = useState<Record<string, number>>({})
+  const [tournamentMatches, setTournamentMatches] = useState<MatchForSupersubWindow[]>([])
+  const [supersubModalSlot, setSupersubModalSlot] = useState<SlotKey | null>(null)
 
   const hasAnyPick = (row: Picks | null): boolean => {
     if (!row) return false
@@ -122,15 +126,17 @@ export default function FiveASidePage() {
         { data: { user: u } },
         { data: firstMatch },
         { data: finishedRows },
+        { data: scheduleRows },
       ] = await Promise.all([
         supabase
           .from("five_a_side_players")
-          .select("id, name, team, position, goals, assists, wins, clean_sheets, mvp")
+          .select("id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp")
           .order("team")
           .order("name"),
         supabase.auth.getUser(),
         supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
         supabase.from("matches").select("team1, team2").eq("status", "finished"),
+        supabase.from("matches").select("id, stage, group, kickoff_time, status").order("kickoff_time"),
       ])
       const gp: Record<string, number> = {}
       for (const row of finishedRows ?? []) {
@@ -139,6 +145,7 @@ export default function FiveASidePage() {
         if (m.team2) gp[m.team2] = (gp[m.team2] ?? 0) + 1
       }
       setTeamGpByTeam(gp)
+      setTournamentMatches((scheduleRows ?? []) as MatchForSupersubWindow[])
       const list = (playersData ?? []).map((p: Record<string, unknown>) => ({
         ...p,
         goals: Number(p.goals) || 0,
@@ -159,7 +166,9 @@ export default function FiveASidePage() {
       if (u) {
         const { data: picksRow } = await supabase
           .from("five_a_side_picks")
-          .select("gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at")
+          .select(
+            "gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at, captain_player_id, captain_set_at, supersub_slot, supersub_out_player_id, supersub_in_player_id, supersub_applied_at, supersub_out_stats, supersub_in_baseline"
+          )
           .eq("user_id", u.id)
           .maybeSingle()
         const initialPicks = (picksRow as Picks | null) ?? null
@@ -193,27 +202,28 @@ export default function FiveASidePage() {
     return players.find((p) => p.id === id) ?? null
   }
 
-  const PTS_GOAL = 4
-  const PTS_ASSIST = 3
-  const PTS_MVP = 3
-  const PTS_WIN = 2
-  const PTS_CLEAN_SHEET = 4
-
-  const getPointsForPlayer = (p: Player | null): number => {
-    if (!p) return 0
-    return p.goals * PTS_GOAL + p.assists * PTS_ASSIST + p.mvp * PTS_MVP + p.wins * PTS_WIN + p.clean_sheets * PTS_CLEAN_SHEET
-  }
-  const totalPoints = SLOT_KEYS.reduce((sum, slot) => sum + getPointsForPlayer(getPlayer(slot)), 0)
-
+  const playersById = useMemo(() => new Map(players.map((p) => [p.id, p])), [players])
   const shirtNumberByPlayerId = useMemo(() => squadShirtNumbers(players), [players])
   const teamComplete = !!(getPlayerId("gk") && getPlayerId("df") && getPlayerId("md1") && getPlayerId("md2") && getPlayerId("st"))
   const tournamentStarted = lockedByTime
   const slotsLocked = tournamentStarted || !isEditing
+  const captainLocked = isCaptainLocked(picks)
+  const supersubApplied = !!picks?.supersub_applied_at
+  const supersubWindowOpen = isSupersubWindowOpen(tournamentMatches) && teamComplete && !supersubApplied
+  const canPickCaptain = teamComplete && !captainLocked && !tournamentStarted
+  const captainId = picks?.captain_player_id ?? null
+
+  const getPointsForSlot = (slot: SlotKey): number => slotFantasyPoints(picks, slot, playersById)
+  const totalPoints = teamFantasyPoints(picks, playersById)
 
   async function savePick(slot: SlotKey, playerId: string) {
     if (!user || tournamentStarted) return
     const chosen = players.find((x) => x.id === playerId)
     if (!chosen) return
+    if (captainLocked && picks?.captain_player_id === getPlayerId(slot) && playerId !== getPlayerId(slot)) {
+      setMessage({ type: "error", text: "Cannot replace your captain — locked for the tournament." })
+      return
+    }
     if (teamsUsedExceptSlot(slot, picks, players).has(chosen.team)) {
       setMessage({ type: "error", text: "Only one player per nation. Pick someone from a country you have not used yet." })
       return
@@ -294,6 +304,118 @@ export default function FiveASidePage() {
     setSaving(false)
   }
 
+  async function setCaptain(playerId: string) {
+    if (!user || !canPickCaptain) return
+    const lineupIds = SLOT_KEYS.map((s) => getPlayerId(s)).filter(Boolean)
+    if (!lineupIds.includes(playerId)) return
+    setSaving(true)
+    setMessage(null)
+    const supabase = createClient()
+    const now = new Date().toISOString()
+    const { error } = await supabase.from("five_a_side_picks").upsert(
+      {
+        user_id: user.id,
+        gk_player_id: getPlayerId("gk"),
+        df_player_id: getPlayerId("df"),
+        md1_player_id: getPlayerId("md1"),
+        md2_player_id: getPlayerId("md2"),
+        st_player_id: getPlayerId("st"),
+        captain_player_id: playerId,
+        captain_set_at: now,
+        updated_at: now,
+      },
+      { onConflict: "user_id" }
+    )
+    if (error) {
+      setMessage({ type: "error", text: error.message })
+    } else {
+      setPicks((prev) =>
+        prev
+          ? { ...prev, captain_player_id: playerId, captain_set_at: now }
+          : {
+              gk_player_id: getPlayerId("gk"),
+              df_player_id: getPlayerId("df"),
+              md1_player_id: getPlayerId("md1"),
+              md2_player_id: getPlayerId("md2"),
+              st_player_id: getPlayerId("st"),
+              submitted_at: null,
+              captain_player_id: playerId,
+              captain_set_at: now,
+            }
+      )
+      setMessage({ type: "ok", text: "Captain set — locked for the whole tournament." })
+    }
+    setSaving(false)
+  }
+
+  async function applySupersub(slot: SlotKey, inPlayerId: string) {
+    if (!user || !supersubWindowOpen) return
+    const outPlayerId = getPlayerId(slot)
+    if (!outPlayerId || outPlayerId === inPlayerId) return
+    const outPlayer = players.find((p) => p.id === outPlayerId)
+    const inPlayer = players.find((p) => p.id === inPlayerId)
+    if (!outPlayer || !inPlayer) return
+    if (inPlayer.position !== outPlayer.position) {
+      setMessage({ type: "error", text: "Supersub must be the same position." })
+      return
+    }
+    const nationsUsed = teamsUsedExceptSlot(slot, picks, players)
+    if (nationsUsed.has(inPlayer.team)) {
+      setMessage({ type: "error", text: "Only one player per nation. Pick someone from a country you have not used yet." })
+      return
+    }
+
+    setSaving(true)
+    setMessage(null)
+    const supabase = createClient()
+    const now = new Date().toISOString()
+    const outStats = statsFromPlayer(outPlayer)
+    const inBaseline = statsFromPlayer(inPlayer)
+    const slotKey =
+      slot === "md1" ? "md1_player_id" : slot === "md2" ? "md2_player_id" : `${slot}_player_id`
+
+    const { error } = await supabase.from("five_a_side_picks").upsert(
+      {
+        user_id: user.id,
+        gk_player_id: getPlayerId("gk"),
+        df_player_id: getPlayerId("df"),
+        md1_player_id: getPlayerId("md1"),
+        md2_player_id: getPlayerId("md2"),
+        st_player_id: getPlayerId("st"),
+        [slotKey]: inPlayerId,
+        supersub_slot: slot,
+        supersub_out_player_id: outPlayerId,
+        supersub_in_player_id: inPlayerId,
+        supersub_applied_at: now,
+        supersub_out_stats: outStats,
+        supersub_in_baseline: inBaseline,
+        updated_at: now,
+      },
+      { onConflict: "user_id" }
+    )
+    if (error) {
+      setMessage({ type: "error", text: error.message })
+    } else {
+      setPicks((prev) =>
+        prev
+          ? {
+              ...prev,
+              [slotKey]: inPlayerId,
+              supersub_slot: slot,
+              supersub_out_player_id: outPlayerId,
+              supersub_in_player_id: inPlayerId,
+              supersub_applied_at: now,
+              supersub_out_stats: outStats,
+              supersub_in_baseline: inBaseline,
+            }
+          : null
+      )
+      setSupersubModalSlot(null)
+      setMessage({ type: "ok", text: "Supersub applied — locked for the rest of the tournament." })
+    }
+    setSaving(false)
+  }
+
   const modalPlayers = modalSlot ? playersByPosition[SLOT_POSITION[modalSlot]] ?? [] : []
   const filteredModalPlayers = teamFilter
     ? modalPlayers.filter((p) => p.team.toLowerCase().includes(teamFilter.toLowerCase()))
@@ -350,8 +472,48 @@ export default function FiveASidePage() {
       )}
 
       {user && (getPlayerId("gk") ?? getPlayerId("df") ?? getPlayerId("md1") ?? getPlayerId("md2") ?? getPlayerId("st")) && (
-        <div className="glass rounded-xl px-4 py-2 mb-4 border border-wc-gold/25 text-center">
+        <div className="glass rounded-xl px-4 py-2 mb-4 border border-wc-gold/25 text-center space-y-1">
           <span className="font-medium text-wc-green-dark">Total points: {totalPoints}</span>
+          {captainId && (
+            <p className="text-xs text-slate-400">
+              Captain: {playersById.get(captainId)?.name ?? "—"} (×2 pts, locked)
+            </p>
+          )}
+          {supersubApplied && picks?.supersub_out_player_id && picks?.supersub_in_player_id && (
+            <p className="text-xs text-slate-400">
+              Supersub: {playersById.get(picks.supersub_out_player_id)?.name ?? "—"} →{" "}
+              {playersById.get(picks.supersub_in_player_id)?.name ?? "—"}
+            </p>
+          )}
+        </div>
+      )}
+
+      {user && teamComplete && !captainLocked && !tournamentStarted && (
+        <div className="glass rounded-xl px-4 py-3 mb-4 border border-amber-400/30 text-center">
+          <p className="text-sm text-amber-100/90 mb-1">Choose your captain (×2 points for the whole tournament)</p>
+          <p className="text-xs text-slate-400">Tap a player card below, then use &quot;Set captain&quot; — cannot be changed later.</p>
+        </div>
+      )}
+
+      {user && supersubWindowOpen && (
+        <div className="glass rounded-xl px-4 py-3 mb-4 border border-cyan-400/30 text-center">
+          <p className="text-sm font-medium text-cyan-100">Supersub window open</p>
+          <p className="text-xs text-slate-400 mt-1">
+            One substitution between group stage and Round of 32. Pick a slot to replace.
+          </p>
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            {LINEUP_SLOTS.map(({ slot, badge }) => (
+              <button
+                key={slot}
+                type="button"
+                disabled={saving}
+                onClick={() => setSupersubModalSlot(slot)}
+                className="rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-100 hover:bg-cyan-500/20"
+              >
+                Replace {badge}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -380,7 +542,8 @@ export default function FiveASidePage() {
         <div className="relative flex flex-row flex-nowrap justify-start md:justify-center gap-3 sm:gap-4 md:gap-5 overflow-x-auto py-6 sm:py-8 px-4 sm:px-6 pb-8 [scrollbar-width:thin] snap-x snap-mandatory md:snap-none">
           {LINEUP_SLOTS.map(({ slot, badge }) => {
             const player = getPlayer(slot)
-            const points = getPointsForPlayer(player)
+            const points = getPointsForSlot(slot)
+            const isCaptain = !!(player && captainId === player.id)
             const status: "empty" | "editing" | "filled" | "locked" = !player
               ? "empty"
               : tournamentStarted
@@ -399,8 +562,19 @@ export default function FiveASidePage() {
                   locked={slotsLocked}
                   status={status}
                   isPickerOpen={modalSlot === slot}
+                  isCaptain={isCaptain}
                   onChoose={() => setModalSlot(slot)}
                 />
+                {canPickCaptain && player && !isCaptain && (
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={() => setCaptain(player.id)}
+                    className="rounded-lg border border-amber-400/50 bg-amber-500/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-100 hover:bg-amber-500/25"
+                  >
+                    Set captain
+                  </button>
+                )}
                 <PointsBadge points={points} filled={!!player} />
               </div>
             )
@@ -430,8 +604,8 @@ export default function FiveASidePage() {
 
       <div className="text-center text-xs sm:text-sm text-stone-500 px-1 space-y-1">
         <p>
-          Scoring: Goals {PTS_GOAL} | Assists {PTS_ASSIST} | MVP {PTS_MVP} | Win {PTS_WIN} (player plays;
-          incl. AET/PEN) | Clean sheet (GK/DF) {PTS_CLEAN_SHEET} (0 conceded; player plays; minutes irrelevant).
+          Scoring: Goals 4 | Assists 3 | MVP 3 | Win 2 (player plays; incl. AET/PEN) | Clean sheet (GK/DF) 4 (0
+          conceded; player plays; minutes irrelevant). Captain ×2. Supersub splits points at swap time.
         </p>
         <p>
           Card stats: G/A/CS/W/MVP from player rows; GP = finished World Cup matches for that nation. Lineup: each
@@ -439,7 +613,55 @@ export default function FiveASidePage() {
         </p>
       </div>
 
-      {/* Modal */}
+      {/* Supersub modal */}
+      {supersubModalSlot && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+          onClick={() => !saving && setSupersubModalSlot(null)}
+        >
+          <div
+            className="glass rounded-2xl max-h-[80vh] w-full max-w-md flex flex-col border border-cyan-400/30 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
+              <h2 className="font-bold text-wc-green-dark">
+                Supersub — replace {POSITION_LABELS[SLOT_POSITION[supersubModalSlot]]}
+              </h2>
+              <button type="button" onClick={() => setSupersubModalSlot(null)} className="text-stone-500 hover:text-stone-700">
+                ×
+              </button>
+            </div>
+            <p className="px-4 py-2 text-xs text-stone-500">
+              Out: {getPlayer(supersubModalSlot)?.name ?? "—"}. Pick a replacement (same position, new nation).
+            </p>
+            <ul className="overflow-y-auto flex-1 p-2 space-y-1">
+              {(playersByPosition[SLOT_POSITION[supersubModalSlot]] ?? [])
+                .filter((p) => p.id !== getPlayerId(supersubModalSlot))
+                .map((p) => {
+                  const nationBlocked = teamsUsedExceptSlot(supersubModalSlot, picks, players).has(p.team)
+                  return (
+                    <li key={p.id}>
+                      <button
+                        type="button"
+                        onClick={() => applySupersub(supersubModalSlot, p.id)}
+                        disabled={saving || nationBlocked}
+                        className={`w-full flex items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-colors ${
+                          nationBlocked ? "cursor-not-allowed opacity-45" : "hover:bg-cyan-500/15"
+                        }`}
+                      >
+                        <FlagImage src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
+                        <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
+                        <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Pick player modal */}
       {modalSlot && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
@@ -654,6 +876,7 @@ function FantasyPlayerCard({
   locked,
   status,
   isPickerOpen,
+  isCaptain,
   onChoose,
 }: {
   slot: SlotKey
@@ -665,6 +888,7 @@ function FantasyPlayerCard({
   locked: boolean
   status: "empty" | "editing" | "filled" | "locked"
   isPickerOpen: boolean
+  isCaptain?: boolean
   onChoose: () => void
 }) {
   const posLabel = POSITION_LABELS[SLOT_POSITION[slot]]
@@ -710,7 +934,12 @@ function FantasyPlayerCard({
           }`}
         >
           <span>WC26</span>
-          <span className="rounded bg-black/25 px-1 py-0.5 text-[7px] text-white/90">{badge}</span>
+          <span className="flex items-center gap-1">
+            {isCaptain && (
+              <span className="rounded bg-amber-500/90 px-1 py-0.5 text-[7px] font-black text-black">C</span>
+            )}
+            <span className="rounded bg-black/25 px-1 py-0.5 text-[7px] text-white/90">{badge}</span>
+          </span>
         </div>
 
         {player ? (

@@ -2,15 +2,21 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## 5-A-SIDE squads (convocatorias)
 
-Each nation has **26 players** in `five_a_side_players`: `name`, `team`, `position` (`gk` / `df` / `md` / `st`). **No player photos** — the UI uses national kit colours only.
+Each nation has a squad in `five_a_side_players`: `name`, `team`, `position` (`gk` / `df` / `md` / `st`). **Position counts are not fixed** — a real convocatoria might have 4 forwards and 9 midfielders, etc. (usually **26 players** total). **No player photos** — the UI uses national kit colours only.
 
-To update one country, add `supabase/sql/NNN_<team>_squad.sql` or run:
+Users still pick **1 GK + 1 DF + 2 MD + 1 ST** for their 5-A-SIDE lineup from that pool.
+
+To update one country, add `supabase/sql/NNN_<team>_squad.sql` or run (list any number of names per group):
 
 ```bash
 node scripts/upsert-squad-sql.mjs Spain gk:"Unai Simón,David Raya,Joan García" df:"Marc Cucurella,..." md:"..." st:"..."
 ```
 
-Then apply in Supabase SQL Editor. Spain: `056_spain_squad.sql`.
+Then apply in Supabase SQL Editor. Applied: `056_spain_squad.sql`, `059_korea_republic_squad.sql`, `060_switzerland_squad.sql`, `061_bosnia_herzegovina_squad.sql`, `062_brazil_squad.sql`, `063_haiti_squad.sql`, `064_scotland_squad.sql`, `065_morocco_squad.sql`, `066_jersey_number.sql`, `067_usa_squad.sql`, `068_germany_squad.sql`, `069_curacao_squad.sql`, `070_cote_divoire_squad.sql`, `071_ecuador_squad.sql`, `072_netherlands_squad.sql`, `073_japan_squad.sql`, `074_sweden_squad.sql`, `075_tunisia_squad.sql`, `076_belgium_squad.sql`, `077_egypt_squad.sql`, `078_new_zealand_squad.sql`, `079_spain_squad.sql`, `080_cabo_verde_squad.sql`, `081_france_squad.sql`, `082_senegal_squad.sql`, `083_norway_squad.sql`, `084_austria_squad.sql`, `085_portugal_squad.sql`, `086_congo_dr_squad.sql`, `087_colombia_squad.sql`, `088_england_squad.sql`, `089_croatia_squad.sql`, `090_ghana_squad.sql`, `091_panama_squad.sql`.
+
+**Full list (production DB):** see [`docs/SQUADS.md`](docs/SQUADS.md). Regenerate: `npm run export:squads` (needs `.env.local`).
+
+Legacy SQL (partial / outdated): `047_sync_cartoon_squads.sql` — do not treat as source of truth.
 
 ## Live scores (real API)
 

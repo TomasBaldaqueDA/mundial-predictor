@@ -78,11 +78,10 @@ export function getKitForTeam(team: string): KitStyle {
   return TEAM_KITS[team] ?? DEFAULT_KIT
 }
 
-type PlayerRow = { id: string; team: string; name: string }
+type PlayerRow = { id: string; team: string; name: string; jersey_number?: number | null }
 
 /**
- * Stable shirt numbers per squad: sort by name (A–Z), assign 1 … N (N = squad size).
- * Typical squads are ≤26; if your data has more, numbers continue past 26 (unique).
+ * Shirt numbers per squad: use official jersey_number when set, else alphabetical 1…N fallback.
  */
 export function squadShirtNumbers(players: PlayerRow[]): Map<string, number> {
   const byTeam = new Map<string, PlayerRow[]>()
@@ -96,7 +95,8 @@ export function squadShirtNumbers(players: PlayerRow[]): Map<string, number> {
   for (const [, list] of byTeam) {
     list.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
     list.forEach((p, i) => {
-      out.set(p.id, i + 1)
+      const official = p.jersey_number
+      out.set(p.id, official != null && official >= 1 ? official : i + 1)
     })
   }
   return out

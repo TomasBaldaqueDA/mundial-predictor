@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"
 import { PageHeader } from "@/app/components/PageHeader"
 import {
+  FIVE_A_SIDE_PICKS_COLUMNS,
   hasAnyPick,
   normalizePlayer,
   teamFantasyPoints,
@@ -30,10 +31,10 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
   ] = await Promise.all([
     supabase
       .from("five_a_side_picks")
-      .select("gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at")
+      .select(FIVE_A_SIDE_PICKS_COLUMNS)
       .eq("user_id", userId)
       .maybeSingle(),
-    supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
+    supabase.from("five_a_side_players").select("id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"),
     supabase.from("profiles").select("display_name").eq("id", userId).maybeSingle(),
     supabase.from("matches").select("team1, team2").eq("status", "finished"),
   ])

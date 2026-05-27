@@ -16,6 +16,7 @@
     "qa:seed": "node scripts/qa-seed.mjs",
     "qa:audit": "node scripts/qa-audit.mjs",
     "sync:squads": "node scripts/sync-cartoon-squads.mjs",
+    "export:squads": "node scripts/export-squads-md.mjs",
     "prepare": "husky"
   },
   "dependencies": {

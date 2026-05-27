@@ -5,6 +5,7 @@ import { PageHeader } from "@/app/components/PageHeader"
 import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
 import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
 import {
+  FIVE_A_SIDE_PICKS_SELECT,
   hasAnyPick,
   normalizePlayer,
   teamFantasyPoints,
@@ -31,7 +32,7 @@ export default async function FiveASideTeamsPage({
   const [{ data: picksRows }, { data: playersRows }, { data: profiles }] = await Promise.all([
     supabase
       .from("five_a_side_picks")
-      .select("user_id, gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at"),
+      .select(FIVE_A_SIDE_PICKS_SELECT),
     supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
     supabase.from("profiles").select("id, display_name"),
   ])

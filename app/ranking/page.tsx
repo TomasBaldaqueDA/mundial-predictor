@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server"
 import { RankingBoard } from "@/app/components/RankingBoard"
 import { PageHeader } from "@/app/components/PageHeader"
+import {
+  FIVE_A_SIDE_PICKS_SELECT,
+  normalizePlayer,
+  teamFantasyPoints,
+  type FiveASidePicks,
+} from "@/lib/five-a-side"
 
 export const metadata = {
   title: "Global ranking · WC26 Predictor",
@@ -26,7 +32,7 @@ export default async function RankingPage() {
     supabase.rpc("get_all_group_points"),
     supabase.from("special_questions").select("id, points, correct_answer").not("correct_answer", "is", null),
     supabase.from("special_answers").select("user_id, question_id, answer"),
-    supabase.from("five_a_side_picks").select("user_id, gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id"),
+    supabase.from("five_a_side_picks").select(FIVE_A_SIDE_PICKS_SELECT),
     supabase.from("five_a_side_players").select("id, goals, assists, wins, clean_sheets, mvp"),
   ])
   const safeGroupPoints = groupPointsError ? [] : groupPointsRows ?? []
@@ -83,43 +89,15 @@ export default async function RankingPage() {
     specialPointsByUserId.set(row.user_id, current + pts)
   }
 
-  const PTS_GOAL = 4
-  const PTS_ASSIST = 3
-  const PTS_MVP = 3
-  const PTS_WIN = 2
-  const PTS_CLEAN_SHEET = 4
-  const playerStatsById = new Map<
-    string,
-    { goals: number; assists: number; wins: number; clean_sheets: number; mvp: number }
-  >()
-  for (const p of fiveASidePlayers ?? []) {
-    const row = p as { id: string; goals: number; assists: number; wins: number; clean_sheets: number; mvp: number }
-    playerStatsById.set(row.id, {
-      goals: Number(row.goals) || 0,
-      assists: Number(row.assists) || 0,
-      wins: Number(row.wins) || 0,
-      clean_sheets: Number(row.clean_sheets) || 0,
-      mvp: Number(row.mvp) || 0,
-    })
-  }
+  const playersById = new Map(
+    (fiveASidePlayers ?? []).map((row) => [String((row as { id: string }).id), normalizePlayer(row as Record<string, unknown>)])
+  )
   const fiveASidePointsByUserId = new Map<string, number>()
   for (const pick of fiveASidePicks ?? []) {
-    const row = pick as {
-      user_id: string
-      gk_player_id: string | null
-      df_player_id: string | null
-      md1_player_id: string | null
-      md2_player_id: string | null
-      st_player_id: string | null
+    const row = pick as FiveASidePicks & { user_id: string }
+    if (row.user_id) {
+      fiveASidePointsByUserId.set(row.user_id, teamFantasyPoints(row, playersById))
     }
-    const ids = [row.gk_player_id, row.df_player_id, row.md1_player_id, row.md2_player_id, row.st_player_id].filter(Boolean) as string[]
-    let pts = 0
-    for (const id of ids) {
-      const s = playerStatsById.get(id)
-      if (!s) continue
-      pts += s.goals * PTS_GOAL + s.assists * PTS_ASSIST + s.mvp * PTS_MVP + s.wins * PTS_WIN + s.clean_sheets * PTS_CLEAN_SHEET
-    }
-    if (row.user_id) fiveASidePointsByUserId.set(row.user_id, pts)
   }
 
   const ranking = Array.from(profileNameByUserId.entries())

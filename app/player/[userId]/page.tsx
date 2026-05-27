@@ -5,6 +5,7 @@ import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonl
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
 import {
+  FIVE_A_SIDE_PICKS_COLUMNS,
   hasAnyPick,
   normalizePlayer,
   teamFantasyPoints,
@@ -67,7 +68,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     supabase.from("special_answers").select("question_id, answer").eq("user_id", userId),
     supabase
       .from("five_a_side_picks")
-      .select("gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at")
+      .select(FIVE_A_SIDE_PICKS_COLUMNS)
       .eq("user_id", userId)
       .maybeSingle(),
     supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
