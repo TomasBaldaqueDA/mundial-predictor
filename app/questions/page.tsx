@@ -226,7 +226,7 @@ export default function PerguntasPage() {
           </div>
           <div className="relative z-[1]">
             <p
-              className={`text-3xl sm:text-5xl font-black mb-4 uppercase tracking-[0.08em] sm:tracking-[0.12em] ${
+              className={`text-4xl sm:text-5xl font-black mb-4 uppercase tracking-[0.12em] ${
                 locked
                   ? "text-amber-900 drop-shadow-sm"
                   : "text-amber-100 drop-shadow-[0_2px_6px_rgba(0,0,0,0.95),0_0_28px_rgba(251,191,36,0.35)]"
@@ -353,9 +353,9 @@ export default function PerguntasPage() {
                     )}
                   </p>
                   {isChoice ? (
-                    <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       {formLocked ? (
-                        <p className="col-span-full rounded-lg border border-white/12 bg-slate-900/60 px-3 py-2 text-sm text-slate-200 break-words">
+                        <p className="col-span-2 rounded-lg border border-white/12 bg-slate-900/60 px-3 py-2 text-sm text-slate-200">
                           {answers[q.id] || "—"}
                         </p>
                       ) : (
@@ -366,14 +366,14 @@ export default function PerguntasPage() {
                               key={option}
                               type="button"
                               onClick={() => user && !locked && saveAnswer(q.id, option)}
-                              className={`group flex items-start gap-2 rounded-xl border-2 px-3 py-2.5 text-left transition-all duration-200 min-w-0 ${
+                              className={`group flex items-center gap-2 rounded-xl border-2 px-3 py-2 text-left transition-all duration-200 ${
                                 selected
-                                  ? "border-amber-400 bg-amber-400/88 text-slate-950 shadow-md ring-2 ring-amber-400/40"
-                                  : "border-white/15 bg-slate-800/75 text-slate-100 hover:border-amber-400/70 hover:bg-amber-100 hover:text-slate-900"
+                                  ? "border-amber-400 bg-amber-400/88 text-slate-950 shadow-md ring-2 ring-amber-400/40 scale-[1.02]"
+                                  : "border-white/15 bg-slate-800/75 text-slate-100 hover:border-amber-400/70 hover:bg-amber-100 hover:text-slate-900 hover:scale-[1.01]"
                               }`}
                             >
                               <span
-                                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold mt-0.5 ${
+                                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
                                   selected
                                     ? "bg-slate-900 text-amber-200"
                                     : "bg-slate-700 text-slate-200 group-hover:bg-amber-600 group-hover:text-white"
@@ -381,7 +381,7 @@ export default function PerguntasPage() {
                               >
                                 {letters[idx] ?? idx + 1}
                               </span>
-                              <span className="text-sm leading-snug break-words min-w-0 flex-1">{option}</span>
+                              <span className="text-sm">{option}</span>
                             </button>
                           )
                         })
