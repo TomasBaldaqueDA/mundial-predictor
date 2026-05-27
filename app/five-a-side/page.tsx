@@ -211,6 +211,7 @@ export default function FiveASidePage() {
   const supersubApplied = !!picks?.supersub_applied_at
   const supersubWindowOpen = isSupersubWindowOpen(tournamentMatches) && teamComplete && !supersubApplied
   const canPickCaptain = teamComplete && !tournamentStarted
+  const showCaptainButtons = canPickCaptain && isEditing
   const captainId = picks?.captain_player_id ?? null
 
   const getPointsForSlot = (slot: SlotKey): number => slotFantasyPoints(picks, slot, playersById)
@@ -304,7 +305,7 @@ export default function FiveASidePage() {
   }
 
   async function setCaptain(playerId: string) {
-    if (!user || !canPickCaptain) return
+    if (!user || !showCaptainButtons) return
     const lineupIds = SLOT_KEYS.map((s) => getPlayerId(s)).filter(Boolean)
     if (!lineupIds.includes(playerId)) return
     setSaving(true)
@@ -348,7 +349,7 @@ export default function FiveASidePage() {
   }
 
   async function clearCaptain() {
-    if (!user || tournamentStarted || !picks?.captain_player_id) return
+    if (!user || tournamentStarted || !picks?.captain_player_id || !isEditing) return
     setSaving(true)
     setMessage(null)
     const supabase = createClient()
@@ -517,7 +518,7 @@ export default function FiveASidePage() {
         </div>
       )}
 
-      {user && teamComplete && canPickCaptain && (
+      {user && teamComplete && showCaptainButtons && (
         <div className="glass rounded-xl px-4 py-3 mb-4 border border-amber-400/30 text-center">
           <p className="text-sm text-amber-100/90 mb-1">Choose your captain (×2 points for the whole tournament)</p>
           <p className="text-xs text-slate-400">
@@ -596,7 +597,7 @@ export default function FiveASidePage() {
                   isCaptain={isCaptain}
                   onChoose={() => setModalSlot(slot)}
                 />
-                {canPickCaptain && player && !isCaptain && (
+                {showCaptainButtons && player && !isCaptain && (
                   <button
                     type="button"
                     disabled={saving}
@@ -606,7 +607,7 @@ export default function FiveASidePage() {
                     Set captain
                   </button>
                 )}
-                {canPickCaptain && player && isCaptain && (
+                {showCaptainButtons && player && isCaptain && (
                   <button
                     type="button"
                     disabled={saving}
