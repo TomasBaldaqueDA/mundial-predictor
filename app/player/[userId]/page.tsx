@@ -6,6 +6,7 @@ import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { formatKickoffDisplay } from "@/lib/format-kickoff"
 import {
   FIVE_A_SIDE_PICKS_COLUMNS,
+  fetchAllFiveASidePlayers,
   hasAnyPick,
   normalizePlayer,
   teamFantasyPoints,
@@ -42,7 +43,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     { data: specialQuestions },
     { data: specialAnswers },
     { data: picksRow },
-    { data: playersRows },
+    playersRows,
     { data: finishedRows },
     { data: actualStandings },
     { data: actualThird },
@@ -71,7 +72,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
       .select(FIVE_A_SIDE_PICKS_COLUMNS)
       .eq("user_id", userId)
       .maybeSingle(),
-    supabase.from("five_a_side_players").select("id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
+    fetchAllFiveASidePlayers(supabase, "id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
     supabase.from("matches").select("team1, team2").eq("status", "finished"),
     supabase.from("group_actual_standings").select("group_code, position, team_name"),
     supabase.from("group_actual_third_place").select("group_code"),

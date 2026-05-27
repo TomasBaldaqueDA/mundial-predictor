@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import {
   FIVE_A_SIDE_PICKS_SELECT,
+  fetchAllFiveASidePlayers,
   normalizePlayer,
   teamFantasyPoints,
   type FiveASidePicks,
@@ -43,7 +44,7 @@ export async function computeMemberRanking(
     { data: specialQuestions },
     { data: specialAnswers },
     { data: fiveASidePicks },
-    { data: fiveASidePlayers },
+    fiveASidePlayers,
     { data: finishedMatches },
   ] = await Promise.all([
     supabase.from("profiles").select("id, display_name").in("id", userIds),
@@ -52,7 +53,7 @@ export async function computeMemberRanking(
     supabase.from("special_questions").select("id, points, correct_answer").not("correct_answer", "is", null),
     supabase.from("special_answers").select("user_id, question_id, answer").in("user_id", userIds),
     supabase.from("five_a_side_picks").select(FIVE_A_SIDE_PICKS_SELECT).in("user_id", userIds),
-    supabase.from("five_a_side_players").select("id, goals, assists, wins, clean_sheets, mvp"),
+    fetchAllFiveASidePlayers(supabase, "id, goals, assists, wins, clean_sheets, mvp"),
     supabase.from("matches").select("id").eq("status", "finished"),
   ])
 

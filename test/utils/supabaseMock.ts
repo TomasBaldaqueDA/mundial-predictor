@@ -14,8 +14,10 @@ function cloneRows(rows: Row[] = []): Row[] {
 class QueryBuilder {
   private mode: "select" | "update" | "delete" = "select"
   private filters: Array<(row: Row) => boolean> = []
-  private orderBy: { col: string; ascending: boolean } | null = null
+  private orderBy: { col: string; ascending: boolean }[] = []
   private limitN: number | null = null
+  private rangeFrom: number | null = null
+  private rangeTo: number | null = null
   private updatePayload: Row | null = null
 
   constructor(
@@ -44,7 +46,13 @@ class QueryBuilder {
   }
 
   order(col: string, opts?: { ascending?: boolean }) {
-    this.orderBy = { col, ascending: opts?.ascending !== false }
+    this.orderBy.push({ col, ascending: opts?.ascending !== false })
+    return this
+  }
+
+  range(from: number, to: number) {
+    this.rangeFrom = from
+    this.rangeTo = to
     return this
   }
 
@@ -94,17 +102,22 @@ class QueryBuilder {
   private getFiltered(): Row[] {
     let rows = cloneRows(this.store[this.table] ?? [])
     for (const f of this.filters) rows = rows.filter(f)
-    if (this.orderBy) {
-      const { col, ascending } = this.orderBy
+    if (this.orderBy.length) {
       rows.sort((a, b) => {
-        const av = a[col]
-        const bv = b[col]
-        if (av === bv) return 0
-        if (av == null) return 1
-        if (bv == null) return -1
-        const cmp = String(av).localeCompare(String(bv))
-        return ascending ? cmp : -cmp
+        for (const { col, ascending } of this.orderBy) {
+          const av = a[col]
+          const bv = b[col]
+          if (av === bv) continue
+          if (av == null) return 1
+          if (bv == null) return -1
+          const cmp = String(av).localeCompare(String(bv))
+          return ascending ? cmp : -cmp
+        }
+        return 0
       })
+    }
+    if (this.rangeFrom != null && this.rangeTo != null) {
+      rows = rows.slice(this.rangeFrom, this.rangeTo + 1)
     }
     if (this.limitN != null) rows = rows.slice(0, this.limitN)
     return rows

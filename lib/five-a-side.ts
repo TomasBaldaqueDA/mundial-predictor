@@ -1,3 +1,5 @@
+import type { SupabaseClient } from "@supabase/supabase-js"
+
 export type PlayerStats = {
   goals: number
   assists: number
@@ -199,3 +201,26 @@ export const FIVE_A_SIDE_PICKS_COLUMNS =
   "gk_player_id, df_player_id, md1_player_id, md2_player_id, st_player_id, submitted_at, captain_player_id, captain_set_at, supersub_slot, supersub_out_player_id, supersub_in_player_id, supersub_applied_at, supersub_out_stats, supersub_in_baseline"
 
 export const FIVE_A_SIDE_PICKS_SELECT = `user_id, ${FIVE_A_SIDE_PICKS_COLUMNS}`
+
+const FIVE_A_SIDE_PLAYERS_PAGE_SIZE = 1000
+
+/** Supabase caps queries at 1000 rows — paginate so all 48 squads load (Spain, USA, etc.). */
+export async function fetchAllFiveASidePlayers<T extends Record<string, unknown> = Record<string, unknown>>(
+  supabase: SupabaseClient,
+  select: string
+): Promise<T[]> {
+  const rows: T[] = []
+  for (let from = 0; ; from += FIVE_A_SIDE_PLAYERS_PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from("five_a_side_players")
+      .select(select)
+      .order("team")
+      .order("name")
+      .range(from, from + FIVE_A_SIDE_PLAYERS_PAGE_SIZE - 1)
+    if (error) throw new Error(error.message)
+    if (!data?.length) break
+    rows.push(...(data as unknown as T[]))
+    if (data.length < FIVE_A_SIDE_PLAYERS_PAGE_SIZE) break
+  }
+  return rows
+}

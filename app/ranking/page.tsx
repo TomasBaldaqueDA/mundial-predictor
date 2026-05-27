@@ -3,6 +3,7 @@ import { RankingBoard } from "@/app/components/RankingBoard"
 import { PageHeader } from "@/app/components/PageHeader"
 import {
   FIVE_A_SIDE_PICKS_SELECT,
+  fetchAllFiveASidePlayers,
   normalizePlayer,
   teamFantasyPoints,
   type FiveASidePicks,
@@ -25,7 +26,7 @@ export default async function RankingPage() {
     { data: specialQuestions },
     { data: specialAnswers },
     { data: fiveASidePicks },
-    { data: fiveASidePlayers },
+    fiveASidePlayers,
   ] = await Promise.all([
     supabase.rpc("get_match_points_by_user"),
     supabase.from("profiles").select("id, display_name"),
@@ -33,7 +34,7 @@ export default async function RankingPage() {
     supabase.from("special_questions").select("id, points, correct_answer").not("correct_answer", "is", null),
     supabase.from("special_answers").select("user_id, question_id, answer"),
     supabase.from("five_a_side_picks").select(FIVE_A_SIDE_PICKS_SELECT),
-    supabase.from("five_a_side_players").select("id, goals, assists, wins, clean_sheets, mvp"),
+    fetchAllFiveASidePlayers(supabase, "id, goals, assists, wins, clean_sheets, mvp"),
   ])
   const safeGroupPoints = groupPointsError ? [] : groupPointsRows ?? []
 

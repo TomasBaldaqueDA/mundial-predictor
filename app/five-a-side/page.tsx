@@ -8,6 +8,7 @@ import { getFlagSrc } from "@/lib/team-flags"
 import { FlagImage } from "@/app/components/FlagImage"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
 import {
+  fetchAllFiveASidePlayers,
   isCaptainLocked,
   slotFantasyPoints,
   statsFromPlayer,
@@ -122,17 +123,16 @@ export default function FiveASidePage() {
     async function load() {
       const supabase = createClient()
       const [
-        { data: playersData },
+        playersData,
         { data: { user: u } },
         { data: firstMatch },
         { data: finishedRows },
         { data: scheduleRows },
       ] = await Promise.all([
-        supabase
-          .from("five_a_side_players")
-          .select("id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp")
-          .order("team")
-          .order("name"),
+        fetchAllFiveASidePlayers(
+          supabase,
+          "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+        ),
         supabase.auth.getUser(),
         supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
         supabase.from("matches").select("team1, team2").eq("status", "finished"),
