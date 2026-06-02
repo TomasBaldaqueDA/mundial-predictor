@@ -3,7 +3,8 @@ import { PageHeader } from "@/app/components/PageHeader"
 import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
-import { formatKickoffDisplay } from "@/lib/format-kickoff"
+import { KickoffText } from "@/app/components/KickoffText"
+import { getKickoffTimestamp } from "@/lib/format-kickoff"
 import {
   FIVE_A_SIDE_PICKS_COLUMNS,
   fetchAllFiveASidePlayers,
@@ -138,7 +139,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     hasRes: boolean
   }[]
 
-  matchRows.sort((a, b) => new Date(b.kickoff_time).getTime() - new Date(a.kickoff_time).getTime())
+  matchRows.sort((a, b) => getKickoffTimestamp(b.kickoff_time) - getKickoffTimestamp(a.kickoff_time))
 
   const actualByGroup = new Map<string, Record<number, string>>()
   for (const row of actualStandings ?? []) {
@@ -239,7 +240,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                     <TeamWithFlag name={r.team1} /> vs <TeamWithFlag name={r.team2} />
                   </div>
                   <div className="text-xs text-slate-400 mt-1">
-                    {formatKickoffDisplay(r.kickoff_time)}
+                    <KickoffText kickoff={r.kickoff_time} />
                     {r.stage && <> · {r.stage}</>}
                   </div>
                   <div className="text-xs text-slate-300 mt-1">

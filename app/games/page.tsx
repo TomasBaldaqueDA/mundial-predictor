@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { PageHeader } from "@/app/components/PageHeader"
 import { TournamentProgressBar } from "@/app/components/TournamentProgressBar"
 import { ListSkeleton } from "@/app/components/Skeleton"
+import { getKickoffTimestamp } from "@/lib/format-kickoff"
 import { GamesList, type InitialPredictionData } from "./GamesList"
 
 export const metadata = {
@@ -50,9 +51,12 @@ export default async function JogosPage() {
   const allMatches = matches ?? []
   const now = new Date()
 
-  const upcoming = allMatches.filter((m) => m.status === "started" || new Date(m.kickoff_time) >= now)
+  const nowMs = now.getTime()
+  const upcoming = allMatches.filter(
+    (m) => m.status === "started" || getKickoffTimestamp(String(m.kickoff_time)) >= nowMs
+  )
   const past = allMatches
-    .filter((m) => m.status !== "started" && new Date(m.kickoff_time) < now)
+    .filter((m) => m.status !== "started" && getKickoffTimestamp(String(m.kickoff_time)) < nowMs)
     .reverse()
 
   return (

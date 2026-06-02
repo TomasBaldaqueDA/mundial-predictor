@@ -3,7 +3,8 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
-import { formatKickoffDisplay } from "@/lib/format-kickoff"
+import { KickoffText } from "@/app/components/KickoffText"
+import { parseKickoffInstant } from "@/lib/format-kickoff"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
 
 export default async function MatchPage({
@@ -46,7 +47,7 @@ export default async function MatchPage({
     notFound()
   }
 
-  const kickoff = new Date(match.kickoff_time)
+  const kickoff = parseKickoffInstant(String(match.kickoff_time)) ?? new Date(0)
   const now = new Date()
   const hasStarted = now >= kickoff
   const hasResult = match.score1 != null && match.score2 != null
@@ -157,7 +158,9 @@ export default async function MatchPage({
               <span className="text-sm font-bold text-white/40 uppercase tracking-widest">vs</span>
               <TeamWithFlag name={match.team2} />
             </h1>
-            <p className="page-description">{formatKickoffDisplay(String(match.kickoff_time))}</p>
+            <p className="page-description">
+              <KickoffText kickoff={String(match.kickoff_time)} />
+            </p>
           </div>
         </div>
       </header>

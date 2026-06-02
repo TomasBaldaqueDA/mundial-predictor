@@ -4,13 +4,23 @@ import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { KickoffCountdown } from "@/app/components/KickoffCountdown"
+import { KickoffText } from "@/app/components/KickoffText"
 import { useState, useMemo, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { formatKickoffDisplay } from "@/lib/format-kickoff"
+import { getKickoffTimestamp } from "@/lib/format-kickoff"
 import { buildPowerUpBucketMap, type PowerUpBucket } from "@/lib/powerup-bucket"
 import { validatePowerUpPhase } from "@/lib/powerup-week-client"
 
 const MVP_POS_ORDER: Record<string, number> = { gk: 1, df: 2, md: 3, st: 4 }
+
+function useNowMs(refreshMs = 60_000): number {
+  const [nowMs, setNowMs] = useState(() => Date.now())
+  useEffect(() => {
+    const id = window.setInterval(() => setNowMs(Date.now()), refreshMs)
+    return () => window.clearInterval(id)
+  }, [refreshMs])
+  return nowMs
+}
 
 const STAGE_ORDER = [
   "First Stage",
@@ -61,7 +71,7 @@ type Section = { title: string; stage: string; isKnockout: boolean; matches: Mat
 /** Single block, all matches sorted by kickoff (no Group A / Group B headings). */
 function matchesIntoKickoffOrderSections(matches: Match[]): Section[] {
   const sorted = [...matches].sort(
-    (a, b) => new Date(a.kickoff_time).getTime() - new Date(b.kickoff_time).getTime()
+    (a, b) => getKickoffTimestamp(a.kickoff_time) - getKickoffTimestamp(b.kickoff_time)
   )
   if (!sorted.length) return []
   return [{ title: "", stage: "chronological", isKnockout: false, matches: sorted }]
@@ -82,7 +92,7 @@ function pickGroupStageRoundRange(matches: Match[], startIndex: number, endIndex
         .get(g)
         ?.sort(
           (a, b) =>
-            new Date(a.kickoff_time).getTime() - new Date(b.kickoff_time).getTime()
+            getKickoffTimestamp(a.kickoff_time) - getKickoffTimestamp(b.kickoff_time)
         ) ?? []
     for (let idx = startIndex; idx <= endIndex; idx++) {
       const pick = list[idx]
@@ -90,7 +100,7 @@ function pickGroupStageRoundRange(matches: Match[], startIndex: number, endIndex
     }
   }
   return out.sort(
-    (a, b) => new Date(a.kickoff_time).getTime() - new Date(b.kickoff_time).getTime()
+    (a, b) => getKickoffTimestamp(a.kickoff_time) - getKickoffTimestamp(b.kickoff_time)
   )
 }
 
@@ -122,6 +132,7 @@ function InlinePredictForm({
   existing,
   predictionRowId,
   powerUpActive,
+  nowMs,
   onSave,
   onCancel,
 }: {
@@ -129,6 +140,7 @@ function InlinePredictForm({
   existing: UserPrediction | undefined
   predictionRowId: number | undefined
   powerUpActive: boolean
+  nowMs: number
   onSave: (pred: UserPrediction, rowId: number) => void
   /** When set (e.g. editing a saved pick), shown next to save — discards unsaved edits and closes editor */
   onCancel?: () => void
@@ -147,7 +159,7 @@ function InlinePredictForm({
   const validScores = score1 !== "" && score2 !== "" && Number.isInteger(s1) && Number.isInteger(s2) && s1 >= 0 && s2 >= 0
   const knockoutDraw = isKnockout && validScores && s1 === s2
   const knockoutWinner = isKnockout && validScores && s1 !== s2 ? (s1 > s2 ? match.team1 : match.team2) : null
-  const closed = new Date(match.kickoff_time) <= new Date()
+  const closed = getKickoffTimestamp(match.kickoff_time) <= nowMs
 
   useEffect(() => {
     async function loadRoster() {
@@ -441,11 +453,11 @@ function SavedPredictionPanel({
           </span>
           {editable ? (
             <span className="text-[10px] text-slate-500 font-medium tabular-nums leading-snug">
-              Editable until {formatKickoffDisplay(kickoffTime)}
+              Editable until <KickoffText kickoff={kickoffTime} />
             </span>
           ) : (
             <span className="text-[10px] text-slate-500 font-medium tabular-nums leading-snug">
-              Locked at kickoff ({formatKickoffDisplay(kickoffTime)})
+              Locked at kickoff (<KickoffText kickoff={kickoffTime} />)
             </span>
           )}
         </div>
@@ -524,6 +536,7 @@ function MatchCard({
   powerUpBusy,
   powerUpError,
   powerUpPhaseLocked,
+  nowMs,
 }: {
   match: Match
   showPredict: boolean
@@ -540,6 +553,7 @@ function MatchCard({
   powerUpError: string | null
   /** True when another match in this phase already has ×2 — cannot enable here until that one is cleared */
   powerUpPhaseLocked: boolean
+  nowMs: number
 }) {
   const [showPredictionEditor, setShowPredictionEditor] = useState(!hasUserPrediction)
 
@@ -554,7 +568,7 @@ function MatchCard({
   const showLiveOrResultBoard = isLive || hasResult
   const score1Display = match.score1 ?? 0
   const score2Display = match.score2 ?? 0
-  const predictClosed = new Date(match.kickoff_time) <= new Date()
+  const predictClosed = getKickoffTimestamp(match.kickoff_time) <= nowMs
   const canEditPrediction = showPredict && signedIn && !predictClosed && !hasResult
   const showPowerStrip = canEditPrediction
   const showPastResult = hasResult
@@ -589,7 +603,7 @@ function MatchCard({
       {/* ── Top bar ── */}
       <div className="px-4 sm:px-5 pt-3.5 pb-2.5 flex items-center justify-between border-b border-white/10 gap-2">
         <span className="text-xs text-slate-400 font-medium inline-flex items-center gap-2 flex-wrap">
-          {formatKickoffDisplay(match.kickoff_time)}
+          <KickoffText kickoff={match.kickoff_time} />
           {isLive && (
             <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-100 bg-red-500/20 border border-red-400/40 px-2 py-0.5 rounded-full">
               <span className="h-2 w-2 rounded-full bg-red-400 animate-pulse" aria-hidden />
@@ -679,6 +693,7 @@ function MatchCard({
                 existing={userPrediction}
                 predictionRowId={predictionRowId}
                 powerUpActive={powerUpActive}
+                nowMs={nowMs}
                 onSave={(pred, rowId) => {
                   onPredictionSaved(pred, rowId)
                   setShowPredictionEditor(false)
@@ -819,7 +834,7 @@ function getTodayWindow(): { start: Date; end: Date } {
 }
 
 function isInTodayWindow(kickoffTime: string, window: { start: Date; end: Date }): boolean {
-  const t = new Date(kickoffTime).getTime()
+  const t = getKickoffTimestamp(kickoffTime)
   return t >= window.start.getTime() && t <= window.end.getTime()
 }
 
@@ -861,6 +876,7 @@ export function GamesList({
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const nowMs = useNowMs()
   const [filter, setFilter] = useState<Filter>("all")
   const [subFilter, setSubFilter] = useState<string | null>(null)
   const [matchIdsWithUserPrediction, setMatchIdsWithUserPrediction] = useState<Set<number>>(() =>
@@ -901,7 +917,7 @@ export function GamesList({
 
   async function handleCardPowerUpToggle(match: Match, enabled: boolean) {
     if (!signedIn) return
-    if (new Date(match.kickoff_time) <= new Date()) return
+    if (getKickoffTimestamp(match.kickoff_time) <= nowMs) return
     setPowerUpBusyId(match.id)
     setPowerUpErr((e) => (e?.mid === match.id ? null : e))
     const supabase = createClient()
@@ -926,7 +942,7 @@ export function GamesList({
         const holderLabel = holderMatch ? `${holderMatch.team1} vs ${holderMatch.team2}` : "another match"
 
         // If the holder match has already kicked off the ×2 is permanently locked there.
-        if (holderMatch && new Date(holderMatch.kickoff_time) <= new Date()) {
+        if (holderMatch && getKickoffTimestamp(holderMatch.kickoff_time) <= nowMs) {
           setPowerUpErr({ mid: match.id, msg: `×2 is locked on ${holderLabel} — that match has already started.` })
           setPowerUpBusyId(null)
           return
@@ -1165,6 +1181,7 @@ export function GamesList({
               powerUpBusy={powerUpBusyId === match.id}
               powerUpError={powerUpErr?.mid === match.id ? powerUpErr.msg : null}
               powerUpPhaseLocked={false}
+              nowMs={nowMs}
             />
           ))}
         </div>
@@ -1218,7 +1235,7 @@ export function GamesList({
         <div className="mb-10">
           <h2 className="section-title mb-4">Today&apos;s matches</h2>
           {todayFiltered.length > 0
-            ? renderSections(todaySections, (m) => new Date(m.kickoff_time) >= new Date())
+            ? renderSections(todaySections, (m) => getKickoffTimestamp(m.kickoff_time) >= nowMs)
             : <p className="text-white/40 text-sm">No matches today for this filter.</p>}
         </div>
       )}

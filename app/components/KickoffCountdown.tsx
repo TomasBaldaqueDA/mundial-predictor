@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { getKickoffTimestamp } from "@/lib/format-kickoff"
 
 /**
  * Tiny "kicks off in 1h 23m" badge. Renders nothing past kickoff or for matches
@@ -14,7 +15,7 @@ export function KickoffCountdown({ kickoff }: { kickoff: string }) {
     return () => window.clearInterval(id)
   }, [])
 
-  const target = new Date(kickoff).getTime()
+  const target = getKickoffTimestamp(kickoff)
   if (!Number.isFinite(target)) return null
   const diff = target - now
   if (diff <= 0) return null

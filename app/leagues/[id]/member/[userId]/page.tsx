@@ -6,7 +6,8 @@ import { PageHeader } from "@/app/components/PageHeader"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { TeamWithFlag } from "@/app/components/TeamWithFlag"
-import { formatKickoffDisplay } from "@/lib/format-kickoff"
+import { KickoffText } from "@/app/components/KickoffText"
+import { getKickoffTimestamp } from "@/lib/format-kickoff"
 
 export default function LeagueMemberPredictionsPage({
   params,
@@ -97,7 +98,7 @@ export default function LeagueMemberPredictionsPage({
         })
         .filter(Boolean) as typeof rows
 
-      list.sort((a, b) => new Date(b.kickoff_time).getTime() - new Date(a.kickoff_time).getTime())
+      list.sort((a, b) => getKickoffTimestamp(b.kickoff_time) - getKickoffTimestamp(a.kickoff_time))
       setRows(list)
       setLoading(false)
     }
@@ -145,7 +146,9 @@ export default function LeagueMemberPredictionsPage({
                 <div className="font-semibold text-slate-100 flex flex-wrap items-center gap-1.5 text-sm">
                   <TeamWithFlag name={r.team1} /> vs <TeamWithFlag name={r.team2} />
                 </div>
-                <div className="text-xs text-slate-400 mt-1">{formatKickoffDisplay(r.kickoff_time)}</div>
+                <div className="text-xs text-slate-400 mt-1">
+                  <KickoffText kickoff={r.kickoff_time} />
+                </div>
                 <div className="text-xs text-slate-300 mt-1">
                   Guess: <span className="font-bold tabular-nums text-slate-100">{r.pred_score1}–{r.pred_score2}</span>
                   {r.pred_mvp && <> · MVP: <span className="text-slate-100">{r.pred_mvp}</span></>}

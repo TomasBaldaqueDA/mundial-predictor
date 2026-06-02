@@ -7,6 +7,7 @@ import {
   LINEUP_SLOTS,
   pickIdForSlot,
   slotFantasyPoints,
+  supersubInDeltaDisplay,
   supersubOutFrozenDisplay,
   type FiveASidePicks,
   type FiveASidePlayer,
@@ -58,6 +59,8 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
             const points = slotFantasyPoints(picks, slot, playersById)
             const supersubOnSlot = supersubApplied && picks.supersub_slot === slot
             const subbedOut = supersubOnSlot ? supersubOutFrozenDisplay(picks, playersById) : null
+            const subbedIn = supersubOnSlot ? supersubInDeltaDisplay(picks, playersById) : null
+            const displayPlayer = subbedIn?.player ?? player
             const gp = player ? (teamGpByTeam[player.team] ?? 0) : 0
             const shirt = player ? (shirtNumberByPlayerId.get(player.id) ?? 1) : 0
             const isCaptain = !!(player && captainId === player.id)
@@ -102,35 +105,43 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
                       <span className="rounded bg-black/25 px-1 py-0.5 text-[7px] text-white/90">{badge}</span>
                     </span>
                   </div>
-                  {player ? (
+                  {displayPlayer ? (
                     <div className="px-2 pb-3 text-center">
+                      {supersubOnSlot && (
+                        <p className="text-[8px] font-bold uppercase tracking-wide text-cyan-300/90 mb-1">From R32</p>
+                      )}
                       <div className="flex justify-center mb-1">
                         <FlagImage
-                          src={getFlagSrc(player.team)}
+                          src={getFlagSrc(displayPlayer.team)}
                           alt=""
                           className="h-8 w-12 rounded-sm object-cover ring-1 ring-white/20"
                         />
                       </div>
                       <p className="text-[10px] font-bold text-slate-100 leading-tight line-clamp-2 min-h-[2rem]">
-                        {player.name}
+                        {displayPlayer.name}
                       </p>
-                      <p className="text-[9px] text-slate-400 mt-0.5 truncate">{player.team}</p>
+                      <p className="text-[9px] text-slate-400 mt-0.5 truncate">{displayPlayer.team}</p>
                       <p className="text-[9px] text-slate-500 mt-1 tabular-nums">
                         #{shirt} · GP {gp}
                       </p>
                       <div className="mt-2 grid grid-cols-4 gap-0.5 text-[8px] text-slate-400">
-                        <span>G {player.goals}</span>
-                        <span>A {player.assists}</span>
-                        {(player.position === "gk" || player.position === "df") && (
-                          <span>CS {player.clean_sheets}</span>
+                        <span>G {displayPlayer.goals}</span>
+                        <span>A {displayPlayer.assists}</span>
+                        {(displayPlayer.position === "gk" || displayPlayer.position === "df") && (
+                          <span>CS {displayPlayer.clean_sheets}</span>
                         )}
-                        <span>MVP {player.mvp}</span>
+                        <span>MVP {displayPlayer.mvp}</span>
                       </div>
                     </div>
                   ) : (
                     <div className="px-2 pb-4 pt-2 text-center text-[10px] text-slate-500">{label} — empty</div>
                   )}
                 </div>
+                {supersubOnSlot && subbedIn && (
+                  <span className="text-[10px] font-black tabular-nums text-cyan-200/90 border border-cyan-400/30 rounded-full px-2 py-0.5">
+                    {subbedIn.points} pts from R32
+                  </span>
+                )}
                 <div
                   className={`rounded-full px-2.5 py-1 text-[11px] font-black tabular-nums border ${
                     player
@@ -143,7 +154,7 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
                   {player ? (
                     <>
                       {points > 0 ? "+" : ""}
-                      {points} pts{supersubOnSlot ? " total" : ""}
+                      {points} pts{supersubOnSlot ? " slot total" : ""}
                     </>
                   ) : null}
                 </div>
@@ -180,7 +191,7 @@ function ReadonlyMiniCard({
     >
       {substitutedOut && (
         <div className="absolute -top-2 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
-          Substituted
+          OUT
         </div>
       )}
       <div className="flex items-center justify-between px-2 pt-1.5 pb-1 text-[8px] font-bold uppercase tracking-wider text-slate-400/90">

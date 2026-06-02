@@ -125,6 +125,24 @@ export function playerFantasyPoints(p: PlayerStats): number {
   )
 }
 
+/** Incoming player stats/points counted only after supersub (delta vs baseline at swap). */
+export function supersubInDeltaDisplay(
+  picks: FiveASidePicks | null,
+  playersById: Map<string, FiveASidePlayer>
+): { player: FiveASidePlayer; points: number } | null {
+  if (!picks?.supersub_applied_at || !picks.supersub_in_player_id) return null
+  const base = playersById.get(picks.supersub_in_player_id)
+  if (!base) return null
+  const baseline = parsePlayerStats(picks.supersub_in_baseline) ?? ZERO_STATS
+  const delta = statsDelta(statsFromPlayer(base), baseline)
+  const player: FiveASidePlayer = { ...base, ...delta }
+  let points = playerFantasyPoints(delta)
+  if (picks.captain_player_id && picks.captain_player_id === picks.supersub_in_player_id) {
+    points *= 2
+  }
+  return { player, points }
+}
+
 /** Player + fantasy points frozen at supersub time (outgoing player). */
 export function supersubOutFrozenDisplay(
   picks: FiveASidePicks | null,

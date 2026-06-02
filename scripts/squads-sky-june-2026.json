@@ -1,0 +1,92 @@
+{
+  "Mexico": {
+    "gk": ["Guillermo Ochoa", "Raul Rangel", "Carlos Acevedo"],
+    "df": ["Cesar Montes", "Johan Vasquez", "Jorge Sanchez", "Israel Reyes", "Jesus Gallardo", "Mateo Chavez"],
+    "md": ["Edson Alvarez", "Orbelin Pineda", "Luis Chavez", "Obed Vargas", "Luis Romo", "Gilberto Mora", "Alvaro Fidalgo", "Cesar Huerta", "Brian Gutierrez", "Erik Lira"],
+    "st": ["Santiago Gimenez", "Raul Jimenez", "Julian Quinones", "Roberto Alvarado", "Alexis Vega", "Guillermo Martinez", "Armando Gonzalez"]
+  },
+  "Czechia": {
+    "gk": ["Lukas Hornicek", "Matej Kovar", "Jindrich Stanek"],
+    "df": ["Vladimir Coufal", "David Doudera", "Tomas Holes", "Robin Hranac", "Stepan Chaloupek", "David Jurasek", "Ladislav Krejci", "Jaroslav Zeleny", "David Zima"],
+    "md": ["Lukas Cerv", "Vladimir Darida", "Lukas Provod", "Michal Sadilek", "Hugo Sochurek", "Alexandr Sojka", "Tomas Soucek", "Pavel Sulc", "Denis Visinsky"],
+    "st": ["Adam Hlozek", "Tomas Chory", "Mojmir Chytil", "Jan Kuchta", "Patrik Schick"]
+  },
+  "Canada": {
+    "gk": ["Maxime Crepeau", "Owen Goodman", "Dayne St. Clair"],
+    "df": ["Moise Bombito", "Derek Cornelius", "Alphonso Davies", "Luc de Fougerolles", "Alistair Johnston", "Alfie Jones", "Richie Laryea", "Niko Sigur", "Joel Waterman"],
+    "md": ["Ali Ahmed", "Tajon Buchanan", "Mathieu Choiniere", "Stephen Eustaquio", "Marcelo Flores", "Ismael Kone", "Liam Millar", "Jonathan Osorio", "Nathan-Dylan Saliba", "Jacob Shaffelburg"],
+    "st": ["Jonathan David", "Promise David", "Cyle Larin", "Tani Oluwaseyi"]
+  },
+  "Qatar": {
+    "gk": ["Salah Zakaria", "Mahmoud Abunada", "Meshaal Barsham"],
+    "df": ["Hashmi Hussein", "Ayoub Alawi", "Boualem Khoukhi", "Pedro Miguel", "Issa Laaye", "Lucas Mendes", "Sultan Al-Brake", "Homam Al-Amin"],
+    "md": ["Mohammed Al-Manai", "Jassem Jaber", "Karim Boudiaf", "Ahmed Fathi", "Abdulaziz Hatem", "Assim Madibo"],
+    "st": ["Tahseen Mohammed", "Edmilson Junior", "Almoez Ali", "Akram Afif", "Mohammed Muntari", "Youssef Abdulrazzaq", "Ahmed Alaa", "Hassan Al-Haydos", "Ahmed Al-Janahi"]
+  },
+  "Paraguay": {
+    "gk": ["Roberto Junior Fernandez", "Orlando Gill", "Gaston Olveira"],
+    "df": ["Omar Alderete", "Junior Alonso", "Fabian Balbuena", "Juan Jose Caceres", "Jose Canale", "Gustavo Gomez", "Alexandro Maidana", "Gustavo Velazquez"],
+    "md": ["Damian Bobadilla", "Gustavo Caballero", "Andres Cubas", "Matias Galarza", "Diego Gomez", "Mauricio Magalhaes", "Briaian Ojeda", "Alejandro Romero"],
+    "st": ["Miguel Almiron", "Gabriel Avalos", "Alex Arce", "Julio Enciso", "Isidro Pitta", "Antonio Sanabria", "Ramon Sosa"]
+  },
+  "Australia": {
+    "gk": ["Maty Ryan", "Paul Izzo", "Patrick Beach"],
+    "df": ["Aziz Behich", "Jordan Bos", "Cameron Burgess", "Alessandro Circati", "Milos Degenek", "Jason Geria", "Lucas Herrington", "Jacob Italiano", "Harry Souttar", "Kai Trewin"],
+    "md": ["Cameron Devlin", "Ajdin Hrustic", "Jackson Irvine", "Connor Metcalfe", "Aiden O'Neill", "Paul Okon-Engstler"],
+    "st": ["Nestory Irankunda", "Mathew Leckie", "Awer Mabil", "Mohamed Toure", "Nishan Velupillay", "Cristian Volpato", "Tete Yengi"]
+  },
+  "Türkiye": {
+    "gk": ["Ugurcan Cakir", "Altay Bayindir", "Mert Gunok"],
+    "df": ["Ferdi Kadioglu", "Merih Demiral", "Zeki Celik", "Ozan Kabak", "Mert Muldur", "Abdulkerim Bardakci", "Eren Elmali", "Caglar Soyuncu", "Samet Akaydin"],
+    "md": ["Arda Guler", "Can Uzun", "Orkun Kokcu", "Hakan Calhanoglu", "Ismail Yuksek", "Kaan Ayhan", "Salih Ozcan"],
+    "st": ["Kenan Yildiz", "Baris Alper Yilmaz", "Kerem Akturkoglu", "Yunus Akgun", "Oguz Aydin", "Deniz Gul", "Irfan Can Kahveci"]
+  },
+  "IR Iran": {
+    "gk": ["Alireza Beiranvand", "Seyed Hossein Hosseini", "Payam Niazmand"],
+    "df": ["Danial Eiri", "Ehsan Hajsafi", "Saleh Hardani", "Hossein Kanaani", "Shoja Khalilzadeh", "Milad Mohammadi", "Ali Nemati", "Ramin Rezaeian"],
+    "md": ["Rouzbeh Cheshmi", "Saeid Ezatolahi", "Mehdi Ghaedi", "Saman Ghoddos", "Mohammad Ghorbani", "Alireza Jahanbakhsh", "Mohammad Mohebi", "Amir Mohammad Razzaghinia", "Mehdi Torabi", "Aria Yousefi"],
+    "st": ["Ali Alipour", "Dennis Dargahi", "Amirhossein Hosseinzadeh", "Mehdi Taremi", "Shahriar Moghanlou"]
+  },
+  "Saudi Arabia": {
+    "gk": ["Mohammed Al Owais", "Nawaf Al Aqidi", "Ahmed Al Kassar"],
+    "df": ["Abdulelah Al Amri", "Hassan Tambakti", "Jehad Thikri", "Ali Lajami", "Hassan Kadesh", "Saud Abdulhamid", "Mohammed Abu Al Shamat", "Ali Majrashi", "Moteb Al Harbi", "Nawaf Boushal", "Sultan Al-Ghannam"],
+    "md": ["Mohammed Kanno", "Abdullah Al Khaibari", "Ziyad Al Johani", "Nasser Al Dawsari", "Musab Al Juwayr", "Alaa Al Hajji", "Salem Al Dawsari", "Khalid Al Ghannam", "Ayman Yahya"],
+    "st": ["Firas Al Buraikan", "Saleh Al Shehri", "Abdullah Al Hamdan"]
+  },
+  "Uruguay": {
+    "gk": ["Sergio Rochet", "Fernando Muslera", "Santiago Mele"],
+    "df": ["Guillermo Varela", "Ronald Araujo", "Jose Maria Gimenez", "Santiago Bueno", "Sebastian Caceres", "Mathias Olivera", "Joaquin Piquerez", "Matias Vina", "Juan Manuel Sanabria"],
+    "md": ["Manuel Ugarte", "Emiliano Martinez", "Rodrigo Bentancur", "Federico Valverde", "Agustin Canobbio", "Giorgian de Arrascaeta", "Nicolas de la Cruz", "Facundo Pellistri", "Rodrigo Zalazar", "Maxi Araujo", "Brian Rodriguez"],
+    "st": ["Rodrigo Aguirre", "Federico Vinas", "Darwin Nunez"]
+  },
+  "Algeria": {
+    "gk": ["Luca Zidane", "Oussama Benbot", "Melvin Mastil"],
+    "df": ["Aissa Mandi", "Ramy Bensebaini", "Mohamed Amine Tougai", "Rayan Ait-Nouri", "Jaouen Hadjam", "Rafik Belghali", "Zineddine Belaid", "Achref Abada", "Samir Chergui"],
+    "md": ["Nabil Bentaleb", "Ramiz Zerrouki", "Hicham Boudaoui", "Fares Chaibi", "Houssem Aouar", "Ibrahim Maza", "Yacine Titraoui"],
+    "st": ["Riyad Mahrez", "Mohamed Amoura", "Amine Gouiri", "Anis Hadj Moussa", "Adil Boulbina", "Nadhir Benbouali", "Fares Ghedjemis"]
+  },
+  "Argentina": {
+    "gk": ["Emiliano Martinez", "Juan Musso", "Geronimo Rulli"],
+    "df": ["Leonardo Balerdi", "Lisandro Martinez", "Facundo Medina", "Nahuel Molina", "Gonzalo Montiel", "Nicolas Otamendi", "Cristian Romero", "Nicolas Tagliafico"],
+    "md": ["Valentin Barco", "Rodrigo De Paul", "Enzo Fernandez", "Giovani Lo Celso", "Alexis Mac Allister", "Exequiel Palacios", "Leandro Paredes"],
+    "st": ["Thiago Almada", "Julian Alvarez", "Nicolas Gonzalez", "Jose Manuel Lopez", "Lautaro Martinez", "Lionel Messi", "Nicolas Paz", "Giuliano Simeone"]
+  },
+  "Iraq": {
+    "gk": ["Fahad Talib", "Jalal Hassan", "Ahmed Basil"],
+    "df": ["Hussein Ali", "Manaf Younis", "Ahmed Yahya", "Mustafa Saadoon", "Zaid Tahseen", "Rebin Sulaka", "Akam Hashim", "Merchas Doski", "Zaid Ismail", "Frans Putros"],
+    "md": ["Amir Al-Ammari", "Kevin Yakob", "Zidane Iqbal", "Aimar Sher", "Ibrahim Bayesh", "Ahmed Qasem", "Youssef Amyn", "Marko Farji"],
+    "st": ["Ali Jassim", "Ali Al-Hamadi", "Ali Yousef", "Aymen Hussein", "Mohanad Ali"]
+  },
+  "Jordan": {
+    "gk": ["Yazeed Abulaila", "Abdallah Al-Fakhouri", "Nour Bani Attiah"],
+    "df": ["Ihsan Haddad", "Yazan Al-Arab", "Abdallah Nasib", "Mohammad Abu Hashish", "Saed Al-Rosan", "Husam Abu Dahab", "Mo Abualnadi", "Salim Obaid", "Anas Badawi"],
+    "md": ["Rajaei Ayed", "Noor Al-Rawabdeh", "Ibrahim Sadeh", "Nizar Al-Rashdan", "Mohannad Abu Taha", "Amer Jamous", "Mohammad Al-Dawoud"],
+    "st": ["Musa Al-Taamari", "Mahmoud Al-Mardi", "Ali Olwan", "Mohammad Abu Zrayq", "Odeh Al-Fakhouri", "Ibrahim Sabra", "Ali Azaizeh"]
+  },
+  "Uzbekistan": {
+    "gk": ["Utkir Yusupov", "Abduvohid Nematov", "Botirali Ergashev"],
+    "df": ["Rustam Ashurmatov", "Farrukh Sayfiev", "Khojiakbar Alijonov", "Sherzod Nasrullaev", "Umar Eshmurodov", "Abdukodir Khusanov", "Abdulla Abdullaev", "Bekhruz Karimov", "Jakhongir Urozov", "Avazbek Ulmasaliev"],
+    "md": ["Otabek Shukurov", "Jaloliddin Masharipov", "Odiljon Hamrobekov", "Oston Urunov", "Jamshid Iskanderov", "Dostonbek Khamdamov", "Abbosbek Fayzullaev", "Akmal Mozgovoy", "Azizjon Ganiev", "Sherzod Esanov"],
+    "st": ["Eldor Shomurodov", "Igor Sergeev", "Azizbek Amonov"]
+  }
+}

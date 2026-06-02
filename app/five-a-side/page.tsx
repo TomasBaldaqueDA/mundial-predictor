@@ -12,6 +12,7 @@ import {
   isCaptainLocked,
   slotFantasyPoints,
   statsFromPlayer,
+  supersubInDeltaDisplay,
   supersubOutFrozenDisplay,
   teamFantasyPoints,
   type FiveASidePicks,
@@ -604,6 +605,8 @@ export default function FiveASidePage() {
             const isCaptain = !!(player && captainId === player.id)
             const supersubOnSlot = supersubApplied && picks?.supersub_slot === slot
             const subbedOut = supersubOnSlot ? supersubOutFrozenDisplay(picks, playersById) : null
+            const subbedIn = supersubOnSlot ? supersubInDeltaDisplay(picks, playersById) : null
+            const displayPlayer = subbedIn?.player ?? player
             const status: "empty" | "editing" | "filled" | "locked" = !player
               ? "empty"
               : tournamentStarted
@@ -637,7 +640,7 @@ export default function FiveASidePage() {
                 <FantasyPlayerCard
                   slot={slot}
                   badge={badge}
-                  player={player}
+                  player={displayPlayer}
                   shirtNumber={player ? (shirtNumberByPlayerId.get(player.id) ?? 1) : 0}
                   teamGamesPlayed={player ? (teamGpByTeam[player.team] ?? 0) : 0}
                   locked={slotsLocked}
@@ -647,6 +650,9 @@ export default function FiveASidePage() {
                   variant={supersubOnSlot ? "supersub-in" : "active"}
                   onChoose={() => setModalSlot(slot)}
                 />
+                {supersubOnSlot && subbedIn && (
+                  <PointsBadge points={subbedIn.points} filled caption="from R32" />
+                )}
                 {showCaptainButtons && player && !isCaptain && (
                   <button
                     type="button"
@@ -667,11 +673,7 @@ export default function FiveASidePage() {
                     Remove captain
                   </button>
                 )}
-                <PointsBadge
-                  points={points}
-                  filled={!!player}
-                  caption={supersubOnSlot ? "slot total" : undefined}
-                />
+                <PointsBadge points={points} filled={!!player} caption={supersubOnSlot ? "slot total" : undefined} />
               </div>
             )
           })}
@@ -1075,12 +1077,12 @@ function FantasyPlayerCard({
     >
       {isSubbedOut && (
         <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
-          Substituted
+          OUT
         </div>
       )}
       {isSubIn && (
         <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan-400/40 bg-cyan-950/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-cyan-200">
-          In
+          From R32
         </div>
       )}
       {isPickerOpen && (
