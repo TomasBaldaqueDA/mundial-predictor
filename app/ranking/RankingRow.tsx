@@ -102,11 +102,13 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
   if (podCfg) {
     return (
       <div className={`${podCfg.bg} ${podCfg.glow} border-b border-white/5 last:border-0`}>
-        <div className="hidden sm:grid sm:grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_6rem] px-4 py-3.5 items-center gap-0">
-          <div
-            className={`w-9 h-9 rounded-xl ${podCfg.avatarBg} ring-2 ${podCfg.ring} flex items-center justify-center text-white font-black text-sm shrink-0 mx-auto`}
-          >
-            {initials(row.name)}
+        <div className="hidden sm:grid sm:grid-cols-[2.5rem_1fr_5rem_5rem_5rem_5rem_6rem] px-4 py-3.5 items-center gap-0">
+          <div className="flex items-center justify-center">
+            <div
+              className={`w-9 h-9 rounded-xl ${podCfg.avatarBg} ring-2 ${podCfg.ring} flex items-center justify-center text-white font-black text-sm shrink-0`}
+            >
+              {initials(row.name)}
+            </div>
           </div>
           <div className={`font-bold text-sm truncate pl-1 ${podCfg.text}`}>
             {podCfg.medal}{" "}

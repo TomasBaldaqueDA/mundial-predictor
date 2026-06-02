@@ -42,21 +42,17 @@ BEGIN
 END;
 $$;
 
--- 5) Dev duplicate accounts (keep owner tomasbaldaque10@outlook.pt)
+-- 5) Remove all accounts except launch owner
 DO $$
 DECLARE
-  dev_ids uuid[];
+  keeper uuid;
 BEGIN
-  SELECT array_agg(id) INTO dev_ids
+  SELECT id INTO keeper
   FROM auth.users
-  WHERE email IN (
-    'tomas.marinho3@gmail.com',
-    'tomas.marinho3@outlook.com',
-    'josemourinho2021fm@gmail.com'
-  );
+  WHERE email = 'tomas.marinho3@gmail.com';
 
-  IF dev_ids IS NOT NULL THEN
-    DELETE FROM auth.users WHERE id = ANY(dev_ids);
+  IF keeper IS NOT NULL THEN
+    DELETE FROM auth.users WHERE id <> keeper;
   END IF;
 END;
 $$;

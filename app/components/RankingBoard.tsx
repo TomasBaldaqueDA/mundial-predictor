@@ -23,7 +23,7 @@ export function RankingBoard({ rows, currentUserId, scrollToUser = true }: Props
           <div className="text-right hidden sm:block">Quest.</div>
           <div className="text-right hidden sm:block">Groups</div>
           <div className="text-right hidden sm:block">5-A-Side</div>
-          <div className="text-right text-wc-gold/80 sm:col-auto col-start-3 row-start-1">Total</div>
+          <div className="text-right text-wc-gold/80">Total</div>
         </div>
 
         <div className="divide-y divide-white/[0.04]">
