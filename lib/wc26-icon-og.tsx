@@ -20,7 +20,7 @@ export function Wc26IconMark({ size }: { size: number }): ReactNode {
         style={{
           width: diameter,
           height: diameter,
-          borderRadius: radius,
+          borderRadius: "50%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
