@@ -27,6 +27,13 @@ test.describe("Public pages", () => {
     const json = (await res.json()) as { name?: string }
     expect(json.name).toContain("WC26")
   })
+
+  test("favicon is served for crawlers", async ({ request }) => {
+    const res = await request.get("/favicon.ico")
+    expect(res.ok()).toBeTruthy()
+    const body = await res.body()
+    expect(body.length).toBeGreaterThan(500)
+  })
 })
 
 test.describe("Auth middleware", () => {
