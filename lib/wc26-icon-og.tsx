@@ -1,11 +1,10 @@
 import type { ReactNode } from "react"
 
-/** Shared mark for favicon / PWA icons (OG ImageResponse). */
+/** Shared mark for favicon / PWA icons (OG ImageResponse). Transparent outside the badge. */
 export function Wc26IconMark({ size }: { size: number }): ReactNode {
-  const diameter = Math.round(size * 0.9)
+  const diameter = Math.round(size * 0.92)
   const wcSize = Math.max(10, Math.round(size * 0.2))
-  const numSize = Math.max(9, Math.round(size * 0.18))
-
+  const numSize = Math.max(9, Math.round(size * 0.19))
   return (
     <div
       style={{
@@ -14,24 +13,25 @@ export function Wc26IconMark({ size }: { size: number }): ReactNode {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#02060f",
+        background: "transparent",
       }}
     >
       <div
         style={{
           width: diameter,
           height: diameter,
-          borderRadius: "50%",
+          borderRadius: radius,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #f2c94c 0%, #f5d76e 38%, #9fd4e8 72%, #b8e0f0 100%)",
-          color: "#000000",
+          background: "linear-gradient(135deg, #fcd34d 0%, #e8b84a 42%, #38bdf8 100%)",
+          color: "#1a0f00",
           fontWeight: 900,
           lineHeight: 0.92,
           fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
-          letterSpacing: "-0.02em",
+          letterSpacing: "-0.03em",
+          boxShadow: "0 2px 12px rgba(232,184,74,0.35)",
         }}
       >
         <div style={{ fontSize: wcSize, marginTop: Math.round(size * 0.02) }}>WC</div>
