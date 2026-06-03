@@ -3,7 +3,9 @@ import Link from "next/link"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
 import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { TournamentLockedNotice } from "@/app/components/TournamentLockedNotice"
 import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
+import { fetchTournamentStarted } from "@/lib/tournament"
 import {
   FIVE_A_SIDE_PICKS_SELECT,
   fetchAllFiveASidePlayers,
@@ -28,6 +30,7 @@ export default async function FiveASideTeamsPage({
   const leagueId = typeof sp?.league === "string" ? sp.league : ""
 
   const supabase = await createClient()
+  const tournamentStarted = await fetchTournamentStarted(supabase)
   const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
 
   const [{ data: picksRows }, playersRows, { data: profiles }] = await Promise.all([
@@ -82,9 +85,13 @@ export default async function FiveASideTeamsPage({
         backLabel="My team"
       />
 
-      <LeagueFilterBar title="All teams" currentLeagueId={leagueId || undefined} />
+      {tournamentStarted && <LeagueFilterBar title="All teams" currentLeagueId={leagueId || undefined} />}
 
-      {teams.length === 0 ? (
+      {!tournamentStarted && (
+        <TournamentLockedNotice message="Other players' 5-A-SIDE teams are hidden until the start of the World Cup." />
+      )}
+
+      {tournamentStarted && teams.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
           <p className="text-slate-400">
             {leagueMemberIds
@@ -92,8 +99,8 @@ export default async function FiveASideTeamsPage({
               : "No 5-A-SIDE teams saved yet."}
           </p>
         </div>
-      ) : (
-        <div className="glass rounded-2xl overflow-hidden border border-white/10">
+      ) : tournamentStarted ? (
+        <div className="glass rounded-2xl overflow-hidden border border-white/10 max-w-full overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead className="bg-white/5 border-b border-white/10">
               <tr>
@@ -127,7 +134,7 @@ export default async function FiveASideTeamsPage({
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
     </main>
   )
 }

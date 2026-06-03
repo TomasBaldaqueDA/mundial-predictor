@@ -7,6 +7,7 @@ import { friendlyAuthError } from "@/lib/auth-errors"
 import { getAuthCallbackUrl, signOutBeforeOAuth } from "@/lib/auth-oauth"
 import { safeRedirectPath } from "@/lib/safe-redirect"
 import Link from "next/link"
+import { PasswordInput } from "@/app/components/PasswordInput"
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -146,21 +147,14 @@ function LoginForm() {
             placeholder="you@example.com"
           />
         </div>
-        <div>
-          <label htmlFor="password" className="label-field">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-            className="input-field"
-            placeholder="••••••••"
-          />
-        </div>
+        <PasswordInput
+          id="password"
+          label="Password"
+          value={password}
+          onChange={setPassword}
+          required
+          autoComplete="current-password"
+        />
         {displayError && (
           <p className="text-sm text-red-200 rounded-lg bg-red-500/15 border border-red-400/30 px-3 py-2" role="alert">
             {displayError}

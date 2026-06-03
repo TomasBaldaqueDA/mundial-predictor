@@ -375,12 +375,21 @@ export default function GroupsPage() {
             >
               <div className="flex items-center justify-between gap-2 mb-4">
                 <h2 className="text-lg font-semibold text-wc-green-dark">Group {groupCode}</h2>
-                <Link
-                  href={`/groups/${groupCode}`}
-                  className="rounded-xl border-2 border-wc-gold text-wc-gold px-3 py-1.5 text-sm font-semibold hover:bg-wc-gold-light/30 transition-all shrink-0"
-                >
-                  View predictions
-                </Link>
+                {competitionStarted ? (
+                  <Link
+                    href={`/groups/${groupCode}`}
+                    className="rounded-xl border-2 border-wc-gold text-wc-gold px-3 py-1.5 text-sm font-semibold hover:bg-wc-gold-light/30 transition-all shrink-0"
+                  >
+                    View predictions
+                  </Link>
+                ) : (
+                  <span
+                    className="rounded-xl border-2 border-wc-gold/35 text-wc-gold/50 px-3 py-1.5 text-sm font-semibold shrink-0 cursor-not-allowed"
+                    title="Available when the World Cup starts"
+                  >
+                    View predictions
+                  </span>
+                )}
               </div>
               {showForm ? (
                 <>
@@ -482,12 +491,21 @@ export default function GroupsPage() {
             <h2 className="text-xl font-semibold text-wc-green-dark">
               Select the 8 third-place teams that advance
             </h2>
-            <Link
-              href="/groups/third-place"
-              className="rounded-xl border-2 border-wc-gold text-wc-gold px-3 py-1.5 text-sm font-semibold hover:bg-wc-gold-light/30 transition-all shrink-0"
-            >
-              View predictions
-            </Link>
+            {competitionStarted ? (
+              <Link
+                href="/groups/third-place"
+                className="rounded-xl border-2 border-wc-gold text-wc-gold px-3 py-1.5 text-sm font-semibold hover:bg-wc-gold-light/30 transition-all shrink-0"
+              >
+                View predictions
+              </Link>
+            ) : (
+              <span
+                className="rounded-xl border-2 border-wc-gold/35 text-wc-gold/50 px-3 py-1.5 text-sm font-semibold shrink-0 cursor-not-allowed"
+                title="Available when the World Cup starts"
+              >
+                View predictions
+              </span>
+            )}
           </div>
           {(savedThirdPlace && !editingThirdPlace) || (competitionStarted && thirdPlaceQualifiers.length === 8) ? (
             <>

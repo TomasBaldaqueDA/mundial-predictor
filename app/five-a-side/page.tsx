@@ -472,9 +472,18 @@ export default function FiveASidePage() {
         title="5-A-SIDE"
         description="Pick 1 GK, 1 DF, 2 MF, 1 FW — max one player per nation. Locked at first match or when you submit."
       >
-        <Link href="/five-a-side/teams" className="btn-secondary text-sm py-2 px-4">
-          View teams
-        </Link>
+        {tournamentStarted ? (
+          <Link href="/five-a-side/teams" className="btn-secondary text-sm py-2 px-4">
+            View teams
+          </Link>
+        ) : (
+          <span
+            className="btn-secondary text-sm py-2 px-4 opacity-50 cursor-not-allowed"
+            title="Available when the World Cup starts"
+          >
+            View teams
+          </span>
+        )}
       </PageHeader>
 
       {!user && (

@@ -7,6 +7,7 @@ import { friendlyAuthError } from "@/lib/auth-errors"
 import { getAuthCallbackUrl, OAUTH_SIGNUP_FLOW, signOutBeforeOAuth } from "@/lib/auth-oauth"
 import { validatePasswordLength, MIN_PASSWORD_LENGTH } from "@/lib/auth-password"
 import Link from "next/link"
+import { PasswordInput } from "@/app/components/PasswordInput"
 
 // Escape `_` and `%` so display-name uniqueness checks don't accept literal
 // wildcard characters as a regex-like match.
@@ -174,38 +175,24 @@ export default function RegisterPage() {
             placeholder="you@example.com"
           />
         </div>
-        <div>
-          <label htmlFor="password" className="label-field">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-            minLength={MIN_PASSWORD_LENGTH}
-            className="input-field"
-            placeholder="••••••••"
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword" className="label-field">
-            Confirm password
-          </label>
-          <input
-            id="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-            minLength={MIN_PASSWORD_LENGTH}
-            className="input-field"
-            placeholder="••••••••"
-          />
-        </div>
+        <PasswordInput
+          id="password"
+          label="Password"
+          value={password}
+          onChange={setPassword}
+          required
+          autoComplete="new-password"
+          minLength={MIN_PASSWORD_LENGTH}
+        />
+        <PasswordInput
+          id="confirmPassword"
+          label="Confirm password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          required
+          autoComplete="new-password"
+          minLength={MIN_PASSWORD_LENGTH}
+        />
         {error && (
           <p className="text-sm text-red-200 rounded-lg bg-red-500/15 border border-red-400/30 px-3 py-2" role="alert">
             {error}

@@ -3,6 +3,8 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { FiveASideLineupReadonly } from "@/app/components/FiveASideLineupReadonly"
 import { PageHeader } from "@/app/components/PageHeader"
+import { TournamentLockedNotice } from "@/app/components/TournamentLockedNotice"
+import { isTournamentStarted } from "@/lib/tournament"
 import {
   FIVE_A_SIDE_PICKS_COLUMNS,
   fetchAllFiveASidePlayers,
@@ -23,12 +25,16 @@ export async function generateMetadata({ params }: { params: Promise<{ userId: s
 export default async function FiveASideViewTeamPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params
   const supabase = await createClient()
+  const {
+    data: { user: sessionUser },
+  } = await supabase.auth.getUser()
 
   const [
     { data: picksRow },
     playersRows,
     { data: profile },
     { data: finishedRows },
+    { data: firstMatch },
   ] = await Promise.all([
     supabase
       .from("five_a_side_picks")
@@ -41,7 +47,12 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
     ),
     supabase.from("profiles").select("display_name").eq("id", userId).maybeSingle(),
     supabase.from("matches").select("team1, team2").eq("status", "finished"),
+    supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
   ])
+
+  const tournamentStarted = isTournamentStarted(firstMatch?.kickoff_time as string | undefined)
+  const isOwnTeam = sessionUser?.id === userId
+  const canView = tournamentStarted || isOwnTeam
 
   const picks = (picksRow as FiveASidePicks | null) ?? null
   if (!hasAnyPick(picks)) notFound()
@@ -62,7 +73,7 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
     <main className="space-y-6 max-w-6xl mx-auto">
       <PageHeader
         title={`${displayName}'s 5-A-SIDE`}
-        description={`Total points: ${totalPts}`}
+        description={canView ? `Total points: ${totalPts}` : undefined}
         backHref="/five-a-side/teams"
         backLabel="All teams"
       >
@@ -71,7 +82,11 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
         </Link>
       </PageHeader>
 
-      <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
+      {!canView ? (
+        <TournamentLockedNotice message="Other players' 5-A-SIDE teams are hidden until the start of the World Cup." />
+      ) : (
+        <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
+      )}
     </main>
   )
 }

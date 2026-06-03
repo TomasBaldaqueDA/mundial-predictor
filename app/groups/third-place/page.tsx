@@ -3,7 +3,9 @@ import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { PageHeader } from "@/app/components/PageHeader"
 import { LeagueFilterBar } from "@/app/components/LeagueFilterBar"
+import { TournamentLockedNotice } from "@/app/components/TournamentLockedNotice"
 import { getLeagueMemberIds, isUserInLeagueFilter } from "@/lib/league-members"
+import { fetchTournamentStarted } from "@/lib/tournament"
 
 const GROUPS_ORDER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 
@@ -16,6 +18,7 @@ export default async function ThirdPlacePredictionsPage({
   const leagueId = typeof sp?.league === "string" ? sp.league : ""
 
   const supabase = await createClient()
+  const tournamentStarted = await fetchTournamentStarted(supabase)
   const leagueMemberIds = await getLeagueMemberIds(supabase, leagueId)
   const [
     { data: preds, error: predError },
@@ -109,9 +112,13 @@ export default async function ThirdPlacePredictionsPage({
         backLabel="Groups"
       />
 
-      <LeagueFilterBar title="All predictions" currentLeagueId={leagueId || undefined} />
+      {tournamentStarted && <LeagueFilterBar title="All predictions" currentLeagueId={leagueId || undefined} />}
 
-      {actualThirdPlaceTeams.length === 8 && (
+      {!tournamentStarted && (
+        <TournamentLockedNotice message="Third-place predictions from other players are hidden until the start of the World Cup." />
+      )}
+
+      {tournamentStarted && actualThirdPlaceTeams.length === 8 && (
         <div className="glass rounded-2xl border border-emerald-400/30 p-4 shadow-lg">
           <p className="text-xs font-semibold text-emerald-300 mb-3 uppercase tracking-wider">Actual 8 third-place (qualified)</p>
           <div className="flex flex-wrap gap-2">
@@ -127,7 +134,7 @@ export default async function ThirdPlacePredictionsPage({
         </div>
       )}
 
-      {rows.length === 0 ? (
+      {tournamentStarted && rows.length === 0 ? (
         <div className="glass rounded-2xl p-8 text-center">
           <p className="text-slate-400">
             {leagueMemberIds
@@ -135,8 +142,8 @@ export default async function ThirdPlacePredictionsPage({
               : "No third-place predictions yet."}
           </p>
         </div>
-      ) : (
-        <div className="glass rounded-2xl overflow-x-auto border border-white/10">
+      ) : tournamentStarted ? (
+        <div className="glass rounded-2xl overflow-x-auto border border-white/10 max-w-full">
           <table className="min-w-full text-sm">
             <thead className="bg-white/5 border-b border-white/10">
               <tr>
@@ -173,7 +180,7 @@ export default async function ThirdPlacePredictionsPage({
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
     </main>
   )
 }
