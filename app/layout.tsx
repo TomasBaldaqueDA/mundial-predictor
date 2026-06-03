@@ -41,7 +41,13 @@ export const metadata: Metadata = {
     description: "Predict the 2026 World Cup. Guess scores, pick the MVP and compete with friends.",
     images: ["/opengraph-image"],
   },
-  icons: { icon: "/favicon.ico", apple: "/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     title: "WC26",

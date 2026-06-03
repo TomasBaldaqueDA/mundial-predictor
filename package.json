@@ -17,6 +17,7 @@
     "qa:audit": "node scripts/qa-audit.mjs",
     "sync:squads": "node scripts/sync-cartoon-squads.mjs",
     "export:squads": "node scripts/export-squads-md.mjs",
+    "icons:generate": "npx tsx scripts/generate-pwa-icons.tsx",
     "update:supabase-auth-urls": "node scripts/update-supabase-auth-urls.mjs",
     "prepare": "husky"
   },
