@@ -58,21 +58,21 @@ function MobileCategoryPts({
   className?: string
 }) {
   return (
-    <div className={`grid grid-cols-4 gap-1 text-[10px] tabular-nums ${className}`}>
+    <div className={`grid grid-cols-4 gap-1 text-xs tabular-nums ${className}`}>
       <div className="text-center">
-        <span className="block text-white/30 uppercase tracking-wide text-[9px]">Gms</span>
+        <span className="block text-white/30 uppercase tracking-wide text-xs">Gms</span>
         {row.matchPts}
       </div>
       <div className="text-center">
-        <span className="block text-white/30 uppercase tracking-wide text-[9px]">Q</span>
+        <span className="block text-white/30 uppercase tracking-wide text-xs">Q</span>
         {row.specialPts}
       </div>
       <div className="text-center">
-        <span className="block text-white/30 uppercase tracking-wide text-[9px]">Grp</span>
+        <span className="block text-white/30 uppercase tracking-wide text-xs">Grp</span>
         {row.groupPts}
       </div>
       <div className="text-center">
-        <span className="block text-white/30 uppercase tracking-wide text-[9px]">5v5</span>
+        <span className="block text-white/30 uppercase tracking-wide text-xs">5v5</span>
         {row.fiveASidePts}
       </div>
     </div>
@@ -154,7 +154,7 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
         <DesktopCells row={row} />
         <div className="text-right font-bold text-sm tabular-nums text-white/80">
           {row.points}
-          <span className="text-[10px] font-normal text-white/40 ml-0.5">pts</span>
+          <span className="text-xs font-normal text-white/40 ml-0.5">pts</span>
         </div>
       </div>
       <div className="sm:hidden px-4 py-3 grid grid-cols-[2.5rem_1fr_auto] gap-x-2 gap-y-2 items-center">
@@ -166,7 +166,7 @@ export function RankingRow({ row, index }: { row: Row; index: number }) {
         </div>
         <div className="text-right font-bold text-sm tabular-nums text-white/80 row-span-2 self-center">
           {row.points}
-          <span className="text-[10px] font-normal text-white/40 ml-0.5">pts</span>
+          <span className="text-xs font-normal text-white/40 ml-0.5">pts</span>
         </div>
         <div className="col-span-2 min-w-0">
           <MobileCategoryPts row={row} />

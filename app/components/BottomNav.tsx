@@ -123,7 +123,7 @@ export function BottomNav() {
                 <Link
                   key={href}
                   href={href}
-                  className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 px-1 transition-all duration-200 relative min-w-[3.4rem] shrink-0 ${
+                  className={`flex flex-1 flex-col items-center justify-center gap-1 py-3 px-1 transition-colors duration-200 relative min-w-[3.4rem] shrink-0 ${
                     active ? "text-wc-gold" : "text-white/40"
                   }`}
                   aria-label={label}
@@ -133,7 +133,7 @@ export function BottomNav() {
                     <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-gradient-to-r from-transparent via-wc-gold to-transparent" />
                   )}
                   <span className={active ? "scale-110 transition-transform" : ""}>{icon(active)}</span>
-                  <span className={`text-[8px] font-bold tracking-wide uppercase text-center leading-tight max-w-[4.25rem] ${active ? "text-wc-gold" : "text-white/30"}`}>
+                  <span className={`text-[9px] font-bold tracking-wide uppercase text-center leading-tight max-w-[4.25rem] ${active ? "text-wc-gold" : "text-white/30"}`}>
                     {label}
                   </span>
                 </Link>

@@ -30,7 +30,7 @@ export function KickoffCountdown({ kickoff }: { kickoff: string }) {
   const soon = diff <= 60 * 60 * 1000
   return (
     <span
-      className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 border ${
+      className={`inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide rounded-full px-2 py-0.5 border ${
         soon
           ? "bg-amber-500/15 text-amber-100 border-amber-400/40"
           : "bg-cyan-500/10 text-cyan-100 border-cyan-400/30"

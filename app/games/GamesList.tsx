@@ -486,7 +486,7 @@ function SavedPredictionPanel({
         )}
 
         <div className="rounded-xl border border-amber-400/25 bg-gradient-to-br from-amber-500/[0.09] to-transparent px-3 py-2.5 backdrop-blur-sm">
-          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-amber-200/75 mb-1">Predicted MVP</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/75 mb-1">Predicted MVP</p>
           <p className="text-sm sm:text-base font-semibold text-white tracking-tight leading-snug break-words">
             {pred.pred_mvp?.trim() || "—"}
           </p>
@@ -597,7 +597,7 @@ function MatchCard({
 
   return (
     <div
-      className={`glass rounded-2xl border overflow-hidden transition-all duration-200 hover:-translate-y-0.5 min-w-0 ${cardBorder}`}
+      className={`glass rounded-2xl border overflow-hidden transition-colors duration-200 min-w-0 ${cardBorder}`}
     >
 
       {/* ── Top bar ── */}
@@ -605,7 +605,7 @@ function MatchCard({
         <span className="text-xs text-slate-400 font-medium inline-flex items-center gap-2 flex-wrap">
           <KickoffText kickoff={match.kickoff_time} />
           {isLive && (
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-100 bg-red-500/20 border border-red-400/40 px-2 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-red-100 bg-red-500/20 border border-red-400/40 px-2 py-0.5 rounded-full">
               <span className="h-2 w-2 rounded-full bg-red-400 animate-pulse" aria-hidden />
               Live
             </span>

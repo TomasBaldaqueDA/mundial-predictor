@@ -23,8 +23,7 @@ export function GuestNotice() {
   return (
     <div className="alert-banner mb-8">
       <p className="text-sm text-slate-200 leading-relaxed">
-        <span className="font-bold text-wc-gold">Welcome</span> — create an account to predict scores, join private
-        leagues, and climb the global ranking. Guests can browse this page and the rules only.
+        Sign up to predict scores, join leagues, and appear on the ranking.
       </p>
       <div className="flex gap-2 shrink-0">
         <Link href="/register" className="btn-primary text-sm py-2 px-4">
