@@ -8,6 +8,7 @@ import { ImageResponse } from "next/og"
 import { Wc26IconMark } from "../lib/wc26-icon-og"
 
 const publicDir = join(process.cwd(), "public")
+const appDir = join(process.cwd(), "app")
 
 async function writeIcon(size: number, filename: string) {
   const res = new ImageResponse(<Wc26IconMark size={size} />, { width: size, height: size })
@@ -25,7 +26,8 @@ async function main() {
   const favicon48 = await new ImageResponse(<Wc26IconMark size={48} />, { width: 48, height: 48 })
   const faviconBuf = Buffer.from(await favicon48.arrayBuffer())
   writeFileSync(join(publicDir, "favicon.ico"), faviconBuf)
-  console.log(`  favicon.ico (48×48, ${faviconBuf.length} bytes)`)
+  writeFileSync(join(appDir, "favicon.ico"), faviconBuf)
+  console.log(`  favicon.ico (48×48, ${faviconBuf.length} bytes) → public/ + app/`)
   console.log("PWA icons generated in public/")
 }
 
