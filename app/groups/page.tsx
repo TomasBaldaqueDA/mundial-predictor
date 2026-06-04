@@ -316,7 +316,8 @@ export default function GroupsPage() {
     <div className="space-y-8">
       <PageHeader
         title="Group predictions"
-        description="Pick 1st–4th in every group and which third-place sides advance. Points update as results come in."
+        description={"Pick 1st–4th in every group and which third-place sides advance. Points update as results come\u00A0in."}
+        descriptionClassName="max-w-none sm:whitespace-nowrap"
       />
 
       {message && (

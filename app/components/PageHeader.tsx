@@ -3,13 +3,14 @@ import Link from "next/link"
 type Props = {
   title: string
   description?: string
+  descriptionClassName?: string
   backHref?: string
   backLabel?: string
   children?: React.ReactNode
   badge?: React.ReactNode
 }
 
-export function PageHeader({ title, description, backHref, backLabel = "Back", children, badge }: Props) {
+export function PageHeader({ title, description, descriptionClassName, backHref, backLabel = "Back", children, badge }: Props) {
   return (
     <header className="page-header mb-8 sm:mb-10">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -26,7 +27,11 @@ export function PageHeader({ title, description, backHref, backLabel = "Back", c
             <h1 className="page-title">{title}</h1>
             {badge}
           </div>
-          {description && <p className="page-description">{description}</p>}
+          {description && (
+            <p className={descriptionClassName ? `page-description ${descriptionClassName}` : "page-description"}>
+              {description}
+            </p>
+          )}
         </div>
         {children && <div className="flex flex-wrap items-center gap-2 shrink-0">{children}</div>}
       </div>
