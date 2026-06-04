@@ -10,12 +10,11 @@ export function AppViewShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <AppBackground />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-grid-fine opacity-[0.12]" aria-hidden />
 
-      <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#02060f]/85 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.04)]">
+      <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#02060f]/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4 relative z-10">
           <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-[#fcd34d] via-[#e8b84a] to-[#38bdf8] flex flex-col items-center justify-center leading-none shadow-[0_4px_24px_rgba(232,184,74,0.4)] ring-1 ring-white/25 group-hover:scale-[1.03] transition-transform duration-300">
+            <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-[#fcd34d] via-[#e8b84a] to-[#38bdf8] flex flex-col items-center justify-center leading-none ring-1 ring-white/20">
               <span className="text-[#1a0f00] font-black text-[8px] tracking-tight [font-family:var(--font-outfit)] leading-none">
                 WC
               </span>

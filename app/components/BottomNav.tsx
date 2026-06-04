@@ -129,11 +129,8 @@ export function BottomNav() {
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
                 >
-                  {active && (
-                    <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-gradient-to-r from-transparent via-wc-gold to-transparent" />
-                  )}
-                  <span className={active ? "scale-110 transition-transform" : ""}>{icon(active)}</span>
-                  <span className={`text-[9px] font-bold tracking-wide uppercase text-center leading-tight max-w-[4.25rem] ${active ? "text-wc-gold" : "text-white/30"}`}>
+                  <span>{icon(active)}</span>
+                  <span className={`text-[9px] font-bold tracking-wide uppercase text-center leading-tight max-w-[4.25rem] ${active ? "text-wc-gold font-extrabold" : "text-white/30"}`}>
                     {label}
                   </span>
                 </Link>

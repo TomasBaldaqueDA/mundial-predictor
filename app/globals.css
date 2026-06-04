@@ -58,14 +58,9 @@ body {
   color: #fff;
 }
 
-/* ─── Premium dark background — WC26 “stadium night” (no photo) ─── */
+/* ─── Base background (stadium photo carries atmosphere) ─── */
 .bg-pitch-pattern {
   background-color: var(--background);
-  background-image:
-    radial-gradient(ellipse 120% 80% at 80% -20%, rgba(240, 180, 41, 0.14) 0%, transparent 55%),
-    radial-gradient(ellipse 90% 60% at 15% 110%, rgba(22, 163, 74, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 45% at 50% 40%, rgba(34, 211, 238, 0.04) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(4, 10, 20, 0.2) 0%, transparent 35%, rgba(4, 10, 20, 0.4) 100%);
 }
 
 /* ─── Stadium photo layer (fixed, under content) ─── */
@@ -106,66 +101,22 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  /* Veil: readable UI but photos still read per route (jogos / leagues / perguntas) */
-  background:
-    radial-gradient(ellipse 88% 72% at 50% 38%, transparent 0%, rgba(4, 10, 20, 0.42) 58%, rgba(2, 5, 12, 0.88) 100%),
-    linear-gradient(
-      180deg,
-      rgba(2, 4, 10, 0.68) 0%,
-      rgba(4, 10, 20, 0.26) 34%,
-      rgba(4, 10, 20, 0.34) 52%,
-      rgba(2, 6, 14, 0.82) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(2, 5, 12, 0.5) 0%,
-      transparent 14%,
-      transparent 86%,
-      rgba(2, 5, 12, 0.5) 100%
-    ),
-    linear-gradient(180deg, rgba(240, 180, 41, 0.05) 0%, transparent 42%);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 6, 15, 0.72) 0%,
+    rgba(2, 6, 15, 0.82) 45%,
+    rgba(2, 6, 15, 0.88) 100%
+  );
 }
 
-/* Jogos — light veil so stadium photos read clearly */
+/* Slightly lighter veil on games — photo reads through a bit more */
 .app-bg-stadium.app-bg--matches::after {
-  background:
-    radial-gradient(ellipse 90% 75% at 50% 35%, transparent 0%, rgba(4, 10, 20, 0.12) 48%, rgba(2, 5, 12, 0.42) 100%),
-    linear-gradient(
-      180deg,
-      rgba(2, 4, 10, 0.25) 0%,
-      rgba(4, 10, 20, 0.06) 42%,
-      rgba(4, 10, 20, 0.1) 58%,
-      rgba(2, 6, 14, 0.38) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(2, 5, 12, 0.18) 0%,
-      transparent 22%,
-      transparent 78%,
-      rgba(2, 5, 12, 0.18) 100%
-    ),
-    linear-gradient(180deg, rgba(240, 180, 41, 0.06) 0%, transparent 45%);
-}
-
-/* Perguntas — slightly stronger than jogos/leagues (trophy detail) */
-.app-bg-stadium.app-bg--perguntas::after {
-  background:
-    radial-gradient(ellipse 88% 72% at 50% 38%, transparent 0%, rgba(4, 10, 20, 0.22) 52%, rgba(2, 5, 12, 0.65) 100%),
-    linear-gradient(
-      180deg,
-      rgba(2, 4, 10, 0.48) 0%,
-      rgba(4, 10, 20, 0.12) 38%,
-      rgba(4, 10, 20, 0.2) 55%,
-      rgba(2, 6, 14, 0.58) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(2, 5, 12, 0.32) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(2, 5, 12, 0.32) 100%
-    ),
-    linear-gradient(180deg, rgba(240, 180, 41, 0.07) 0%, transparent 38%);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 6, 15, 0.62) 0%,
+    rgba(2, 6, 15, 0.78) 50%,
+    rgba(2, 6, 15, 0.85) 100%
+  );
 }
 
 /*
@@ -201,26 +152,7 @@ body {
   background-image: url("/images/world-cup-trophy.jpg") !important;
   background-position: center 28%;
   background-size: cover;
-  filter: blur(0.35px) saturate(1.15) brightness(0.95);
-}
-.app-bg-stadium.app-bg--leagues::after {
-  background:
-    radial-gradient(ellipse 75% 65% at 50% 32%, transparent 0%, rgba(4, 10, 20, 0.18) 55%, rgba(2, 5, 12, 0.72) 100%),
-    linear-gradient(
-      180deg,
-      rgba(2, 4, 10, 0.45) 0%,
-      rgba(4, 10, 20, 0.08) 38%,
-      rgba(4, 10, 20, 0.15) 55%,
-      rgba(2, 6, 14, 0.55) 100%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(2, 5, 12, 0.28) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(2, 5, 12, 0.28) 100%
-    ),
-    linear-gradient(180deg, rgba(232, 184, 74, 0.08) 0%, transparent 42%);
+  filter: blur(0.35px) brightness(0.92);
 }
 .app-bg--groups {
   --stadium-photo: url("https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=2400&q=80");
@@ -290,51 +222,18 @@ body {
   mask-image: radial-gradient(ellipse 85% 70% at 50% 30%, black 20%, transparent 75%);
 }
 
-/* ─── Premium glass surfaces ─── */
+/* ─── Flat surfaces (no glass chrome) ─── */
 .glass {
   position: relative;
-  background: linear-gradient(
-    165deg,
-    rgba(17, 27, 48, 0.72) 0%,
-    rgba(8, 14, 28, 0.82) 45%,
-    rgba(12, 20, 38, 0.78) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.15);
-  -webkit-backdrop-filter: blur(20px) saturate(1.15);
+  background: rgba(11, 18, 32, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-2xl);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 4px 16px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
   color: rgb(226 232 240);
-  transition:
-    box-shadow 0.4s var(--ease-out-expo),
-    transform 0.35s var(--ease-out-expo),
-    border-color 0.35s ease;
-}
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.02) 40%,
-    rgba(232, 184, 74, 0.08) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 .glass:hover {
-  border-color: rgba(232, 184, 74, 0.14);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 6px 20px rgba(0, 0, 0, 0.32);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* Do not force global .text-stone-* inside .glass — breaks contrast on light row fills & choice chips */
@@ -405,22 +304,15 @@ body {
 
 .glass-dark {
   position: relative;
-  background: linear-gradient(180deg, rgba(6, 10, 20, 0.92) 0%, rgba(10, 16, 30, 0.88) 100%);
-  backdrop-filter: blur(20px) saturate(1.15);
-  -webkit-backdrop-filter: blur(20px) saturate(1.15);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(8, 14, 26, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-2xl);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.04) inset,
-    0 6px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   color: rgb(226 232 240);
-  transition: box-shadow 0.4s var(--ease-out-expo), border-color 0.35s ease;
+  transition: border-color 0.2s ease;
 }
 .glass-dark:hover {
-  border-color: rgba(232, 184, 74, 0.12);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.11);
 }
 
 .glass-dark :where(.text-stone-900, .text-stone-800, .text-stone-700) {
@@ -876,8 +768,7 @@ select.select-modern {
 .nav-pill-active {
   color: var(--gold-bright) !important;
   background: rgba(232, 184, 74, 0.1) !important;
-  border-color: rgba(232, 184, 74, 0.22) !important;
-  box-shadow: 0 0 20px rgba(232, 184, 74, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-color: rgba(232, 184, 74, 0.2) !important;
 }
 
 .alert-banner {
@@ -886,8 +777,8 @@ select.select-modern {
   gap: 0.75rem;
   padding: 1rem 1.25rem;
   border-radius: var(--radius-2xl);
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(232, 184, 74, 0.06) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(11, 18, 32, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 @media (min-width: 640px) {
   .alert-banner {
@@ -900,11 +791,9 @@ select.select-modern {
 .leaderboard-shell {
   border-radius: var(--radius-2xl);
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(8, 14, 26, 0.95) 0%, rgba(4, 8, 18, 0.98) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: rgba(8, 14, 26, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .leaderboard-header {

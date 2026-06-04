@@ -10,12 +10,12 @@ export default function RulesPage() {
     <main className="space-y-8">
       <PageHeader
         title="Rules & scoring"
-        description="How predictions work, when they lock, and how points are calculated in WC26 Predictor."
+        description="Deadlines, scoring and how each section earns points."
         backHref="/"
         backLabel="Home"
       />
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">1. Access & deadlines</h2>
         <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
           <li>
@@ -38,7 +38,7 @@ export default function RulesPage() {
         </ul>
       </section>
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">2. Match predictions</h2>
         <p className="text-sm text-slate-300 mb-1">
           For each match you predict the final score (90 minutes) and the MVP of the match.
@@ -78,7 +78,7 @@ export default function RulesPage() {
         </p>
       </section>
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">3. Group predictions</h2>
         <p className="text-sm text-slate-300">
           You predict the <span className="font-semibold">final order (1st–4th)</span> in each group and which{" "}
@@ -123,7 +123,7 @@ export default function RulesPage() {
         </p>
       </section>
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">4. Special questions</h2>
         <p className="text-sm text-slate-300">
           Before the World Cup starts you answer a set of{" "}
@@ -144,7 +144,7 @@ export default function RulesPage() {
         </p>
       </section>
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">5. 5-A-SIDE fantasy team</h2>
         <p className="text-sm text-slate-300">
           You pick a fixed team of <span className="font-semibold">5 players</span> for the whole tournament:
@@ -189,7 +189,7 @@ export default function RulesPage() {
         </ul>
       </section>
 
-      <section className="glass rounded-2xl p-5 border border-wc-gold/25 space-y-3">
+      <section className="glass rounded-2xl p-5 border border-white/10 space-y-3">
         <h2 className="text-lg font-semibold text-wc-green-dark">6. Ranking summary</h2>
         <p className="text-sm text-slate-300">
           Your <span className="font-semibold">total points</span> in the ranking are the sum of:

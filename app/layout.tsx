@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased min-h-screen flex flex-col bg-pitch-pattern bg-mesh-animated font-sans relative`}
+        className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased min-h-screen flex flex-col bg-pitch-pattern font-sans relative`}
       >
         <AppViewShell>{children}</AppViewShell>
       </body>

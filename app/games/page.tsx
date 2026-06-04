@@ -63,7 +63,7 @@ export default async function JogosPage() {
     <main>
       <PageHeader
         title="Games"
-        description="Every match of the 2026 World Cup — predict scores, MVPs and qualifiers before kickoff."
+        description="Pick scores and MVP before kickoff."
       />
       <TournamentProgressBar matches={allMatches} />
       <Suspense fallback={<ListSkeleton rows={8} />}>

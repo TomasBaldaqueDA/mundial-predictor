@@ -27,10 +27,8 @@ export default function HomePage() {
     <main className="max-w-4xl mx-auto">
       <GuestNotice />
 
-      <section className="text-center pt-2 sm:pt-6 pb-10 sm:pb-14">
-        <div className="wc26-chip hero-chip-readable mb-6">
-          USA · Mexico · Canada · 2026
-        </div>
+      <section className="text-center pt-2 sm:pt-6 pb-8 sm:pb-10">
+        <div className="wc26-chip hero-chip-readable mb-6">USA · Mexico · Canada · 2026</div>
 
         <h1 className="text-[2.75rem] sm:text-[4.5rem] font-black tracking-tight mb-5 text-gradient-hero leading-[0.95]">
           WC26 Predictor
@@ -68,11 +66,16 @@ export default function HomePage() {
       </section>
 
       <section className="mt-6 glass-dark p-5 sm:p-7">
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
           <h2 className="section-kicker text-wc-gold">How points work</h2>
-          <Link href="/rules" className="text-xs font-semibold text-white/40 hover:text-wc-gold transition-colors">
-            Full rules →
-          </Link>
+          <div className="flex items-center gap-4 text-xs font-semibold">
+            <Link href="/ranking" className="text-white/40 hover:text-wc-gold transition-colors">
+              Global ranking →
+            </Link>
+            <Link href="/rules" className="text-white/40 hover:text-wc-gold transition-colors">
+              Full rules →
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
           {pointsRules.map(({ pts, label }) => (
@@ -82,18 +85,6 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
-
-      <section className="mt-4">
-        <Link
-          href="/ranking"
-          className="feature-card group glass block px-5 py-4 sm:py-5 border border-wc-gold/10 hover:border-wc-gold/25"
-        >
-          <div className="text-sm font-semibold text-white group-hover:text-wc-gold transition-colors">
-            Global Ranking
-          </div>
-          <div className="text-xs text-white/40 mt-0.5">See where you stand against everyone</div>
-        </Link>
       </section>
     </main>
   )

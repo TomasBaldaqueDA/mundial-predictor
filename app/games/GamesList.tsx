@@ -429,14 +429,7 @@ function SavedPredictionPanel({
   const editable = typeof onEdit === "function"
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-wc-gold/35 bg-gradient-to-br from-[#0c1220] via-slate-900/90 to-[#070d18] shadow-[0_0_36px_rgba(240,180,41,0.14),inset_0_1px_0_rgba(255,255,255,0.07)]">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        style={{
-          background:
-            "radial-gradient(ellipse 85% 55% at 50% -10%, rgba(240, 180, 41, 0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(34, 211, 238, 0.06) 0%, transparent 45%)",
-        }}
-      />
+    <div className="relative rounded-2xl overflow-hidden border border-wc-gold/30 bg-[#0b1220]/95">
       <div className="relative px-3 sm:px-4 py-3 sm:py-4 space-y-3">
         <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-400/25 pl-2 pr-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-100/95 w-fit">
@@ -485,7 +478,7 @@ function SavedPredictionPanel({
           </div>
         )}
 
-        <div className="rounded-xl border border-amber-400/25 bg-gradient-to-br from-amber-500/[0.09] to-transparent px-3 py-2.5 backdrop-blur-sm">
+        <div className="rounded-xl border border-amber-400/20 bg-amber-500/10 px-3 py-2.5">
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/75 mb-1">Predicted MVP</p>
           <p className="text-sm sm:text-base font-semibold text-white tracking-tight leading-snug break-words">
             {pred.pred_mvp?.trim() || "—"}
@@ -504,7 +497,7 @@ function SavedPredictionPanel({
             <button
               type="button"
               onClick={onEdit}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-wc-gold/55 bg-wc-gold/10 px-3 py-2 text-xs sm:text-sm font-semibold text-wc-gold hover:bg-wc-gold/20 hover:border-wc-gold/80 transition-all duration-200 w-full"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-wc-gold/40 bg-wc-gold/10 px-3 py-2 text-xs sm:text-sm font-semibold text-wc-gold hover:bg-wc-gold/15 hover:border-wc-gold/55 transition-colors duration-200 w-full"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5 shrink-0" aria-hidden>
                 <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
@@ -586,7 +579,7 @@ function MatchCard({
       ? "border-emerald-300/50"
       : "border-red-300/40"
     : isSavedSummaryView
-      ? "border-wc-gold/40 shadow-[0_0_32px_rgba(240,180,41,0.16)]"
+      ? "border-wc-gold/35"
       : "border-white/35 hover:border-cyan-400/35"
 
   const ptsBadge = finishedWithPoints
@@ -740,7 +733,7 @@ function MatchCard({
         {showPowerStrip && (
           <div className="mt-4 flex justify-end">
             <div
-              className={`rounded-xl border px-2 py-2 shadow-[0_0_16px_rgba(245,158,11,0.06)] w-fit max-w-[11rem] transition-opacity ${
+              className={`rounded-xl border px-2 py-2 w-fit max-w-[11rem] transition-opacity ${
                 powerUpPhaseLocked && !powerUpActive
                   ? "border-slate-600/30 bg-slate-900/45 opacity-[0.72]"
                   : "border-amber-400/45 bg-amber-500/8"
@@ -1204,7 +1197,7 @@ export function GamesList({
           <button key={key} type="button" onClick={() => setFilterAndUrl(key, null)}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
               filter === key
-                ? "bg-wc-gold text-[#1a0f00] shadow-[0_2px_12px_rgba(240,180,41,0.4)]"
+                ? "bg-wc-gold text-[#1a0f00]"
                 : "text-white/60 hover:text-white/90 hover:bg-white/8"
             }`}
           >
@@ -1221,7 +1214,7 @@ export function GamesList({
             <button key={opt} type="button" onClick={() => setSubFilterAndUrl(opt === SUB_ALL ? null : opt)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
                 (opt === SUB_ALL && !subFilter) || subFilter === opt
-                  ? "bg-wc-green text-white shadow-[0_2px_8px_rgba(22,163,74,0.3)]"
+                  ? "bg-wc-green text-white"
                   : "glass border-white/12 text-slate-400 hover:bg-white/6"
               }`}
             >
@@ -1292,7 +1285,7 @@ export function GamesList({
               <button
                 type="button"
                 onClick={() => handleConfirmAnswer(true)}
-                className="px-4 py-2 rounded-xl text-sm font-bold bg-wc-gold text-[#1a0f00] hover:bg-wc-gold/90 transition-all shadow-[0_2px_12px_rgba(240,180,41,0.35)]"
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-wc-gold text-[#1a0f00] hover:bg-wc-gold/90 transition-colors"
               >
                 Move ×2
               </button>

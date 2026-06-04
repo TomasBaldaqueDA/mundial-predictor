@@ -187,24 +187,16 @@ export default function PerguntasPage() {
       {/* Separate Winner box – before the questions card */}
       {winnerQuestion && user && (
         <div
-          className={`relative rounded-2xl p-6 sm:p-8 text-center overflow-hidden transition-all duration-300 border-2 shadow-[0_0_48px_rgba(217,119,6,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] ${
+          className={`relative rounded-2xl p-6 sm:p-8 text-center overflow-hidden transition-colors duration-200 border ${
             locked
-              ? "border-amber-600/70 bg-gradient-to-br from-amber-100 via-amber-50 to-stone-200"
-              : "border-amber-400/90 bg-gradient-to-br from-[#1a1206] via-[#2d210c] to-[#0c0904]"
+              ? "border-amber-600/50 bg-gradient-to-br from-amber-100 via-amber-50 to-stone-200"
+              : "border-amber-400/40 bg-[#141008]"
           }`}
         >
           <div
-            className="absolute inset-0 pointer-events-none opacity-90"
+            className="absolute inset-0 pointer-events-none opacity-40"
             style={{
-              background:
-                "radial-gradient(ellipse 85% 65% at 50% -15%, rgba(251,191,36,0.35) 0%, transparent 55%), radial-gradient(ellipse 60% 45% at 80% 100%, rgba(180,83,9,0.2) 0%, transparent 50%)",
-            }}
-          />
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-overlay"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(-45deg, #fcd34d 0px, #fcd34d 1px, transparent 1px, transparent 6px)",
+              background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(251,191,36,0.12) 0%, transparent 60%)",
             }}
           />
           <div className="relative z-[1] flex flex-wrap items-center justify-center gap-2 mb-5">
