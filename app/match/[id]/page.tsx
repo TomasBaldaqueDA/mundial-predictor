@@ -5,7 +5,10 @@ import { TeamWithFlag } from "@/app/components/TeamWithFlag"
 import { PlayerNameLink } from "@/app/components/PlayerNameLink"
 import { KickoffText } from "@/app/components/KickoffText"
 import { parseKickoffInstant } from "@/lib/format-kickoff"
+import { shouldShowMatchPredictionsList } from "@/lib/match-predictions-visible"
 import { LeagueFilter } from "@/app/components/LeagueFilter"
+
+export const dynamic = "force-dynamic"
 
 export default async function MatchPage({
   params,
@@ -48,11 +51,9 @@ export default async function MatchPage({
   }
 
   const kickoff = parseKickoffInstant(String(match.kickoff_time)) ?? new Date(0)
-  const now = new Date()
-  const hasStarted = now >= kickoff
   const hasResult = match.score1 != null && match.score2 != null
   const isKnockout = (match.stage ?? "") !== "First Stage"
-  const showPredictionsList = hasStarted || hasResult
+  const showPredictionsList = shouldShowMatchPredictionsList(match)
 
   const { data: allPredictions, error: predError } = await supabase
     .from("predictions")

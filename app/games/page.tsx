@@ -11,6 +11,8 @@ export const metadata = {
   description: "Every match of the 2026 World Cup with predictions and live results.",
 }
 
+export const dynamic = "force-dynamic"
+
 export default async function JogosPage() {
   const supabase = await createClient()
   const {

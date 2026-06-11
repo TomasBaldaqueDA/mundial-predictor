@@ -413,16 +413,33 @@ function InlinePredictForm({
 
 // ─── Saved prediction (read-only summary until user taps “Edit”) ────────────
 
+function ViewPredictionsLink({ href, className = "" }: { href: string; className?: string }) {
+  return (
+    <Link
+      href={href}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-xl border border-cyan-400/30 bg-cyan-500/10 text-cyan-100 px-3.5 py-2.5 text-xs sm:text-sm font-semibold hover:bg-cyan-500/15 hover:border-cyan-400/45 transition-all duration-200 ${className}`}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden>
+        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+        <path fillRule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.002.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clipRule="evenodd" />
+      </svg>
+      View predictions
+    </Link>
+  )
+}
+
 function SavedPredictionPanel({
   match,
   pred,
   kickoffTime,
   onEdit,
+  viewPredictionsHref,
 }: {
   match: Match
   pred: UserPrediction
   kickoffTime: string
   onEdit?: () => void
+  viewPredictionsHref?: string
 }) {
   const isKnockout = (match.stage ?? "") !== "First Stage"
   const x2 = Number(pred.points_multiplier) === 2
@@ -507,6 +524,12 @@ function SavedPredictionPanel({
             </button>
           </div>
         )}
+
+        {!editable && viewPredictionsHref && (
+          <div className="pt-2 border-t border-white/[0.07]">
+            <ViewPredictionsLink href={viewPredictionsHref} className="w-full" />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -573,6 +596,7 @@ function MatchCard({
   const isKnockout = (match.stage ?? "") !== "First Stage"
   const isSavedSummaryView =
     canEditPrediction && hasUserPrediction && !showPredictionEditor && !hasResult
+  const showViewPredictionsProminent = predictClosed || isLive || hasResult
 
   const cardBorder = finishedWithPoints
     ? userPrediction!.points! > 0
@@ -669,6 +693,12 @@ function MatchCard({
                 )}
               </div>
             )}
+
+            {showViewPredictionsProminent && (
+              <div className="mt-4 pt-3 border-t border-white/[0.07]">
+                <ViewPredictionsLink href={matchViewHref} className="w-full" />
+              </div>
+            )}
           </>
         ) : canEditPrediction ? (
           <>
@@ -702,6 +732,7 @@ function MatchCard({
                 match={match}
                 pred={userPrediction}
                 kickoffTime={match.kickoff_time}
+                viewPredictionsHref={matchViewHref}
               />
             ) : (
               <>
@@ -797,15 +828,11 @@ function MatchCard({
         )}
       </div>
 
-      {/* Always show on games list — live, today, upcoming, and past */}
       <div className="px-4 sm:px-5 pb-4 flex flex-wrap gap-2">
-        <Link
+        <ViewPredictionsLink
           href={matchViewHref}
-          className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 text-slate-400 px-3.5 py-2 text-xs font-semibold hover:bg-white/8 hover:border-cyan-400/25 hover:text-slate-200 transition-all duration-200"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5" aria-hidden><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path fillRule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.002.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clipRule="evenodd"/></svg>
-          View predictions
-        </Link>
+          className={showViewPredictionsProminent ? "w-full" : ""}
+        />
       </div>
     </div>
   )
