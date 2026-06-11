@@ -433,13 +433,11 @@ function SavedPredictionPanel({
   pred,
   kickoffTime,
   onEdit,
-  viewPredictionsHref,
 }: {
   match: Match
   pred: UserPrediction
   kickoffTime: string
   onEdit?: () => void
-  viewPredictionsHref?: string
 }) {
   const isKnockout = (match.stage ?? "") !== "First Stage"
   const x2 = Number(pred.points_multiplier) === 2
@@ -525,11 +523,6 @@ function SavedPredictionPanel({
           </div>
         )}
 
-        {!editable && viewPredictionsHref && (
-          <div className="pt-2 border-t border-white/[0.07]">
-            <ViewPredictionsLink href={viewPredictionsHref} className="w-full" />
-          </div>
-        )}
       </div>
     </div>
   )
@@ -596,7 +589,6 @@ function MatchCard({
   const isKnockout = (match.stage ?? "") !== "First Stage"
   const isSavedSummaryView =
     canEditPrediction && hasUserPrediction && !showPredictionEditor && !hasResult
-  const showViewPredictionsProminent = predictClosed || isLive || hasResult
 
   const cardBorder = finishedWithPoints
     ? userPrediction!.points! > 0
@@ -694,11 +686,6 @@ function MatchCard({
               </div>
             )}
 
-            {showViewPredictionsProminent && (
-              <div className="mt-4 pt-3 border-t border-white/[0.07]">
-                <ViewPredictionsLink href={matchViewHref} className="w-full" />
-              </div>
-            )}
           </>
         ) : canEditPrediction ? (
           <>
@@ -732,7 +719,6 @@ function MatchCard({
                 match={match}
                 pred={userPrediction}
                 kickoffTime={match.kickoff_time}
-                viewPredictionsHref={matchViewHref}
               />
             ) : (
               <>
@@ -829,10 +815,7 @@ function MatchCard({
       </div>
 
       <div className="px-4 sm:px-5 pb-4 flex flex-wrap gap-2">
-        <ViewPredictionsLink
-          href={matchViewHref}
-          className={showViewPredictionsProminent ? "w-full" : ""}
-        />
+        <ViewPredictionsLink href={matchViewHref} className="w-full" />
       </div>
     </div>
   )
