@@ -797,17 +797,16 @@ function MatchCard({
         )}
       </div>
 
-      {showPredict && (
-        <div className="px-4 sm:px-5 pb-4 flex flex-wrap gap-2">
-          <Link
-            href={matchViewHref}
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 text-slate-400 px-3.5 py-2 text-xs font-semibold hover:bg-white/8 hover:border-cyan-400/25 hover:text-slate-200 transition-all duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5" aria-hidden><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path fillRule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.002.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clipRule="evenodd"/></svg>
-            View predictions
-          </Link>
-        </div>
-      )}
+      {/* Always show on games list — live, today, upcoming, and past */}
+      <div className="px-4 sm:px-5 pb-4 flex flex-wrap gap-2">
+        <Link
+          href={matchViewHref}
+          className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 text-slate-400 px-3.5 py-2 text-xs font-semibold hover:bg-white/8 hover:border-cyan-400/25 hover:text-slate-200 transition-all duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5" aria-hidden><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path fillRule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.002.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clipRule="evenodd"/></svg>
+          View predictions
+        </Link>
+      </div>
     </div>
   )
 }
@@ -1228,7 +1227,7 @@ export function GamesList({
         <div className="mb-10">
           <h2 className="section-title mb-4">Today&apos;s matches</h2>
           {todayFiltered.length > 0
-            ? renderSections(todaySections, (m) => getKickoffTimestamp(m.kickoff_time) >= nowMs)
+            ? renderSections(todaySections, true)
             : <p className="text-white/40 text-sm">No matches today for this filter.</p>}
         </div>
       )}
