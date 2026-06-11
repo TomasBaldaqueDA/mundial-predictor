@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 
-const WC_START = new Date("2026-06-12T01:00:00Z")
+// Opener: Mexico vs South Africa, 16:00 Brasilia / 13:00 CDMX = 19:00 UTC, 11 Jun 2026.
+const WC_START = new Date("2026-06-11T19:00:00Z")
 
 function getTimeLeft() {
   const diff = WC_START.getTime() - Date.now()
