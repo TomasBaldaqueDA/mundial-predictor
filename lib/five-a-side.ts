@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { resolveGamesPlayed } from "@/lib/match-appearances"
 
 export type PlayerStats = {
   goals: number
@@ -19,6 +20,7 @@ export type FiveASidePlayer = {
   wins: number
   clean_sheets: number
   mvp: number
+  games_played: number
 }
 
 export type FiveASidePicks = {
@@ -229,6 +231,7 @@ export function normalizePlayer(row: Record<string, unknown>): FiveASidePlayer {
     wins: Number(row.wins) || 0,
     clean_sheets: Number(row.clean_sheets) || 0,
     mvp: Number(row.mvp) || 0,
+    games_played: resolveGamesPlayed(String(row.team ?? ""), String(row.name ?? ""), row.games_played as number | undefined),
   }
 }
 

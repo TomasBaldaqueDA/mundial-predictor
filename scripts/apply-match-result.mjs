@@ -1,0 +1,74 @@
+/**
+ * Apply a finished match result via Supabase service role (no DDL).
+ * Usage: QA_TLS_INSECURE=1 node scripts/apply-match-result.mjs
+ *
+ * After this, run: node scripts/recalc-stats-from-appearances.mjs
+ */
+import fs from "node:fs"
+import path from "node:path"
+import { createClient } from "@supabase/supabase-js"
+
+if (process.env.QA_TLS_INSECURE === "1") process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
+function loadEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) return {}
+  const out = {}
+  for (const line of fs.readFileSync(filePath, "utf8").split(/\r?\n/)) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith("#")) continue
+    const idx = trimmed.indexOf("=")
+    if (idx <= 0) continue
+    let value = trimmed.slice(idx + 1).trim()
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1)
+    }
+    out[trimmed.slice(0, idx).trim()] = value
+  }
+  return out
+}
+
+const MATCH = {
+  id: 3,
+  score1: 1,
+  score2: 1,
+  mvp: "Ismael Kone",
+  goals: [
+    { team: "Bosnia and Herzegovina", name: "Jovo Lukic" },
+    { team: "Canada", name: "Cyle Larin" },
+  ],
+  assists: [
+    { team: "Bosnia and Herzegovina", name: "Sead Kolašinac" },
+    { team: "Canada", name: "Promise David" },
+  ],
+}
+
+const env = { ...loadEnvFile(path.join(process.cwd(), ".env.local")), ...process.env }
+const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY)
+
+async function bumpStat(team, name, field) {
+  const { data, error: fetchErr } = await supabase
+    .from("five_a_side_players")
+    .select("id, goals, assists")
+    .eq("team", team)
+    .eq("name", name)
+    .maybeSingle()
+  if (fetchErr) throw fetchErr
+  if (!data) throw new Error(`Player not found: ${team} / ${name}`)
+  const patch = field === "goals" ? { goals: (data.goals ?? 0) + 1 } : { assists: (data.assists ?? 0) + 1 }
+  const { error } = await supabase.from("five_a_side_players").update(patch).eq("id", data.id)
+  if (error) throw error
+}
+
+const { error: matchErr } = await supabase
+  .from("matches")
+  .update({ status: "finished", score1: MATCH.score1, score2: MATCH.score2, mvp: MATCH.mvp })
+  .eq("id", MATCH.id)
+if (matchErr) throw matchErr
+console.log(`Match ${MATCH.id}: ${MATCH.score1}-${MATCH.score2}, MVP ${MATCH.mvp}`)
+
+for (const g of MATCH.goals) await bumpStat(g.team, g.name, "goals")
+for (const a of MATCH.assists) await bumpStat(a.team, a.name, "assists")
+console.log("Goals and assists updated")
+
+const { data: match } = await supabase.from("matches").select("team1, team2, score1, score2, status, mvp").eq("id", MATCH.id).single()
+console.log("Verified:", match)

@@ -1,0 +1,150 @@
+-- Track which squad players actually played (starters + subs) per match.
+-- Wins, clean sheets and GP are derived from appearances — not the full 26-man squad.
+
+CREATE TABLE IF NOT EXISTS public.match_appearances (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  match_id bigint NOT NULL REFERENCES public.matches(id) ON DELETE CASCADE,
+  player_id uuid NOT NULL REFERENCES public.five_a_side_players(id) ON DELETE CASCADE,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (match_id, player_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_match_appearances_player ON public.match_appearances (player_id);
+CREATE INDEX IF NOT EXISTS idx_match_appearances_match ON public.match_appearances (match_id);
+
+ALTER TABLE public.match_appearances ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Anyone can read match appearances" ON public.match_appearances;
+CREATE POLICY "Anyone can read match appearances"
+  ON public.match_appearances FOR SELECT
+  USING (true);
+
+ALTER TABLE public.five_a_side_players
+  ADD COLUMN IF NOT EXISTS games_played int NOT NULL DEFAULT 0;
+
+COMMENT ON TABLE public.match_appearances IS
+  'Players who appeared in a finished match (XI + substitutes). Drives GP / wins / clean sheets.';
+COMMENT ON COLUMN public.five_a_side_players.games_played IS
+  'World Cup matches this player appeared in (starters or subs).';
+
+CREATE OR REPLACE FUNCTION public.refresh_five_a_side_player_stats()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  UPDATE public.five_a_side_players p
+  SET games_played = COALESCE(
+    (SELECT COUNT(*)::int
+     FROM public.match_appearances ma
+     INNER JOIN public.matches m ON m.id = ma.match_id
+     WHERE ma.player_id = p.id
+       AND m.status = 'finished'),
+    0
+  )
+  WHERE TRUE;
+
+  UPDATE public.five_a_side_players p
+  SET mvp = COALESCE(
+    (SELECT COUNT(*)::int
+     FROM public.matches m
+     INNER JOIN public.match_appearances ma ON ma.match_id = m.id AND ma.player_id = p.id
+     WHERE m.status = 'finished'
+       AND m.mvp IS NOT NULL AND m.mvp <> ''
+       AND trim(lower(m.mvp)) = trim(lower(p.name))),
+    0
+  )
+  WHERE TRUE;
+
+  UPDATE public.five_a_side_players p
+  SET wins = COALESCE(
+    (SELECT COUNT(*)::int
+     FROM public.matches m
+     INNER JOIN public.match_appearances ma ON ma.match_id = m.id AND ma.player_id = p.id
+     WHERE m.status = 'finished'
+       AND m.score1 IS NOT NULL AND m.score2 IS NOT NULL
+       AND ((m.team1 = p.team AND m.score1 > m.score2)
+         OR (m.team2 = p.team AND m.score2 > m.score1))),
+    0
+  )
+  WHERE TRUE;
+
+  UPDATE public.five_a_side_players p
+  SET clean_sheets = CASE
+    WHEN p.position NOT IN ('gk', 'df') THEN 0
+    ELSE COALESCE(
+      (SELECT COUNT(*)::int
+       FROM public.matches m
+       INNER JOIN public.match_appearances ma ON ma.match_id = m.id AND ma.player_id = p.id
+       WHERE m.status = 'finished'
+         AND m.score1 IS NOT NULL AND m.score2 IS NOT NULL
+         AND ((m.team1 = p.team AND m.score2 = 0)
+           OR (m.team2 = p.team AND m.score1 = 0))),
+      0
+    )
+  END
+  WHERE TRUE;
+END;
+$$;
+
+-- Helper: insert appearances by (match_id, team, player names[])
+CREATE OR REPLACE FUNCTION public.add_match_appearances(
+  p_match_id bigint,
+  p_team text,
+  p_names text[]
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.match_appearances (match_id, player_id)
+  SELECT p_match_id, p.id
+  FROM public.five_a_side_players p
+  WHERE p.team = p_team
+    AND p.name = ANY (p_names)
+  ON CONFLICT (match_id, player_id) DO NOTHING;
+END;
+$$;
+
+-- ── Match 1: Mexico 2-0 South Africa (Sky Sports lineups) ──
+SELECT public.add_match_appearances(1, 'Mexico', ARRAY[
+  'Raul Rangel', 'Israel Reyes', 'Cesar Montes', 'Johan Vasquez', 'Jesus Gallardo',
+  'Erik Lira', 'Roberto Alvarado', 'Brian Gutierrez', 'Alvaro Fidalgo', 'Julian Quinones', 'Raul Jimenez',
+  'Gilberto Mora', 'Mateo Chavez', 'Luis Chavez', 'Edson Alvarez', 'Luis Romo', 'Armando Gonzalez', 'Alexis Vega'
+]);
+
+SELECT public.add_match_appearances(1, 'South Africa', ARRAY[
+  'Ronwen Williams', 'Khuliso Mudau', 'Nkosinathi Sibisi', 'Ime Okon', 'Mbekezeli Mbokazi', 'Aubrey Modiba',
+  'Teboho Mokoena', 'Sphephelo Sithole', 'Jayden Adams', 'Iqraam Rayners', 'Lyle Foster',
+  'Thalente Mbatha', 'Themba Zwane', 'Oswin Appollis', 'Evidence Makgopa'
+]);
+
+-- ── Match 2: Korea Republic 2-1 Czechia (FIFA lineups + bench unused lists) ──
+SELECT public.add_match_appearances(2, 'Korea Republic', ARRAY[
+  'Kim Seung-gyu', 'Lee Han-beom', 'Park Jin-seob', 'Lee Ki-hyuk', 'Kim Min-jae', 'Lee Tae-seok', 'Seol Young-woo',
+  'Hwang Hee-chan', 'Yang Hyun-jun', 'Hwang In-beom', 'Lee Jae-sung', 'Kim Jin-gyu', 'Eom Ji-sung', 'Lee Kan-gin',
+  'Paik Seung-ho', 'Cho Gue-sung', 'Son Heung-min', 'Oh Hyeong-yu'
+]);
+
+SELECT public.add_match_appearances(2, 'Czechia', ARRAY[
+  'Matej Kovar', 'Vladimir Coufal', 'Robin Hranac', 'Stepan Chaloupek', 'Ladislav Krejci', 'Jaroslav Zeleny',
+  'Vladimir Darida', 'Lukas Provod', 'Michal Sadilek', 'Alexandr Sojka', 'Tomas Soucek', 'Pavel Sulc',
+  'Adam Hlozek', 'Tomas Chory', 'Mojmir Chytil', 'Jan Kuchta', 'Patrik Schick'
+]);
+
+-- ── Match 3: Canada 1-1 Bosnia and Herzegovina (Sofascore lineups) ──
+SELECT public.add_match_appearances(3, 'Canada', ARRAY[
+  'Maxime Crepeau', 'Richie Laryea', 'Derek Cornelius', 'Luc de Fougerolles', 'Alistair Johnston',
+  'Liam Millar', 'Stephen Eustaquio', 'Ismael Kone', 'Tajon Buchanan', 'Tani Oluwaseyi', 'Jonathan David',
+  'Ali Ahmed', 'Jacob Shaffelburg', 'Promise David', 'Cyle Larin', 'Jonathan Osorio'
+]);
+
+SELECT public.add_match_appearances(3, 'Bosnia and Herzegovina', ARRAY[
+  'Nikola Vasilj', 'Amar Dedić', 'Nikola Katić', 'Tarik Muharemović', 'Sead Kolašinac',
+  'Esmir Bajraktarevic', 'Benjamin Tahirovic', 'Ivan Basic', 'Amar Memic', 'Ermedin Demirovic', 'Jovo Lukic',
+  'Armin Gigovic', 'Samed Bazdar', 'Ivan Sunjic', 'Kerim Alajbegovic', 'Dzenis Burnic'
+]);
+
+SELECT public.refresh_five_a_side_player_stats();

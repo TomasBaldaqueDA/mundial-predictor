@@ -18,6 +18,7 @@ import {
   type FiveASidePicks,
   type SlotKey,
 } from "@/lib/five-a-side"
+import { resolveGamesPlayed } from "@/lib/match-appearances"
 import { getSupersubButtonState, type MatchForSupersubWindow } from "@/lib/five-a-side-window"
 
 type Player = {
@@ -31,6 +32,7 @@ type Player = {
   wins: number
   clean_sheets: number
   mvp: number
+  games_played: number
 }
 
 type Picks = FiveASidePicks
@@ -105,8 +107,6 @@ export default function FiveASidePage() {
   const [modalSlot, setModalSlot] = useState<SlotKey | null>(null)
   const [teamFilter, setTeamFilter] = useState<string>("")
   const [isEditing, setIsEditing] = useState(false)
-  /** Finished matches per national team (for GP). */
-  const [teamGpByTeam, setTeamGpByTeam] = useState<Record<string, number>>({})
   const [tournamentMatches, setTournamentMatches] = useState<MatchForSupersubWindow[]>([])
   const [supersubModalSlot, setSupersubModalSlot] = useState<SlotKey | null>(null)
   const [supersubSlotPickerOpen, setSupersubSlotPickerOpen] = useState(false)
@@ -129,25 +129,21 @@ export default function FiveASidePage() {
         playersData,
         { data: { user: u } },
         { data: firstMatch },
-        { data: finishedRows },
         { data: scheduleRows },
       ] = await Promise.all([
         fetchAllFiveASidePlayers(
           supabase,
-          "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+          "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp, games_played"
+        ).catch(async () =>
+          fetchAllFiveASidePlayers(
+            supabase,
+            "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+          )
         ),
         supabase.auth.getUser(),
         supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
-        supabase.from("matches").select("team1, team2").eq("status", "finished"),
         supabase.from("matches").select("id, stage, group, kickoff_time, status").order("kickoff_time"),
       ])
-      const gp: Record<string, number> = {}
-      for (const row of finishedRows ?? []) {
-        const m = row as { team1?: string | null; team2?: string | null }
-        if (m.team1) gp[m.team1] = (gp[m.team1] ?? 0) + 1
-        if (m.team2) gp[m.team2] = (gp[m.team2] ?? 0) + 1
-      }
-      setTeamGpByTeam(gp)
       setTournamentMatches((scheduleRows ?? []) as MatchForSupersubWindow[])
       const list = (playersData ?? []).map((p: Record<string, unknown>) => ({
         ...p,
@@ -156,6 +152,7 @@ export default function FiveASidePage() {
         wins: Number(p.wins) || 0,
         clean_sheets: Number(p.clean_sheets) || 0,
         mvp: Number(p.mvp) || 0,
+        games_played: resolveGamesPlayed(String(p.team), String(p.name), p.games_played as number | undefined),
       })) as Player[]
       setPlayers(list)
       const byPos: Record<string, Player[]> = { gk: [], df: [], md: [], st: [] }
@@ -632,7 +629,6 @@ export default function FiveASidePage() {
                       badge={badge}
                       player={subbedOut.player}
                       shirtNumber={shirtNumberByPlayerId.get(subbedOut.player.id) ?? 1}
-                      teamGamesPlayed={teamGpByTeam[subbedOut.player.team] ?? 0}
                       locked
                       status="locked"
                       isPickerOpen={false}
@@ -651,7 +647,6 @@ export default function FiveASidePage() {
                   badge={badge}
                   player={displayPlayer}
                   shirtNumber={player ? (shirtNumberByPlayerId.get(player.id) ?? 1) : 0}
-                  teamGamesPlayed={player ? (teamGpByTeam[player.team] ?? 0) : 0}
                   locked={slotsLocked}
                   status={status}
                   isPickerOpen={modalSlot === slot}
@@ -1042,7 +1037,6 @@ function FantasyPlayerCard({
   badge,
   player,
   shirtNumber,
-  teamGamesPlayed,
   locked,
   status,
   isPickerOpen,
@@ -1054,8 +1048,6 @@ function FantasyPlayerCard({
   badge: string
   player: Player | null
   shirtNumber: number
-  /** Finished WC matches this nation has played (all squad members share). */
-  teamGamesPlayed: number
   locked: boolean
   status: "empty" | "editing" | "filled" | "locked"
   isPickerOpen: boolean
@@ -1162,9 +1154,9 @@ function FantasyPlayerCard({
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-x-0.5">
-                  <div className="min-w-0" title="Team matches finished (World Cup)">
+                  <div className="min-w-0" title="Matches this player appeared in">
                     <div className={statMuted}>GP</div>
-                    <div className={statVal}>{teamGamesPlayed}</div>
+                    <div className={statVal}>{player.games_played}</div>
                   </div>
                   <div className="min-w-0">
                     <div className={statMuted}>W</div>

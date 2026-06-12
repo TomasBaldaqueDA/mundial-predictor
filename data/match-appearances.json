@@ -1,0 +1,62 @@
+[
+  {
+    "matchId": 1,
+    "team1": "Mexico",
+    "team2": "South Africa",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "Mexico", "name": "Julian Quinones" },
+    "appearances": {
+      "Mexico": [
+        "Raul Rangel", "Israel Reyes", "Cesar Montes", "Johan Vasquez", "Jesus Gallardo",
+        "Erik Lira", "Roberto Alvarado", "Brian Gutierrez", "Alvaro Fidalgo", "Julian Quinones", "Raul Jimenez",
+        "Gilberto Mora", "Mateo Chavez", "Luis Chavez", "Edson Alvarez", "Luis Romo", "Armando Gonzalez", "Alexis Vega"
+      ],
+      "South Africa": [
+        "Ronwen Williams", "Khuliso Mudau", "Nkosinathi Sibisi", "Ime Okon", "Mbekezeli Mbokazi", "Aubrey Modiba",
+        "Teboho Mokoena", "Sphephelo Sithole", "Jayden Adams", "Iqraam Rayners", "Lyle Foster",
+        "Thalente Mbatha", "Themba Zwane", "Oswin Appollis", "Evidence Makgopa"
+      ]
+    }
+  },
+  {
+    "matchId": 2,
+    "team1": "Korea Republic",
+    "team2": "Czechia",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Korea Republic", "name": "Hwang In-beom" },
+    "appearances": {
+      "Korea Republic": [
+        "Kim Seung-gyu", "Lee Han-beom", "Park Jin-seob", "Lee Ki-hyuk", "Kim Min-jae", "Lee Tae-seok", "Seol Young-woo",
+        "Hwang Hee-chan", "Yang Hyun-jun", "Hwang In-beom", "Lee Jae-sung", "Kim Jin-gyu", "Eom Ji-sung", "Lee Kan-gin",
+        "Paik Seung-ho", "Cho Gue-sung", "Son Heung-min", "Oh Hyeong-yu"
+      ],
+      "Czechia": [
+        "Matej Kovar", "Vladimir Coufal", "Robin Hranac", "Stepan Chaloupek", "Ladislav Krejci", "Jaroslav Zeleny",
+        "Vladimir Darida", "Lukas Provod", "Michal Sadilek", "Alexandr Sojka", "Tomas Soucek", "Pavel Sulc",
+        "Adam Hlozek", "Tomas Chory", "Mojmir Chytil", "Jan Kuchta", "Patrik Schick"
+      ]
+    }
+  },
+  {
+    "matchId": 3,
+    "team1": "Canada",
+    "team2": "Bosnia and Herzegovina",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Canada", "name": "Ismael Kone" },
+    "appearances": {
+      "Canada": [
+        "Maxime Crepeau", "Richie Laryea", "Derek Cornelius", "Luc de Fougerolles", "Alistair Johnston",
+        "Liam Millar", "Stephen Eustaquio", "Ismael Kone", "Tajon Buchanan", "Tani Oluwaseyi", "Jonathan David",
+        "Ali Ahmed", "Jacob Shaffelburg", "Promise David", "Cyle Larin", "Jonathan Osorio"
+      ],
+      "Bosnia and Herzegovina": [
+        "Nikola Vasilj", "Amar Dedić", "Nikola Katić", "Tarik Muharemović", "Sead Kolašinac",
+        "Esmir Bajraktarevic", "Benjamin Tahirovic", "Ivan Basic", "Amar Memic", "Ermedin Demirovic", "Jovo Lukic",
+        "Armin Gigovic", "Samed Bazdar", "Ivan Sunjic", "Kerim Alajbegovic", "Dzenis Burnic"
+      ]
+    }
+  }
+]
