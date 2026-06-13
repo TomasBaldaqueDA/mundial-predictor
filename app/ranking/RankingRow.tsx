@@ -30,11 +30,11 @@ const PODIUM_CONFIGS = [
     rank: "2",
   },
   {
-    ring: "ring-amber-700/35",
-    bg: "bg-amber-800/8",
+    ring: "ring-orange-800/40",
+    bg: "bg-orange-950/10",
     avatarBg: "bg-amber-700",
-    text: "text-amber-300",
-    pts: "text-amber-300",
+    text: "text-orange-300",
+    pts: "text-orange-300",
     rank: "3",
   },
 ]
