@@ -147,4 +147,17 @@ SELECT public.add_match_appearances(3, 'Bosnia and Herzegovina', ARRAY[
   'Armin Gigovic', 'Samed Bazdar', 'Ivan Sunjic', 'Kerim Alajbegovic', 'Dzenis Burnic'
 ]);
 
+-- ── Match 4: USA 4-1 Paraguay (Sofascore lineups) ──
+SELECT public.add_match_appearances(4, 'USA', ARRAY[
+  'Matt Freese', 'Antonee Robinson', 'Tim Ream', 'Chris Richards', 'Alex Freeman',
+  'Malik Tillman', 'Tyler Adams', 'Christian Pulisic', 'Weston McKennie', 'Sergiño Dest', 'Folarin Balogun',
+  'Sebastian Berhalter', 'Timothy Weah', 'Ricardo Pepi', 'Gio Reyna'
+]);
+
+SELECT public.add_match_appearances(4, 'Paraguay', ARRAY[
+  'Orlando Gill', 'Diego Gomez', 'Andres Cubas', 'Damian Bobadilla', 'Miguel Almiron',
+  'Juan Jose Caceres', 'Gustavo Gomez', 'Omar Alderete', 'Junior Alonso', 'Antonio Sanabria', 'Julio Enciso',
+  'Mauricio Magalhaes', 'Alex Arce', 'Gustavo Velazquez', 'Ramon Sosa', 'Alejandro Romero'
+]);
+
 SELECT public.refresh_five_a_side_player_stats();

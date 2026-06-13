@@ -58,5 +58,25 @@
         "Armin Gigovic", "Samed Bazdar", "Ivan Sunjic", "Kerim Alajbegovic", "Dzenis Burnic"
       ]
     }
+  },
+  {
+    "matchId": 4,
+    "team1": "USA",
+    "team2": "Paraguay",
+    "score1": 4,
+    "score2": 1,
+    "mvp": { "team": "USA", "name": "Folarin Balogun" },
+    "appearances": {
+      "USA": [
+        "Matt Freese", "Antonee Robinson", "Tim Ream", "Chris Richards", "Alex Freeman",
+        "Malik Tillman", "Tyler Adams", "Christian Pulisic", "Weston McKennie", "Sergiño Dest", "Folarin Balogun",
+        "Sebastian Berhalter", "Timothy Weah", "Ricardo Pepi", "Gio Reyna"
+      ],
+      "Paraguay": [
+        "Orlando Gill", "Diego Gomez", "Andres Cubas", "Damian Bobadilla", "Miguel Almiron",
+        "Juan Jose Caceres", "Gustavo Gomez", "Omar Alderete", "Junior Alonso", "Antonio Sanabria", "Julio Enciso",
+        "Mauricio Magalhaes", "Alex Arce", "Gustavo Velazquez", "Ramon Sosa", "Alejandro Romero"
+      ]
+    }
   }
 ]

@@ -1,0 +1,17 @@
+{
+  "id": 4,
+  "score1": 4,
+  "score2": 1,
+  "mvp": "Folarin Balogun",
+  "goals": [
+    { "team": "USA", "name": "Folarin Balogun", "count": 2 },
+    { "team": "USA", "name": "Gio Reyna" },
+    { "team": "Paraguay", "name": "Mauricio Magalhaes" }
+  ],
+  "assists": [
+    { "team": "USA", "name": "Christian Pulisic" },
+    { "team": "USA", "name": "Malik Tillman" },
+    { "team": "USA", "name": "Alex Freeman" },
+    { "team": "Paraguay", "name": "Julio Enciso" }
+  ]
+}
