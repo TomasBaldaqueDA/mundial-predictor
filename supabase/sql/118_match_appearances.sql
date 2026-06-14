@@ -173,4 +173,17 @@ SELECT public.add_match_appearances(5, 'Switzerland', ARRAY[
   'Fabian Rieder', 'Johan Manzambi', 'Zeki Amdouni', 'Miro Muheim', 'Ardon Jashari'
 ]);
 
+-- ── Match 6: Brazil 1-1 Morocco (Sofascore lineups) ──
+SELECT public.add_match_appearances(6, 'Brazil', ARRAY[
+  'Alisson', 'Douglas Santos', 'Gabriel Magalhaes', 'Marquinhos', 'Ibanez',
+  'Bruno Guimaraes', 'Casemiro', 'Vinicius Jr', 'Raphinha', 'Lucas Paqueta', 'Igor Thiago',
+  'Danilo', 'Fabinho', 'Matheus Cunha', 'Luiz Henrique', 'Danilo Santos'
+]);
+
+SELECT public.add_match_appearances(6, 'Morocco', ARRAY[
+  'Yassine Bounou', 'Achraf Hakimi', 'Issa Diop', 'Chadi Riad', 'Noussair Mazraoui',
+  'Neil El Aynaoui', 'Ayyoub Bouaddi', 'Brahim Diaz', 'Azzedine Ounahi', 'Bilal El Khannouss', 'Ismael Saibari',
+  'Chemsdine Talbi', 'Samir El Mourabet', 'Anass Salah-Eddine', 'Ayoube Amaimouni', 'Soufiane Rahimi'
+]);
+
 SELECT public.refresh_five_a_side_player_stats();

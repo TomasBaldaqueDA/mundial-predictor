@@ -98,5 +98,25 @@
         "Fabian Rieder", "Johan Manzambi", "Zeki Amdouni", "Miro Muheim", "Ardon Jashari"
       ]
     }
+  },
+  {
+    "matchId": 6,
+    "team1": "Brazil",
+    "team2": "Morocco",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Brazil", "name": "Vinicius Jr" },
+    "appearances": {
+      "Brazil": [
+        "Alisson", "Douglas Santos", "Gabriel Magalhaes", "Marquinhos", "Ibanez",
+        "Bruno Guimaraes", "Casemiro", "Vinicius Jr", "Raphinha", "Lucas Paqueta", "Igor Thiago",
+        "Danilo", "Fabinho", "Matheus Cunha", "Luiz Henrique", "Danilo Santos"
+      ],
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Issa Diop", "Chadi Riad", "Noussair Mazraoui",
+        "Neil El Aynaoui", "Ayyoub Bouaddi", "Brahim Diaz", "Azzedine Ounahi", "Bilal El Khannouss", "Ismael Saibari",
+        "Chemsdine Talbi", "Samir El Mourabet", "Anass Salah-Eddine", "Ayoube Amaimouni", "Soufiane Rahimi"
+      ]
+    }
   }
 ]

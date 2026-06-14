@@ -1,0 +1,14 @@
+{
+  "id": 6,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Vinicius Jr",
+  "goals": [
+    { "team": "Brazil", "name": "Vinicius Jr" },
+    { "team": "Morocco", "name": "Ismael Saibari" }
+  ],
+  "assists": [
+    { "team": "Brazil", "name": "Bruno Guimaraes" },
+    { "team": "Morocco", "name": "Brahim Diaz" }
+  ]
+}
