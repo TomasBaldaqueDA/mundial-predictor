@@ -56,7 +56,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
       .eq("user_id", userId),
     supabase
       .from("matches")
-      .select("id, team1, team2, kickoff_time, stage, score1, score2, qualifier")
+      .select("id, team1, team2, kickoff_time, stage, score1, score2, qualifier, mvp")
       .lte("kickoff_time", nowIso)
       .order("kickoff_time", { ascending: false }),
     supabase
@@ -102,6 +102,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
         score1: number | null
         score2: number | null
         qualifier: string | null
+        mvp: string | null
       },
     ])
   )
@@ -125,6 +126,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
         score1: m.score1,
         score2: m.score2,
         actual_qualifier: m.qualifier,
+        actual_mvp: m.mvp,
         hasRes,
       }
     })
@@ -142,6 +144,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     score1: number | null
     score2: number | null
     actual_qualifier: string | null
+    actual_mvp: string | null
     hasRes: boolean
   }[]
 
@@ -248,12 +251,6 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                     <span className="font-bold tabular-nums text-slate-100">
                       {r.pred_score1}–{r.pred_score2}
                     </span>
-                    {r.pred_mvp && (
-                      <>
-                        {" "}
-                        · MVP: <span className="text-slate-100">{r.pred_mvp}</span>
-                      </>
-                    )}
                     {r.pred_qualifier && (
                       <>
                         {" "}
@@ -261,12 +258,23 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                       </>
                     )}
                   </div>
+                  {r.pred_mvp && (
+                    <div className="text-xs text-slate-300 mt-1">
+                      MVP: <span className="text-slate-100">{r.pred_mvp}</span>
+                    </div>
+                  )}
                   {r.hasRes && (
                     <div className="text-xs text-emerald-300 mt-1">
                       Result:{" "}
                       <span className="font-semibold tabular-nums">
                         {r.score1}–{r.score2}
                       </span>
+                      {r.actual_mvp && (
+                        <>
+                          {" "}
+                          · MVP: <span className="text-emerald-100">{r.actual_mvp}</span>
+                        </>
+                      )}
                       {r.actual_qualifier && (
                         <>
                           {" "}
