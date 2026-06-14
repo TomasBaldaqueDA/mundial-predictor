@@ -243,18 +243,27 @@ export default async function MatchPage({
                         )}
                       </td>
                       <td className="px-4 py-3 text-slate-200">
-                        <span className="font-semibold tabular-nums">
-                          {p.score1} – {p.score2}
-                        </span>
-                        <span className="text-white/40 ml-1.5 text-xs">
-                          ({(p.score1 ?? 0) > (p.score2 ?? 0) ? (
-                            <><TeamWithFlag name={match.team1} suffix=" wins" /></>
-                          ) : (p.score2 ?? 0) > (p.score1 ?? 0) ? (
-                            <><TeamWithFlag name={match.team2} suffix=" wins" /></>
-                          ) : (
-                            "Draw"
-                          )})
-                        </span>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {p.x2 && (
+                            <span className="inline-flex items-center rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200 shrink-0">
+                              Power-up ×2
+                            </span>
+                          )}
+                          <span>
+                            <span className="font-semibold tabular-nums">
+                              {p.score1} – {p.score2}
+                            </span>
+                            <span className="text-white/40 ml-1.5 text-xs">
+                              ({(p.score1 ?? 0) > (p.score2 ?? 0) ? (
+                                <><TeamWithFlag name={match.team1} suffix=" wins" /></>
+                              ) : (p.score2 ?? 0) > (p.score1 ?? 0) ? (
+                                <><TeamWithFlag name={match.team2} suffix=" wins" /></>
+                              ) : (
+                                "Draw"
+                              )})
+                            </span>
+                          </span>
+                        </div>
                       </td>
                       {isKnockout && (
                         <td className="px-4 py-3 text-slate-200"><TeamWithFlag name={p.pred_qualifier} /></td>
