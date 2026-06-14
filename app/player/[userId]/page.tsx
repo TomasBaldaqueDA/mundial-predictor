@@ -52,7 +52,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
     supabase
       .from("predictions")
-      .select("id, match_id, pred_score1, pred_score2, pred_mvp, pred_qualifier, points")
+      .select("id, match_id, pred_score1, pred_score2, pred_mvp, pred_qualifier, points, points_multiplier")
       .eq("user_id", userId),
     supabase
       .from("matches")
@@ -123,6 +123,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
         pred_mvp: (p.pred_mvp as string | null) ?? null,
         pred_qualifier: (p.pred_qualifier as string | null) ?? null,
         points: p.points as number | null,
+        points_multiplier: (p.points_multiplier as number | null) ?? 1,
         score1: m.score1,
         score2: m.score2,
         actual_qualifier: m.qualifier,
@@ -141,6 +142,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     pred_mvp: string | null
     pred_qualifier: string | null
     points: number | null
+    points_multiplier: number
     score1: number | null
     score2: number | null
     actual_qualifier: string | null
@@ -233,14 +235,25 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
           <p className="text-sm text-slate-500 glass rounded-xl p-4">No match predictions yet.</p>
         ) : (
           <div className="space-y-3">
-            {matchRows.map((r) => (
+            {matchRows.map((r) => {
+              const x2 = r.points_multiplier === 2
+              return (
               <div
                 key={r.id}
-                className="glass rounded-xl p-4 border border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                className={`rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
+                  x2
+                    ? "glass border border-amber-400/35 bg-amber-500/8"
+                    : "glass border border-white/10"
+                }`}
               >
                 <div>
                   <div className="font-semibold text-slate-100 flex flex-wrap items-center gap-1.5 text-sm">
                     <TeamWithFlag name={r.team1} /> vs <TeamWithFlag name={r.team2} />
+                    {x2 && (
+                      <span className="inline-flex items-center rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">
+                        Power-up ×2
+                      </span>
+                    )}
                   </div>
                   <div className="text-xs text-slate-400 mt-1">
                     <KickoffText kickoff={r.kickoff_time} />
@@ -302,7 +315,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                   )}
                 </div>
               </div>
-            ))}
+            )})}
           </div>
         )}
       </section>

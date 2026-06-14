@@ -29,6 +29,7 @@ export default function LeagueMemberPredictionsPage({
       pred_score2: number
       pred_mvp: string | null
       points: number | null
+      points_multiplier: number
       score1: number | null
       score2: number | null
       actual_mvp: string | null
@@ -61,7 +62,7 @@ export default function LeagueMemberPredictionsPage({
 
       const { data: preds } = await supabase
         .from("predictions")
-        .select("id, match_id, pred_score1, pred_score2, pred_mvp, points")
+        .select("id, match_id, pred_score1, pred_score2, pred_mvp, points, points_multiplier")
         .eq("user_id", targetUserId)
         .order("id", { ascending: false })
 
@@ -93,6 +94,7 @@ export default function LeagueMemberPredictionsPage({
             pred_score2: p.pred_score2 ?? 0,
             pred_mvp: p.pred_mvp,
             points: p.points,
+            points_multiplier: p.points_multiplier ?? 1,
             score1: m.score1,
             score2: m.score2,
             actual_mvp: m.mvp,
@@ -142,11 +144,24 @@ export default function LeagueMemberPredictionsPage({
       <div className="space-y-3">
         {rows.map((r) => {
           const hasRes = r.score1 != null && r.score2 != null
+          const x2 = r.points_multiplier === 2
           return (
-            <div key={r.pred_id} className="glass rounded-xl p-4 border border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div
+              key={r.pred_id}
+              className={`rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
+                x2
+                  ? "glass border border-amber-400/35 bg-amber-500/8"
+                  : "glass border border-white/10"
+              }`}
+            >
               <div>
                 <div className="font-semibold text-slate-100 flex flex-wrap items-center gap-1.5 text-sm">
                   <TeamWithFlag name={r.team1} /> vs <TeamWithFlag name={r.team2} />
+                  {x2 && (
+                    <span className="inline-flex items-center rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200">
+                      Power-up ×2
+                    </span>
+                  )}
                 </div>
                 <div className="text-xs text-slate-400 mt-1">
                   <KickoffText kickoff={r.kickoff_time} />
