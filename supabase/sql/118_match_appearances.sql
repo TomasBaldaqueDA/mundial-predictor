@@ -186,4 +186,17 @@ SELECT public.add_match_appearances(6, 'Morocco', ARRAY[
   'Chemsdine Talbi', 'Samir El Mourabet', 'Anass Salah-Eddine', 'Ayoube Amaimouni', 'Soufiane Rahimi'
 ]);
 
+-- ── Match 7: Haiti 0-1 Scotland (Sofascore lineups) ──
+SELECT public.add_match_appearances(7, 'Haiti', ARRAY[
+  'Johnny Placide', 'Carlens Arcus', 'Ricardo Ade', 'Hannes Delcroix', 'Martin Experience',
+  'Louicius Deedson', 'Jean-Jacques Danley', 'Jeanricner Bellegarde', 'Ruben Providence',
+  'Frantzdy Pierrot', 'Wilson Isidor', 'Josué Casimir', 'Lenny Joseph', 'Yassin Fortune'
+]);
+
+SELECT public.add_match_appearances(7, 'Scotland', ARRAY[
+  'Angus Gunn', 'Andy Robertson', 'Jack Hendry', 'Grant Hanley', 'Aaron Hickey',
+  'Lewis Ferguson', 'John McGinn', 'Scott McTominay', 'Ben Gannon-Doak', 'Che Adams', 'Lawrence Shankland',
+  'Ryan Christie', 'Lyndon Dykes', 'Nathan Patterson', 'Findlay Curtis', 'Kenny McLean'
+]);
+
 SELECT public.refresh_five_a_side_player_stats();
