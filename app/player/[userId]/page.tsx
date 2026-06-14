@@ -251,6 +251,12 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                     <span className="font-bold tabular-nums text-slate-100">
                       {r.pred_score1}–{r.pred_score2}
                     </span>
+                    {r.pred_mvp && (
+                      <>
+                        {" "}
+                        · MVP: <span className="text-slate-100">{r.pred_mvp}</span>
+                      </>
+                    )}
                     {r.pred_qualifier && (
                       <>
                         {" "}
@@ -258,11 +264,6 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                       </>
                     )}
                   </div>
-                  {r.pred_mvp && (
-                    <div className="text-xs text-slate-300 mt-1">
-                      MVP: <span className="text-slate-100">{r.pred_mvp}</span>
-                    </div>
-                  )}
                   {r.hasRes && (
                     <div className="text-xs text-emerald-300 mt-1">
                       Result:{" "}
@@ -272,7 +273,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
                       {r.actual_mvp && (
                         <>
                           {" "}
-                          · MVP: <span className="text-emerald-100">{r.actual_mvp}</span>
+                          · MVP: <span className="font-semibold">{r.actual_mvp}</span>
                         </>
                       )}
                       {r.actual_qualifier && (
