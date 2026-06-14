@@ -85,6 +85,7 @@ export default async function MatchPage({
     pred_mvp: string | null
     pred_qualifier: string | null
     points: number | null
+    points_multiplier: number | null
     created_at: string
   }
 
@@ -139,6 +140,7 @@ export default async function MatchPage({
       mvp: p.pred_mvp,
       pred_qualifier: p.pred_qualifier ?? null,
       points: p.points ?? 0,
+      x2: Number(p.points_multiplier) === 2,
       isOwn: p.user_id != null && p.user_id === currentUser?.id,
     }))
     .sort((a, b) => b.points - a.points)
