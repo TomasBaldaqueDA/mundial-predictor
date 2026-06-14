@@ -1,0 +1,18 @@
+{
+  "id": 10,
+  "score1": 2,
+  "score2": 2,
+  "mvp": "Virgil van Dijk",
+  "goals": [
+    { "team": "Netherlands", "name": "Virgil van Dijk" },
+    { "team": "Japan", "name": "Keito Nakamura" },
+    { "team": "Netherlands", "name": "Crysencio Summerville" },
+    { "team": "Japan", "name": "Daichi Kamada" }
+  ],
+  "assists": [
+    { "team": "Netherlands", "name": "Ryan Gravenberch" },
+    { "team": "Netherlands", "name": "Ryan Gravenberch" },
+    { "team": "Japan", "name": "Takefusa Kubo" },
+    { "team": "Japan", "name": "Koki Ogawa" }
+  ]
+}

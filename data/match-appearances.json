@@ -178,5 +178,25 @@
         "Jeremy Antonisse", "Jearl Margaritha", "Gervane Kastaneer"
       ]
     }
+  },
+  {
+    "matchId": 10,
+    "team1": "Netherlands",
+    "team2": "Japan",
+    "score1": 2,
+    "score2": 2,
+    "mvp": { "team": "Netherlands", "name": "Virgil van Dijk" },
+    "appearances": {
+      "Netherlands": [
+        "Bart Verbruggen", "Denzel Dumfries", "Jan Paul van Hecke", "Virgil van Dijk", "Micky van de Ven",
+        "Ryan Gravenberch", "Frenkie de Jong", "Tijjani Reijnders", "Crysencio Summerville", "Donyell Malen", "Cody Gakpo",
+        "Quinten Timber", "Teun Koopmeiners", "Memphis Depay", "Nathan Aké", "Brian Brobbey"
+      ],
+      "Japan": [
+        "Zion Suzuki", "Tsuyoshi Watanabe", "Shogo Taniguchi", "Hiroki Ito", "Ritsu Doan",
+        "Kaishu Sano", "Daichi Kamada", "Keito Nakamura", "Takefusa Kubo", "Daizen Maeda", "Ayase Ueda",
+        "Junya Ito", "Yukinari Sugawara", "Takehiro Tomiyasu", "Koki Ogawa", "Kento Shiogai"
+      ]
+    }
   }
 ]
