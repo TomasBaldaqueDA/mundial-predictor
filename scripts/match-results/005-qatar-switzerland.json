@@ -1,0 +1,10 @@
+{
+  "id": 5,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Mahmoud Abunada",
+  "goals": [
+    { "team": "Switzerland", "name": "Breel Embolo" }
+  ],
+  "assists": []
+}

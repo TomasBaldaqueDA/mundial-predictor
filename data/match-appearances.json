@@ -78,5 +78,25 @@
         "Mauricio Magalhaes", "Alex Arce", "Gustavo Velazquez", "Ramon Sosa", "Alejandro Romero"
       ]
     }
+  },
+  {
+    "matchId": 5,
+    "team1": "Qatar",
+    "team2": "Switzerland",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Qatar", "name": "Mahmoud Abunada" },
+    "appearances": {
+      "Qatar": [
+        "Mahmoud Abunada", "Homam Al-Amin", "Boualem Khoukhi", "Pedro Miguel", "Ayoub Alawi",
+        "Issa Laaye", "Assim Madibo", "Jassem Jaber", "Akram Afif", "Youssef Abdulrazzaq", "Edmilson Junior",
+        "Ahmed Fathi", "Karim Boudiaf", "Ahmed Alaa", "Mohammed Al-Manai", "Hassan Al-Haydos"
+      ],
+      "Switzerland": [
+        "Gregor Kobel", "Denis Zakaria", "Nico Elvedi", "Manuel Akanji", "Ricardo Rodriguez",
+        "Michel Aebischer", "Granit Xhaka", "Remo Freuler", "Dan Ndoye", "Breel Embolo", "Ruben Vargas",
+        "Fabian Rieder", "Johan Manzambi", "Zeki Amdouni", "Miro Muheim", "Ardon Jashari"
+      ]
+    }
   }
 ]
