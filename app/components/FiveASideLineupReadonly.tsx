@@ -18,10 +18,9 @@ import { squadShirtNumbers } from "@/lib/team-kit"
 type Props = {
   picks: FiveASidePicks
   players: FiveASidePlayer[]
-  teamGpByTeam: Record<string, number>
 }
 
-export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props) {
+export function FiveASideLineupReadonly({ picks, players }: Props) {
   const playersById = useMemo(() => new Map(players.map((p) => [p.id, p])), [players])
   const shirtNumberByPlayerId = useMemo(() => squadShirtNumbers(players), [players])
 
@@ -61,7 +60,6 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
             const subbedOut = supersubOnSlot ? supersubOutFrozenDisplay(picks, playersById) : null
             const subbedIn = supersubOnSlot ? supersubInDeltaDisplay(picks, playersById) : null
             const displayPlayer = subbedIn?.player ?? player
-            const gp = player ? (teamGpByTeam[player.team] ?? 0) : 0
             const shirt = player ? (shirtNumberByPlayerId.get(player.id) ?? 1) : 0
             const isCaptain = !!(player && captainId === player.id)
             const wasSubbedOut =
@@ -74,7 +72,6 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
                       player={subbedOut.player}
                       badge={badge}
                       shirt={shirtNumberByPlayerId.get(subbedOut.player.id) ?? 1}
-                      gp={teamGpByTeam[subbedOut.player.team] ?? 0}
                       isCaptain={captainId === subbedOut.player.id}
                       substitutedOut
                     />
@@ -121,17 +118,8 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
                         {displayPlayer.name}
                       </p>
                       <p className="text-[9px] text-slate-400 mt-0.5 truncate">{displayPlayer.team}</p>
-                      <p className="text-[9px] text-slate-500 mt-1 tabular-nums">
-                        #{shirt} · GP {gp}
-                      </p>
-                      <div className="mt-2 grid grid-cols-4 gap-0.5 text-[8px] text-slate-400">
-                        <span>G {displayPlayer.goals}</span>
-                        <span>A {displayPlayer.assists}</span>
-                        {(displayPlayer.position === "gk" || displayPlayer.position === "df") && (
-                          <span>CS {displayPlayer.clean_sheets}</span>
-                        )}
-                        <span>MVP {displayPlayer.mvp}</span>
-                      </div>
+                      <p className="text-[9px] text-slate-500 mt-1 tabular-nums">#{shirt}</p>
+                      <PlayerStatGrid player={displayPlayer} />
                     </div>
                   ) : (
                     <div className="px-2 pb-4 pt-2 text-center text-[10px] text-slate-500">{label} — empty</div>
@@ -168,18 +156,34 @@ export function FiveASideLineupReadonly({ picks, players, teamGpByTeam }: Props)
   )
 }
 
+function PlayerStatGrid({ player }: { player: FiveASidePlayer }) {
+  const showCleanSheet = player.position === "gk" || player.position === "df"
+  return (
+    <div className="mt-2 space-y-1 text-[8px] text-slate-400">
+      <div className={`grid gap-0.5 ${showCleanSheet ? "grid-cols-4" : "grid-cols-3"}`}>
+        <span>G {player.goals}</span>
+        <span>A {player.assists}</span>
+        {showCleanSheet && <span>CS {player.clean_sheets}</span>}
+        <span>MVP {player.mvp}</span>
+      </div>
+      <div className="grid grid-cols-2 gap-0.5">
+        <span>GP {player.games_played}</span>
+        <span>W {player.wins}</span>
+      </div>
+    </div>
+  )
+}
+
 function ReadonlyMiniCard({
   player,
   badge,
   shirt,
-  gp,
   isCaptain,
   substitutedOut,
 }: {
   player: FiveASidePlayer
   badge: string
   shirt: number
-  gp: number
   isCaptain: boolean
   substitutedOut?: boolean
 }) {
@@ -213,15 +217,8 @@ function ReadonlyMiniCard({
         </div>
         <p className="text-[10px] font-bold text-slate-100 leading-tight line-clamp-2 min-h-[2rem]">{player.name}</p>
         <p className="text-[9px] text-slate-400 mt-0.5 truncate">{player.team}</p>
-        <p className="text-[9px] text-slate-500 mt-1 tabular-nums">
-          #{shirt} · GP {gp}
-        </p>
-        <div className="mt-2 grid grid-cols-4 gap-0.5 text-[8px] text-slate-400">
-          <span>G {player.goals}</span>
-          <span>A {player.assists}</span>
-          {(player.position === "gk" || player.position === "df") && <span>CS {player.clean_sheets}</span>}
-          <span>MVP {player.mvp}</span>
-        </div>
+        <p className="text-[9px] text-slate-500 mt-1 tabular-nums">#{shirt}</p>
+        <PlayerStatGrid player={player} />
       </div>
     </div>
   )

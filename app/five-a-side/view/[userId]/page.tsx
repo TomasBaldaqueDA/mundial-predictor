@@ -33,7 +33,6 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
     { data: picksRow },
     playersRows,
     { data: profile },
-    { data: finishedRows },
     { data: firstMatch },
   ] = await Promise.all([
     supabase
@@ -43,10 +42,14 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
       .maybeSingle(),
     fetchAllFiveASidePlayers(
       supabase,
-      "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+      "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp, games_played"
+    ).catch(() =>
+      fetchAllFiveASidePlayers(
+        supabase,
+        "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+      )
     ),
     supabase.from("profiles").select("display_name").eq("id", userId).maybeSingle(),
-    supabase.from("matches").select("team1, team2").eq("status", "finished"),
     supabase.from("matches").select("kickoff_time").order("kickoff_time", { ascending: true }).limit(1).maybeSingle(),
   ])
 
@@ -61,13 +64,6 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
   const playersById = new Map(players.map((p) => [p.id, p]))
   const totalPts = teamFantasyPoints(picks, playersById)
   const displayName = (profile?.display_name ?? "").trim() || "Anonymous"
-
-  const teamGpByTeam: Record<string, number> = {}
-  for (const row of finishedRows ?? []) {
-    const m = row as { team1?: string | null; team2?: string | null }
-    if (m.team1) teamGpByTeam[m.team1] = (teamGpByTeam[m.team1] ?? 0) + 1
-    if (m.team2) teamGpByTeam[m.team2] = (teamGpByTeam[m.team2] ?? 0) + 1
-  }
 
   return (
     <main className="space-y-6 max-w-6xl mx-auto">
@@ -85,7 +81,7 @@ export default async function FiveASideViewTeamPage({ params }: { params: Promis
       {!canView ? (
         <TournamentLockedNotice message="Other players' 5-A-SIDE teams are hidden until the start of the World Cup." />
       ) : (
-        <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
+        <FiveASideLineupReadonly picks={picks!} players={players} />
       )}
     </main>
   )

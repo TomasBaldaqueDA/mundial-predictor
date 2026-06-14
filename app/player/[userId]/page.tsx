@@ -45,7 +45,6 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
     { data: specialAnswers },
     { data: picksRow },
     playersRows,
-    { data: finishedRows },
     { data: actualStandings },
     { data: actualThird },
   ] = await Promise.all([
@@ -73,8 +72,15 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
       .select(FIVE_A_SIDE_PICKS_COLUMNS)
       .eq("user_id", userId)
       .maybeSingle(),
-    fetchAllFiveASidePlayers(supabase, "id, name, team, position, goals, assists, wins, clean_sheets, mvp"),
-    supabase.from("matches").select("team1, team2").eq("status", "finished"),
+    fetchAllFiveASidePlayers(
+      supabase,
+      "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp, games_played"
+    ).catch(() =>
+      fetchAllFiveASidePlayers(
+        supabase,
+        "id, name, team, position, jersey_number, goals, assists, wins, clean_sheets, mvp"
+      )
+    ),
     supabase.from("group_actual_standings").select("group_code, position, team_name"),
     supabase.from("group_actual_third_place").select("group_code"),
   ])
@@ -192,12 +198,6 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
   const players = (playersRows ?? []).map((row) => normalizePlayer(row as Record<string, unknown>))
   const playersById = new Map(players.map((p) => [p.id, p]))
   const fiveASidePts = teamFantasyPoints(picks, playersById)
-  const teamGpByTeam: Record<string, number> = {}
-  for (const row of finishedRows ?? []) {
-    const m = row as { team1?: string | null; team2?: string | null }
-    if (m.team1) teamGpByTeam[m.team1] = (teamGpByTeam[m.team1] ?? 0) + 1
-    if (m.team2) teamGpByTeam[m.team2] = (teamGpByTeam[m.team2] ?? 0) + 1
-  }
 
   const thirdPlaceGroups = [...groupByCode.entries()]
     .filter(([, g]) => g.thirdQualifies)
@@ -422,7 +422,7 @@ export default async function PlayerPredictionsPage({ params }: { params: Promis
             {!hasAnyPick(picks) ? (
               <p className="text-sm text-slate-500 glass rounded-xl p-4">No 5-A-SIDE team saved.</p>
             ) : (
-              <FiveASideLineupReadonly picks={picks!} players={players} teamGpByTeam={teamGpByTeam} />
+              <FiveASideLineupReadonly picks={picks!} players={players} />
             )}
           </section>
         </>
