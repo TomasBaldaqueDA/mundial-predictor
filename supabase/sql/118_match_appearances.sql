@@ -199,4 +199,17 @@ SELECT public.add_match_appearances(7, 'Scotland', ARRAY[
   'Ryan Christie', 'Lyndon Dykes', 'Nathan Patterson', 'Findlay Curtis', 'Kenny McLean'
 ]);
 
+-- ── Match 8: Australia 2-0 Türkiye (Sofascore lineups) ──
+SELECT public.add_match_appearances(8, 'Australia', ARRAY[
+  'Patrick Beach', 'Jordan Bos', 'Cameron Burgess', 'Harry Souttar', 'Alessandro Circati', 'Jacob Italiano',
+  'Nestory Irankunda', 'Paul Okon-Engstler', 'Aiden O''Neill', 'Connor Metcalfe', 'Mohamed Toure',
+  'Nishan Velupillay', 'Jason Geria', 'Tete Yengi', 'Jackson Irvine', 'Aziz Behich'
+]);
+
+SELECT public.add_match_appearances(8, 'Türkiye', ARRAY[
+  'Ugurcan Cakir', 'Zeki Celik', 'Merih Demiral', 'Abdulkerim Bardakci', 'Ferdi Kadioglu',
+  'Ismail Yuksek', 'Hakan Calhanoglu', 'Arda Guler', 'Orkun Kokcu', 'Baris Alper Yilmaz', 'Kerem Akturkoglu',
+  'Kenan Yildiz', 'Yunus Akgun', 'Mert Muldur', 'Salih Ozcan', 'Deniz Gul'
+]);
+
 SELECT public.refresh_five_a_side_player_stats();

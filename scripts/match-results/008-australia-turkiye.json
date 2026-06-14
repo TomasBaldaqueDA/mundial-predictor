@@ -1,0 +1,13 @@
+{
+  "id": 8,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Nestory Irankunda",
+  "goals": [
+    { "team": "Australia", "name": "Nestory Irankunda" },
+    { "team": "Australia", "name": "Connor Metcalfe" }
+  ],
+  "assists": [
+    { "team": "Australia", "name": "Paul Okon-Engstler" }
+  ]
+}

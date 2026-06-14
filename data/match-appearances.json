@@ -138,5 +138,25 @@
         "Ryan Christie", "Lyndon Dykes", "Nathan Patterson", "Findlay Curtis", "Kenny McLean"
       ]
     }
+  },
+  {
+    "matchId": 8,
+    "team1": "Australia",
+    "team2": "Türkiye",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "Australia", "name": "Nestory Irankunda" },
+    "appearances": {
+      "Australia": [
+        "Patrick Beach", "Jordan Bos", "Cameron Burgess", "Harry Souttar", "Alessandro Circati", "Jacob Italiano",
+        "Nestory Irankunda", "Paul Okon-Engstler", "Aiden O'Neill", "Connor Metcalfe", "Mohamed Toure",
+        "Nishan Velupillay", "Jason Geria", "Tete Yengi", "Jackson Irvine", "Aziz Behich"
+      ],
+      "Türkiye": [
+        "Ugurcan Cakir", "Zeki Celik", "Merih Demiral", "Abdulkerim Bardakci", "Ferdi Kadioglu",
+        "Ismail Yuksek", "Hakan Calhanoglu", "Arda Guler", "Orkun Kokcu", "Baris Alper Yilmaz", "Kerem Akturkoglu",
+        "Kenan Yildiz", "Yunus Akgun", "Mert Muldur", "Salih Ozcan", "Deniz Gul"
+      ]
+    }
   }
 ]
