@@ -244,11 +244,6 @@ export default async function MatchPage({
                       </td>
                       <td className="px-4 py-3 text-slate-200">
                         <div className="flex flex-wrap items-center gap-2">
-                          {p.x2 && (
-                            <span className="inline-flex items-center rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200 shrink-0">
-                              Power-up ×2
-                            </span>
-                          )}
                           <span>
                             <span className="font-semibold tabular-nums">
                               {p.score1} – {p.score2}
@@ -263,6 +258,11 @@ export default async function MatchPage({
                               )})
                             </span>
                           </span>
+                          {p.x2 && (
+                            <span className="inline-flex items-center rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-200 shrink-0">
+                              Power-up ×2
+                            </span>
+                          )}
                         </div>
                       </td>
                       {isKnockout && (
