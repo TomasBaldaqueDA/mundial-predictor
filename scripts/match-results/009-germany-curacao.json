@@ -1,0 +1,24 @@
+{
+  "id": 9,
+  "score1": 7,
+  "score2": 1,
+  "mvp": "Kai Havertz",
+  "goals": [
+    { "team": "Germany", "name": "Felix Nmecha" },
+    { "team": "Curaçao", "name": "Livano Comenencia" },
+    { "team": "Germany", "name": "Nico Schlotterbeck" },
+    { "team": "Germany", "name": "Kai Havertz", "count": 2 },
+    { "team": "Germany", "name": "Jamal Musiala" },
+    { "team": "Germany", "name": "Nathaniel Brown" },
+    { "team": "Germany", "name": "Deniz Undav" }
+  ],
+  "assists": [
+    { "team": "Germany", "name": "Florian Wirtz" },
+    { "team": "Germany", "name": "Nathaniel Brown" },
+    { "team": "Germany", "name": "Felix Nmecha" },
+    { "team": "Germany", "name": "Joshua Kimmich" },
+    { "team": "Germany", "name": "Joshua Kimmich" },
+    { "team": "Germany", "name": "Deniz Undav" },
+    { "team": "Germany", "name": "Deniz Undav" }
+  ]
+}

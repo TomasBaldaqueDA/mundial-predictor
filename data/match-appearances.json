@@ -158,5 +158,25 @@
         "Kenan Yildiz", "Yunus Akgun", "Mert Muldur", "Salih Ozcan", "Deniz Gul"
       ]
     }
+  },
+  {
+    "matchId": 9,
+    "team1": "Germany",
+    "team2": "Curaçao",
+    "score1": 7,
+    "score2": 1,
+    "mvp": { "team": "Germany", "name": "Kai Havertz" },
+    "appearances": {
+      "Germany": [
+        "Manuel Neuer", "Joshua Kimmich", "Jonathan Tah", "Nico Schlotterbeck", "Nathaniel Brown",
+        "Aleksandar Pavlovic", "Felix Nmecha", "Leroy Sané", "Jamal Musiala", "Florian Wirtz", "Kai Havertz",
+        "Deniz Undav", "David Raum", "Antonio Rüdiger", "Leon Goretzka", "Waldemar Anton"
+      ],
+      "Curaçao": [
+        "Eloy Room", "Sherel Floranus", "Riechedly Bazoer", "Armando Obispo", "Deveron Fonville",
+        "Tahith Chong", "Leandro Bacuna", "Sontje Hansen", "Livano Comenencia", "Juninho Bacuna", "Jurgen Locadia",
+        "Jeremy Antonisse", "Jearl Margaritha", "Gervane Kastaneer"
+      ]
+    }
   }
 ]
