@@ -198,5 +198,25 @@
         "Junya Ito", "Yukinari Sugawara", "Takehiro Tomiyasu", "Koki Ogawa", "Kento Shiogai"
       ]
     }
+  },
+  {
+    "matchId": 11,
+    "team1": "Côte d'Ivoire",
+    "team2": "Ecuador",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "Côte d'Ivoire", "name": "Yan Diomande" },
+    "appearances": {
+      "Côte d'Ivoire": [
+        "Yahia Fofana", "Guela Doué", "Wilfried Singo", "Emmanuel Agbadou", "Ghislain Konan",
+        "Yan Diomande", "Franck Kessie", "Seko Fofana", "Bazoumana Toure", "Nicolas Pepe", "Elye Wahi",
+        "Ange-Yoan Bonny", "Amad Diallo", "Ibrahim Sangare", "Christ Inao Oulai", "Odilon Kossounou"
+      ],
+      "Ecuador": [
+        "Hernán Galíndez", "Joel Ordonez", "Piero Hincapié", "William Pacho", "Alan Minda",
+        "Alan Franco", "Moises Caicedo", "Pedro Vite", "Gonzalo Plata", "Enner Valencia", "John Yeboah",
+        "Ángelo Preciado", "Jackson Porozo", "Kevin Rodríguez"
+      ]
+    }
   }
 ]

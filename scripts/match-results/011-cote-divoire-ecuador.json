@@ -1,0 +1,12 @@
+{
+  "id": 11,
+  "score1": 1,
+  "score2": 0,
+  "mvp": "Yan Diomande",
+  "goals": [
+    { "team": "Côte d'Ivoire", "name": "Amad Diallo" }
+  ],
+  "assists": [
+    { "team": "Côte d'Ivoire", "name": "Wilfried Singo" }
+  ]
+}
