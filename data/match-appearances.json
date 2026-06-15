@@ -238,5 +238,25 @@
         "Hadj Mahmoud", "Sebastian Tounekti", "Elias Achouri", "Ismael Gharbi", "Firas Chaouat"
       ]
     }
+  },
+  {
+    "matchId": 13,
+    "team1": "Spain",
+    "team2": "Cabo Verde",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Cabo Verde", "name": "Vozinha" },
+    "appearances": {
+      "Spain": [
+        "Unai Simón", "Marcos Llorente", "Aymeric Laporte", "Pau Cubarsí", "Marc Cucurella",
+        "Fabián Ruiz", "Gavi", "Rodri", "Pedri", "Ferran Torres", "Mikel Oyarzabal",
+        "Lamine Yamal", "Mikel Merino", "Dani Olmo", "Nico Williams"
+      ],
+      "Cabo Verde": [
+        "Vozinha", "Diney Borges", "Roberto Lopes", "Sidny Cabral", "Steven Moreira",
+        "Kevin Pina", "Jovane Cabral", "Jamiro Monteiro", "Laros Duarte", "Dailon Livramento", "Ryan Mendes",
+        "Deroy Duarte", "Willy Semedo", "Nuno Da Costa", "Joao Paulo Fernandes", "Telmo Arcanjo"
+      ]
+    }
   }
 ]
