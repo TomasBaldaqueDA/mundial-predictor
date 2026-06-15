@@ -258,5 +258,25 @@
         "Deroy Duarte", "Willy Semedo", "Nuno Da Costa", "Joao Paulo Fernandes", "Telmo Arcanjo"
       ]
     }
+  },
+  {
+    "matchId": 14,
+    "team1": "Belgium",
+    "team2": "Egypt",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Egypt", "name": "Emam Ashour" },
+    "appearances": {
+      "Belgium": [
+        "Thibaut Courtois", "Timothy Castagne", "Brandon Mechele", "Nathan Ngoy", "Thomas Meunier",
+        "Youri Tielemans", "Amadou Onana", "Jeremy Doku", "Kevin De Bruyne", "Leandro Trossard", "Charles De Ketelaere",
+        "Maxim De Cuyper", "Nicolas Raskin", "Romelu Lukaku", "Hans Vanaken", "Matias Fernandez-Pardo"
+      ],
+      "Egypt": [
+        "Mostafa Shobeir", "Mohamed Hany", "Yasser Ibrahim", "Hamdi Fathy", "Ahmed Fatouh",
+        "Marwan Attia", "Mohannad Lasheen", "Mostafa Ziko", "Mohamed Salah", "Emam Ashour", "Omar Marmoush",
+        "Ramy Rabia", "Ahmed Sayed Zizo", "Hamza Abdel Karim", "Karim Hafez", "Ibrahim Adel"
+      ]
+    }
   }
 ]

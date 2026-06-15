@@ -1,0 +1,12 @@
+{
+  "id": 14,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Emam Ashour",
+  "goals": [
+    { "team": "Egypt", "name": "Emam Ashour" }
+  ],
+  "assists": [
+    { "team": "Egypt", "name": "Mohamed Salah" }
+  ]
+}
