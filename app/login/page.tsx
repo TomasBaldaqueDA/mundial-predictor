@@ -1,7 +1,7 @@
 "use client"
 
-import { Suspense, useState } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { friendlyAuthError } from "@/lib/auth-errors"
 import { getAuthCallbackUrl, signOutBeforeOAuth } from "@/lib/auth-oauth"
@@ -12,7 +12,6 @@ import { PasswordInput } from "@/app/components/PasswordInput"
 function LoginForm() {
   const searchParams = useSearchParams()
   const next = searchParams.get("next") ?? ""
-  const router = useRouter()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -27,20 +26,53 @@ function LoginForm() {
       : friendlyAuthError(searchParams.get("error_description") ?? urlAuthError)
     : null
   const displayError = error ?? urlErrorMessage
+  const destination = safeRedirectPath(next, "/")
+
+  // Browser may still have a client session while server cookies are missing (TLS / stale login).
+  useEffect(() => {
+    let cancelled = false
+    void (async () => {
+      const res = await fetch("/auth/session", { credentials: "same-origin" })
+      if (!res.ok || cancelled) return
+      const { authenticated } = (await res.json()) as { authenticated?: boolean }
+      if (authenticated || cancelled) return
+      const supabase = createClient()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (!session || cancelled) return
+      await supabase.auth.signOut()
+      if (!cancelled) {
+        setError("Your session was out of sync. Please log in again.")
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    const supabase = createClient()
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password })
-    setLoading(false)
-    if (err) {
-      setError(friendlyAuthError(err.message))
-      return
+    try {
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ email, password, next }),
+      })
+      const data = (await res.json()) as { error?: string; destination?: string }
+      if (!res.ok) {
+        setError(friendlyAuthError(data.error ?? "Sign-in failed."))
+        return
+      }
+      window.location.assign(data.destination ?? destination)
+    } catch {
+      setError("Could not reach the server. Check your connection and try again.")
+    } finally {
+      setLoading(false)
     }
-    router.push(safeRedirectPath(next, "/"))
-    router.refresh()
   }
 
   async function handleGoogleSignIn() {

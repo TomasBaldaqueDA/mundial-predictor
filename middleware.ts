@@ -7,8 +7,10 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/login",
     // Auth only on known app sections — unknown routes fall through to not-found.tsx.
     "/games/:path*",
+    "/five-a-side",
     "/five-a-side/:path*",
     "/leagues/:path*",
     "/questions/:path*",

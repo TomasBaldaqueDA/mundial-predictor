@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr"
 import { hasCompletedDisplayNameSetup } from "@/lib/auth-profile-setup"
+import { safeRedirectPath } from "@/lib/safe-redirect"
 import { NextResponse, type NextRequest } from "next/server"
 
 async function userMustCompleteProfileSetup(
@@ -52,6 +53,11 @@ export async function updateSession(request: NextRequest) {
     const url = new URL("/login", request.url)
     url.searchParams.set("next", pathname)
     return NextResponse.redirect(url)
+  }
+
+  if (user && pathname === "/login") {
+    const next = safeRedirectPath(request.nextUrl.searchParams.get("next"), "/")
+    return NextResponse.redirect(new URL(next, request.url))
   }
 
   if (

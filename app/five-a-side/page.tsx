@@ -4,8 +4,10 @@ import { createClient } from "@/lib/supabase/client"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { PageHeader } from "@/app/components/PageHeader"
+import { FiveASidePlayerCardArt, LINEUP_GRID_CLASS, LINEUP_SLOT_CLASS } from "@/app/components/FiveASidePlayerCardArt"
 import { getFlagSrc } from "@/lib/team-flags"
 import { FlagImage } from "@/app/components/FlagImage"
+import { hasFiveASideCard } from "@/lib/five-a-side-images"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
 import {
   fetchAllFiveASidePlayers,
@@ -583,28 +585,30 @@ export default function FiveASidePage() {
       )}
 
       {/* Horizontal lineup — trading-card style */}
-      <div className="relative mb-8 rounded-3xl overflow-hidden border border-cyan-400/15 bg-gradient-to-b from-[#121a2e] via-[#0a1020] to-[#020617] shadow-[0_4px_32px_rgba(0,0,0,0.48),0_0_48px_rgba(34,211,238,0.06),inset_0_1px_0_rgba(255,255,255,0.05)]">
-        {/* Pitch perspective + chevron noise */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.14]"
-          style={{
-            backgroundImage: `
+      <div className="relative mb-8 rounded-3xl border border-cyan-400/15 bg-gradient-to-b from-[#121a2e] via-[#0a1020] to-[#020617] shadow-[0_4px_32px_rgba(0,0,0,0.48),0_0_48px_rgba(34,211,238,0.06),inset_0_1px_0_rgba(255,255,255,0.05)]">
+        {/* Pitch perspective + chevron noise (clipped to rounded shell) */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
+          <div
+            className="absolute inset-0 opacity-[0.14]"
+            style={{
+              backgroundImage: `
               linear-gradient(105deg, transparent 40%, rgba(34, 211, 238, 0.2) 40.5%, rgba(34, 211, 238, 0.2) 42%, transparent 42.5%),
               linear-gradient(-105deg, transparent 40%, rgba(56, 189, 248, 0.14) 40.5%, rgba(56, 189, 248, 0.14) 42%, transparent 42.5%)
             `,
-            backgroundSize: "100% 55%",
-            backgroundPosition: "center bottom",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,.12) 6px, rgba(255,255,255,.12) 7px)`,
-          }}
-        />
+              backgroundSize: "100% 55%",
+              backgroundPosition: "center bottom",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,.12) 6px, rgba(255,255,255,.12) 7px)`,
+            }}
+          />
+        </div>
 
-        <div className="relative flex flex-row flex-nowrap justify-start md:justify-center gap-3 sm:gap-4 md:gap-5 overflow-x-auto py-6 sm:py-8 px-4 sm:px-6 pb-8 [scrollbar-width:thin] snap-x snap-mandatory md:snap-none">
+        <div className={LINEUP_GRID_CLASS}>
           {LINEUP_SLOTS.map(({ slot, badge }) => {
             const player = getPlayer(slot)
             const points = getPointsForSlot(slot)
@@ -621,7 +625,7 @@ export default function FiveASidePage() {
                   ? "editing"
                   : "filled"
             return (
-              <div key={slot} className="flex flex-col items-center gap-2.5 shrink-0 snap-center first:pl-1 last:pr-1">
+              <div key={slot} className={LINEUP_SLOT_CLASS}>
                 {subbedOut && (
                   <>
                     <FantasyPlayerCard
@@ -682,7 +686,7 @@ export default function FiveASidePage() {
             )
           })}
         </div>
-        <p className="pb-4 text-center text-[11px] text-slate-400 md:hidden">Swipe horizontally to view all 5 cards.</p>
+        <p className="pb-4 text-center text-[11px] text-slate-400 sm:hidden">Swipe to view all 5 players.</p>
       </div>
 
       {user && !tournamentStarted && (
@@ -862,7 +866,11 @@ export default function FiveASidePage() {
                     <span className="flex h-6 min-w-[1.35rem] items-center justify-center rounded bg-slate-800 text-[10px] font-black text-white tabular-nums shrink-0">
                       {shirtNumberByPlayerId.get(p.id) ?? "—"}
                     </span>
-                    <FlagImage src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
+                    {hasFiveASideCard(p.team, p.name) ? (
+                      <FiveASidePlayerCardArt team={p.team} name={p.name} size="mini" />
+                    ) : (
+                      <FlagImage src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
+                    )}
                     <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
                     <span className="ml-auto max-w-[45%] truncate text-stone-500 text-sm">{p.team}</span>
                   </button>
@@ -1059,7 +1067,8 @@ function FantasyPlayerCard({
   const isSubIn = variant === "supersub-in"
   const posLabel = POSITION_LABELS[SLOT_POSITION[slot]]
   const isGk = slot === "gk"
-  const lightKit = isGk && !!player
+  const showCard = !!(player && hasFiveASideCard(player.team, player.name))
+  const lightKit = isGk && !!player && !showCard
 
   const shell = lightKit
     ? "border-zinc-300/80 bg-gradient-to-b from-zinc-100 via-white to-zinc-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
@@ -1072,9 +1081,111 @@ function FantasyPlayerCard({
   const statMuted = lightKit ? "text-zinc-400" : "text-slate-400/85"
   const statVal = "tabular-nums text-[9px] sm:text-[10px]"
 
+  const statsGrid = player ? (
+    <div
+      className={`border-t px-1 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] ${
+        showCard ? "border-white/10 bg-[#0a1020]/90 text-slate-200/90" : lightKit ? "border-zinc-300/80 text-zinc-600 mt-2" : "border-white/12 text-slate-200/90 mt-2"
+      }`}
+    >
+      <div className="space-y-1">
+        <div className={`grid gap-x-0.5 ${showCleanSheet ? "grid-cols-4" : "grid-cols-3"}`}>
+          <div className="min-w-0">
+            <div className={statMuted}>G</div>
+            <div className={statVal}>{player.goals}</div>
+          </div>
+          <div className="min-w-0">
+            <div className={statMuted}>A</div>
+            <div className={statVal}>{player.assists}</div>
+          </div>
+          {showCleanSheet && (
+            <div className="min-w-0">
+              <div className={statMuted}>CS</div>
+              <div className={statVal}>{player.clean_sheets}</div>
+            </div>
+          )}
+          <div className="min-w-0">
+            <div className={statMuted}>MVP</div>
+            <div className={statVal}>{player.mvp}</div>
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-x-0.5">
+          <div className="min-w-0" title="Matches this player appeared in">
+            <div className={statMuted}>GP</div>
+            <div className={statVal}>{player.games_played}</div>
+          </div>
+          <div className="min-w-0">
+            <div className={statMuted}>W</div>
+            <div className={statVal}>{player.wins}</div>
+          </div>
+          <div className="min-w-0">
+            <div className={statMuted}>Pos</div>
+            <div className="text-[9px] sm:text-[10px] leading-none">{badge}</div>
+          </div>
+          <div className="flex min-w-0 flex-col items-center justify-start">
+            <div className={statMuted}>Nat</div>
+            <FlagImage
+              src={getFlagSrc(player.team)}
+              alt=""
+              className="mt-0.5 h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null
+
+  if (showCard && player) {
+    return (
+      <div
+        className={`relative w-full min-w-0 ${isSubbedOut ? "scale-[0.88] opacity-[0.55] grayscale-[0.35]" : ""} ${isSubIn ? "ring-1 ring-cyan-400/35 rounded-xl" : ""}`}
+      >
+        {isSubbedOut && (
+          <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
+            OUT
+          </div>
+        )}
+        {isSubIn && (
+          <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan-400/40 bg-cyan-950/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-cyan-200">
+            From R32
+          </div>
+        )}
+        {isPickerOpen && (
+          <div className="pointer-events-none absolute -inset-1 z-20" aria-hidden>
+            <span className="absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-cyan-400/70 rounded-tl-sm" />
+            <span className="absolute top-0 right-0 h-3 w-3 border-r-2 border-t-2 border-cyan-400/70 rounded-tr-sm" />
+            <span className="absolute bottom-0 left-0 h-3 w-3 border-l-2 border-b-2 border-cyan-400/70 rounded-bl-sm" />
+            <span className="absolute bottom-0 right-0 h-3 w-3 border-r-2 border-b-2 border-cyan-400/70 rounded-bl-sm" />
+          </div>
+        )}
+        <button
+          type="button"
+          disabled={locked}
+          onClick={locked ? undefined : onChoose}
+          aria-label={`${player.name}, ${badge}`}
+          className={`relative w-full overflow-hidden rounded-xl border-2 text-left transition-all duration-200 border-cyan-400/30 bg-[#0a1020] shadow-lg ${
+            isSubbedOut
+              ? "cursor-default border-white/10"
+              : locked
+                ? "cursor-default opacity-95"
+                : "cursor-pointer hover:border-wc-gold/70 hover:scale-[1.02] active:scale-[0.99]"
+          }`}
+        >
+          <div className="absolute top-1.5 right-1.5 z-10 flex items-center gap-1">
+            {isCaptain && (
+              <span className="rounded bg-amber-500 px-1 py-0.5 text-[7px] font-black text-black shadow">C</span>
+            )}
+            <span className="rounded bg-black/60 px-1 py-0.5 text-[7px] font-bold text-white/95">{badge}</span>
+          </div>
+          <FiveASidePlayerCardArt team={player.team} name={player.name} size="hero" />
+          {statsGrid}
+        </button>
+      </div>
+    )
+  }
+
   return (
     <div
-      className={`relative w-[9.25rem] sm:w-40 ${isSubbedOut ? "scale-[0.88] opacity-[0.55] grayscale-[0.35]" : ""} ${isSubIn ? "ring-1 ring-cyan-400/35 rounded-2xl" : ""}`}
+      className={`relative w-full min-w-0 max-sm:w-[9.25rem] sm:max-w-none ${isSubbedOut ? "scale-[0.88] opacity-[0.55] grayscale-[0.35]" : ""} ${isSubIn ? "ring-1 ring-cyan-400/35 rounded-2xl" : ""}`}
     >
       {isSubbedOut && (
         <div className="absolute -top-2 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-slate-900/95 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-300">
@@ -1107,7 +1218,7 @@ function FantasyPlayerCard({
               : "cursor-pointer hover:border-wc-gold/80 hover:scale-[1.02] active:scale-[0.99]"
         } ${status === "empty" ? "border-dashed opacity-90" : ""}`}
       >
-        <div className={hexBg} />
+        {!showCard && <div className={hexBg} />}
 
         {/* Top meta row */}
         <div
@@ -1127,56 +1238,7 @@ function FantasyPlayerCard({
         {player ? (
           <>
             <KitShirtBack kit={getKitForTeam(player.team)} number={shirtNumber} name={player.name} team={player.team} />
-
-            {/* Stats — row1: G A [CS] MVP (CS only GK/DF; MF/FW = 3 cols) · row2: GP W POS NAT */}
-            <div
-              className={`relative border-t px-0.5 py-1.5 text-center text-[7px] font-semibold uppercase leading-tight tracking-wide sm:text-[8px] mt-2 ${lightKit ? "border-zinc-300/80 text-zinc-600" : "border-white/12 text-slate-200/90"}`}
-            >
-              <div className="space-y-1">
-                <div className={`grid gap-x-0.5 ${showCleanSheet ? "grid-cols-4" : "grid-cols-3"}`}>
-                  <div className="min-w-0">
-                    <div className={statMuted}>G</div>
-                    <div className={statVal}>{player.goals}</div>
-                  </div>
-                  <div className="min-w-0">
-                    <div className={statMuted}>A</div>
-                    <div className={statVal}>{player.assists}</div>
-                  </div>
-                  {showCleanSheet && (
-                    <div className="min-w-0">
-                      <div className={statMuted}>CS</div>
-                      <div className={statVal}>{player.clean_sheets}</div>
-                    </div>
-                  )}
-                  <div className="min-w-0">
-                    <div className={statMuted}>MVP</div>
-                    <div className={statVal}>{player.mvp}</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 gap-x-0.5">
-                  <div className="min-w-0" title="Matches this player appeared in">
-                    <div className={statMuted}>GP</div>
-                    <div className={statVal}>{player.games_played}</div>
-                  </div>
-                  <div className="min-w-0">
-                    <div className={statMuted}>W</div>
-                    <div className={statVal}>{player.wins}</div>
-                  </div>
-                  <div className="min-w-0">
-                    <div className={statMuted}>Pos</div>
-                    <div className="text-[9px] sm:text-[10px] leading-none">{badge}</div>
-                  </div>
-                  <div className="flex min-w-0 flex-col items-center justify-start">
-                    <div className={statMuted}>Nat</div>
-                    <FlagImage
-                      src={getFlagSrc(player.team)}
-                      alt=""
-                      className="mt-0.5 h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            {statsGrid}
           </>
         ) : (
           <div className="relative flex flex-col items-center px-2 pb-4 pt-2 text-center">

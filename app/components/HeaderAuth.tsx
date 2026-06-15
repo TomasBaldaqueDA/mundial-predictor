@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 
 function avatarInitials(name: string): string {
   return name
@@ -17,7 +16,6 @@ function avatarInitials(name: string): string {
 export function HeaderAuth() {
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const router = useRouter()
 
   useEffect(() => {
     const supabase = createClient()
@@ -45,8 +43,7 @@ export function HeaderAuth() {
   async function signOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push("/")
-    router.refresh()
+    window.location.assign("/")
   }
 
   if (loading) {
