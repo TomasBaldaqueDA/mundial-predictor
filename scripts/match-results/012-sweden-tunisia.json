@@ -1,0 +1,19 @@
+{
+  "id": 12,
+  "score1": 5,
+  "score2": 1,
+  "mvp": "Alexander Isak",
+  "goals": [
+    { "team": "Sweden", "name": "Yasin Ayari", "count": 2 },
+    { "team": "Sweden", "name": "Alexander Isak" },
+    { "team": "Tunisia", "name": "Omar Rekik" },
+    { "team": "Sweden", "name": "Viktor Gyokeres" },
+    { "team": "Sweden", "name": "Mattias Svanberg" }
+  ],
+  "assists": [
+    { "team": "Sweden", "name": "Viktor Gyokeres" },
+    { "team": "Tunisia", "name": "Hannibal Mejbri" },
+    { "team": "Sweden", "name": "Alexander Isak", "count": 2 },
+    { "team": "Sweden", "name": "Lucas Bergvall" }
+  ]
+}

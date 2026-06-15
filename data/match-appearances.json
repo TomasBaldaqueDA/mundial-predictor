@@ -218,5 +218,25 @@
         "Ángelo Preciado", "Jackson Porozo", "Kevin Rodríguez"
       ]
     }
+  },
+  {
+    "matchId": 12,
+    "team1": "Sweden",
+    "team2": "Tunisia",
+    "score1": 5,
+    "score2": 1,
+    "mvp": { "team": "Sweden", "name": "Alexander Isak" },
+    "appearances": {
+      "Sweden": [
+        "Kristoffer Nordfeldt", "Gustaf Lagerbielke", "Isak Hien", "Victor Lindelof", "Alexander Bernhardsson",
+        "Jesper Karlstrom", "Yasin Ayari", "Gabriel Gudmundsson", "Benjamin Nygren", "Alexander Isak", "Viktor Gyokeres",
+        "Lucas Bergvall", "Elliot Stroud", "Mattias Svanberg", "Anthony Elanga", "Daniel Svensson"
+      ],
+      "Tunisia": [
+        "Abdelmouhib Chamakh", "Ali Abdi", "Montassar Talbi", "Omar Rekik", "Yan Valery",
+        "Mohamed Amine Ben Hamida", "Hannibal Mejbri", "Rani Khedira", "Ellyes Skhiri", "Anis Ben Slimane", "Elias Saad",
+        "Hadj Mahmoud", "Sebastian Tounekti", "Elias Achouri", "Ismael Gharbi", "Firas Chaouat"
+      ]
+    }
   }
 ]
