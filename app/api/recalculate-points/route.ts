@@ -5,7 +5,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { isCronAuthorized } from "@/lib/cron-auth"
 import { supabaseAdmin } from "@/lib/supabase-server"
-import { calculateMatchPoints } from "@/lib/points"
+import { calculateMatchPoints, normalizePointsMultiplier } from "@/lib/points"
 
 export async function POST(request: NextRequest) {
   // Require the same shared secret used for cron endpoints. Without this,
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       }
 
       for (const pred of predictions ?? []) {
-        const mult = pred.points_multiplier === 2 ? 2 : 1
+        const mult = normalizePointsMultiplier(pred.points_multiplier)
         const points = calculateMatchPoints(
           {
             score1: Number(match.score1),

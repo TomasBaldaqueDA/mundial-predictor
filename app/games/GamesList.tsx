@@ -8,7 +8,12 @@ import { KickoffText } from "@/app/components/KickoffText"
 import { useState, useMemo, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { getKickoffTimestamp } from "@/lib/format-kickoff"
-import { buildPowerUpBucketMap, type PowerUpBucket } from "@/lib/powerup-bucket"
+import {
+  buildPowerUpBucketMap,
+  filterMatchesByGroupRound,
+  type PowerUpBucket,
+} from "@/lib/powerup-bucket"
+import { normalizePointsMultiplier } from "@/lib/points"
 import { validatePowerUpPhase } from "@/lib/powerup-week-client"
 
 const MVP_POS_ORDER: Record<string, number> = { gk: 1, df: 2, md: 3, st: 4 }
@@ -34,8 +39,20 @@ const STAGE_ORDER = [
 
 const GROUP_ORDER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
 
-/** Group stage “matchdays”: 1st / 2nd / 3rd game per group by kickoff order */
+/** Group stage matchdays: 3 rounds × 2 games per group (round index from full schedule). */
 const GROUP_STAGE_ROUNDS = ["1st Round", "2nd Round", "3rd Round"] as const
+
+type MvpPlayerOption = { id: string; name: string; label: string }
+
+function mvpPlayerLabel(
+  row: { name: string; position: string; jersey_number?: number | null },
+  duplicateNames: Set<string>
+): string {
+  if (!duplicateNames.has(row.name)) return row.name
+  const pos = row.position.toUpperCase()
+  const num = row.jersey_number != null ? ` #${row.jersey_number}` : ""
+  return `${row.name} (${pos}${num})`
+}
 
 type Match = {
   id: number
@@ -77,33 +94,6 @@ function matchesIntoKickoffOrderSections(matches: Match[]): Section[] {
   return [{ title: "", stage: "chronological", isKnockout: false, matches: sorted }]
 }
 
-function pickGroupStageRoundRange(matches: Match[], startIndex: number, endIndex: number): Match[] {
-  const firstStage = matches.filter((m) => m.stage === "First Stage" && m.group)
-  const byGroup = new Map<string, Match[]>()
-  for (const m of firstStage) {
-    const g = m.group ?? ""
-    if (!byGroup.has(g)) byGroup.set(g, [])
-    byGroup.get(g)!.push(m)
-  }
-  const out: Match[] = []
-  for (const g of GROUP_ORDER) {
-    const list =
-      byGroup
-        .get(g)
-        ?.sort(
-          (a, b) =>
-            getKickoffTimestamp(a.kickoff_time) - getKickoffTimestamp(b.kickoff_time)
-        ) ?? []
-    for (let idx = startIndex; idx <= endIndex; idx++) {
-      const pick = list[idx]
-      if (pick) out.push(pick)
-    }
-  }
-  return out.sort(
-    (a, b) => getKickoffTimestamp(a.kickoff_time) - getKickoffTimestamp(b.kickoff_time)
-  )
-}
-
 function computePowerUpPhaseState(
   matches: Match[],
   predictionsByMatch: Map<number, UserPrediction>,
@@ -113,7 +103,7 @@ function computePowerUpPhaseState(
   const holderByBucket = new Map<PowerUpBucket, number>()
   const boosted = (mid: number) => {
     const p = predictionsByMatch.get(mid)
-    if (p && Number(p.points_multiplier) === 2) return true
+    if (p && normalizePointsMultiplier(p.points_multiplier) === 2) return true
     return powerUpIntent.get(mid) === true
   }
   for (const m of matches) {
@@ -148,7 +138,7 @@ function InlinePredictForm({
   const [score1, setScore1] = useState(existing ? String(existing.pred_score1) : "")
   const [score2, setScore2] = useState(existing ? String(existing.pred_score2) : "")
   const [mvp, setMvp] = useState(existing?.pred_mvp ?? "")
-  const [mvpPlayers, setMvpPlayers] = useState<string[]>([])
+  const [mvpOptions, setMvpOptions] = useState<MvpPlayerOption[]>([])
   const [qualifier, setQualifier] = useState(existing?.pred_qualifier ?? "")
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -166,7 +156,7 @@ function InlinePredictForm({
       const supabase = createClient()
       const { data: roster } = await supabase
         .from("five_a_side_players")
-        .select("name, team, position")
+        .select("id, name, team, position, jersey_number")
         .in("team", [match.team1, match.team2])
       const rows = roster ?? []
       rows.sort((a, b) => {
@@ -178,8 +168,18 @@ function InlinePredictForm({
         if (pa !== pb) return pa - pb
         return a.name.localeCompare(b.name)
       })
-      const names = rows.map((r) => r.name)
-      setMvpPlayers(names)
+      const nameCounts = new Map<string, number>()
+      for (const r of rows) nameCounts.set(r.name, (nameCounts.get(r.name) ?? 0) + 1)
+      const duplicateNames = new Set(
+        [...nameCounts.entries()].filter(([, n]) => n > 1).map(([name]) => name)
+      )
+      const options = rows.map((r) => ({
+        id: r.id as string,
+        name: r.name,
+        label: mvpPlayerLabel(r, duplicateNames),
+      }))
+      setMvpOptions(options)
+      const names = options.map((o) => o.name)
       setMvp((prev) => (prev && names.includes(prev) ? prev : ""))
     }
     loadRoster()
@@ -354,16 +354,16 @@ function InlinePredictForm({
       {/* MVP */}
       <div>
         <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide block mb-1.5">MVP</label>
-        {mvpPlayers.length > 0 ? (
+        {mvpOptions.length > 0 ? (
           <select
-            value={mvpPlayers.includes(mvp) ? mvp : ""}
+            value={mvpOptions.some((o) => o.name === mvp) ? mvp : ""}
             disabled={closed || saving}
             onChange={(e) => setMvp(e.target.value)}
             className="select-modern w-full px-3 py-2 border border-cyan-500/25 rounded-xl bg-slate-900/80 text-slate-200 text-sm focus:border-wc-gold focus:ring-2 focus:ring-wc-gold/20 disabled:opacity-50"
           >
             <option value="">— Squad player —</option>
-            {mvpPlayers.map((n) => (
-              <option key={n} value={n}>{n}</option>
+            {mvpOptions.map((o) => (
+              <option key={o.id} value={o.name}>{o.label}</option>
             ))}
           </select>
         ) : (
@@ -440,7 +440,7 @@ function SavedPredictionPanel({
   onEdit?: () => void
 }) {
   const isKnockout = (match.stage ?? "") !== "First Stage"
-  const x2 = Number(pred.points_multiplier) === 2
+  const x2 = normalizePointsMultiplier(pred.points_multiplier) === 2
   const editable = typeof onEdit === "function"
 
   return (
@@ -560,7 +560,6 @@ function MatchCard({
   onPowerUpToggle: (enabled: boolean) => void
   powerUpBusy: boolean
   powerUpError: string | null
-  /** True when another match in this phase already has ×2 — cannot enable here until that one is cleared */
   powerUpPhaseLocked: boolean
   nowMs: number
 }) {
@@ -680,7 +679,7 @@ function MatchCard({
                     · MVP: <span className="font-semibold">{userPrediction.pred_mvp}</span>
                   </>
                 )}
-                {Number(userPrediction.points_multiplier) === 2 && (
+                {normalizePointsMultiplier(userPrediction.points_multiplier) === 2 && (
                   <span className="ml-1.5 font-black text-amber-300">×2</span>
                 )}
               </div>
@@ -853,11 +852,11 @@ function getSubOptions(matches: Match[]): string[] {
   ]
 }
 
-function applySubFilter(matches: Match[], subFilter: string | null): Match[] {
+function applySubFilter(matches: Match[], subFilter: string | null, allMatches: Match[]): Match[] {
   if (!subFilter || subFilter === SUB_ALL) return matches
-  if (subFilter === "1st Round") return pickGroupStageRoundRange(matches, 0, 1)
-  if (subFilter === "2nd Round") return pickGroupStageRoundRange(matches, 2, 3)
-  if (subFilter === "3rd Round") return pickGroupStageRoundRange(matches, 4, 5)
+  if (subFilter === "1st Round") return filterMatchesByGroupRound(matches, allMatches, "1st Round")
+  if (subFilter === "2nd Round") return filterMatchesByGroupRound(matches, allMatches, "2nd Round")
+  if (subFilter === "3rd Round") return filterMatchesByGroupRound(matches, allMatches, "3rd Round")
   if (subFilter.startsWith("Group ")) {
     const g = subFilter.replace("Group ", "")
     return matches.filter((m) => m.stage === "First Stage" && m.group === g)
@@ -913,7 +912,7 @@ export function GamesList({
 
   function effectivePowerUp(matchId: number): boolean {
     const pred = predictionsByMatch.get(matchId)
-    if (pred && Number(pred.points_multiplier) === 2) return true
+    if (pred && normalizePointsMultiplier(pred.points_multiplier) === 2) return true
     return powerUpIntent.get(matchId) === true
   }
 
@@ -929,8 +928,6 @@ export function GamesList({
       return
     }
 
-    // If another match in this phase is already holding ×2 and the user is
-    // trying to enable here, offer to transfer instead of erroring out.
     if (enabled) {
       const { bucketByMatchId, holderByBucket, matches: allMatchesOrdered } = computePowerUpPhaseState(
         [...past, ...upcoming],
@@ -939,11 +936,11 @@ export function GamesList({
       )
       const bucket = bucketByMatchId.get(match.id) ?? "Other"
       const holderId = bucket !== "Other" ? holderByBucket.get(bucket) : undefined
+
       if (holderId != null && holderId !== match.id) {
         const holderMatch = allMatchesOrdered.find((m) => m.id === holderId)
         const holderLabel = holderMatch ? `${holderMatch.team1} vs ${holderMatch.team2}` : "another match"
 
-        // If the holder match has already kicked off the ×2 is permanently locked there.
         if (holderMatch && getKickoffTimestamp(holderMatch.kickoff_time) <= nowMs) {
           setPowerUpErr({ mid: match.id, msg: `×2 is locked on ${holderLabel} — that match has already started.` })
           setPowerUpBusyId(null)
@@ -957,7 +954,6 @@ export function GamesList({
           setPowerUpBusyId(null)
           return
         }
-        // Clear the holder first.
         const holderRowId = predictionRowIds.get(holderId)
         if (holderRowId != null) {
           const { error: clearErr } = await supabase
@@ -1137,13 +1133,29 @@ export function GamesList({
     return [...past, ...upcoming]
   }, [filter, upcoming, past, todayMatches])
 
+  const allMatches = useMemo(() => [...past, ...upcoming], [past, upcoming])
   const subOptions = useMemo(() => getSubOptions(visibleForSub), [visibleForSub])
-  const upcomingFiltered = useMemo(() => applySubFilter(upcoming, subOptions.length ? subFilter : null), [upcoming, subFilter, subOptions.length])
-  const pastFiltered = useMemo(() => applySubFilter(past, subOptions.length ? subFilter : null), [past, subFilter, subOptions.length])
-  const todayFiltered = useMemo(() => applySubFilter(todayMatches, subOptions.length ? subFilter : null), [todayMatches, subFilter, subOptions.length])
+  const activeSubFilter = subOptions.length ? subFilter : null
+  const upcomingFiltered = useMemo(
+    () => applySubFilter(upcoming, activeSubFilter, allMatches),
+    [upcoming, activeSubFilter, allMatches]
+  )
+  const pastFiltered = useMemo(
+    () => applySubFilter(past, activeSubFilter, allMatches),
+    [past, activeSubFilter, allMatches]
+  )
+  const todayFiltered = useMemo(
+    () => applySubFilter(todayMatches, activeSubFilter, allMatches),
+    [todayMatches, activeSubFilter, allMatches]
+  )
   const upcomingSections = useMemo(() => matchesIntoKickoffOrderSections(upcomingFiltered), [upcomingFiltered])
   const pastSections = useMemo(() => matchesIntoKickoffOrderSections(pastFiltered), [pastFiltered])
   const todaySections = useMemo(() => matchesIntoKickoffOrderSections(todayFiltered), [todayFiltered])
+
+  const powerUpPhaseState = useMemo(
+    () => computePowerUpPhaseState([...past, ...upcoming], predictionsByMatch, powerUpIntent),
+    [past, upcoming, predictionsByMatch, powerUpIntent]
+  )
 
   function renderSections(sections: Section[], showPredict: boolean | ((m: Match) => boolean)) {
     const getShowPredict = typeof showPredict === "function" ? showPredict : () => showPredict
@@ -1166,7 +1178,10 @@ export function GamesList({
           </div>
         ) : null}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 items-start">
-          {sec.matches.map((match) => (
+          {sec.matches.map((match) => {
+            const bucket = powerUpPhaseState.bucketByMatchId.get(match.id) ?? "Other"
+            const holderId = powerUpPhaseState.holderByBucket.get(bucket)
+            return (
             <MatchCard
               key={match.id}
               match={match}
@@ -1182,10 +1197,11 @@ export function GamesList({
               onPowerUpToggle={(en) => { void handleCardPowerUpToggle(match, en) }}
               powerUpBusy={powerUpBusyId === match.id}
               powerUpError={powerUpErr?.mid === match.id ? powerUpErr.msg : null}
-              powerUpPhaseLocked={false}
+              powerUpPhaseLocked={holderId != null && holderId !== match.id}
               nowMs={nowMs}
             />
-          ))}
+            )
+          })}
         </div>
       </section>
     ))

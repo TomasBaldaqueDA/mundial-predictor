@@ -52,3 +52,15 @@ export function buildPowerUpBucketMap(matches: MatchForBucket[]): Map<number, Po
 
   return map
 }
+
+export type GroupStageRound = "1st Round" | "2nd Round" | "3rd Round"
+
+/** Filter visible matches by group-stage round using the full schedule for bucket assignment. */
+export function filterMatchesByGroupRound<T extends MatchForBucket>(
+  visible: T[],
+  allGroupMatches: T[],
+  round: GroupStageRound
+): T[] {
+  const bucketMap = buildPowerUpBucketMap(allGroupMatches)
+  return visible.filter((m) => bucketMap.get(m.id) === round)
+}

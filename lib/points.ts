@@ -17,6 +17,10 @@ export type PointsOptions = {
   points_multiplier?: number
 }
 
+export function normalizePointsMultiplier(value: unknown): 1 | 2 {
+  return Number(value) === 2 ? 2 : 1
+}
+
 export function calculateMatchPoints(
   match: MatchLike,
   prediction: PredictionLike,
@@ -44,7 +48,6 @@ export function calculateMatchPoints(
     Boolean(match.mvp) &&
     match.mvp!.trim().toLowerCase() === prediction.pred_mvp.trim().toLowerCase()
 
-  // Knockout qualifier: +1 if the user picked the correct advancing team
   const qualifierCorrect =
     Boolean(match.qualifier) &&
     Boolean(prediction.pred_qualifier) &&
@@ -56,6 +59,6 @@ export function calculateMatchPoints(
   const comboPts = exact && mvpCorrect ? 1 : 0
   const qualifierPts = qualifierCorrect ? 1 : 0
 
-  const mult = options?.points_multiplier === 2 ? 2 : 1
+  const mult = normalizePointsMultiplier(options?.points_multiplier)
   return (exactPts + winnerPts + mvpPts + comboPts + qualifierPts) * mult
 }
