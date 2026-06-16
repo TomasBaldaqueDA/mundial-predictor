@@ -1,5 +1,9 @@
 -- Track which squad players actually played (starters + subs) per match.
 -- Wins, clean sheets and GP are derived from appearances — not the full 26-man squad.
+--
+-- Production: apply this migration, then run:
+--   QA_TLS_INSECURE=1 node scripts/recalc-stats-from-appearances.mjs
+-- (uses data/match-appearances.json for all finished matches; keeps goals/assists unchanged)
 
 CREATE TABLE IF NOT EXISTS public.match_appearances (
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
