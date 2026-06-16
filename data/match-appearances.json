@@ -298,5 +298,25 @@
         "Juan Manuel Sanabria", "Agustin Canobbio", "Nicolas de la Cruz", "Brian Rodriguez", "Rodrigo Aguirre"
       ]
     }
+  },
+  {
+    "matchId": 16,
+    "team1": "IR Iran",
+    "team2": "New Zealand",
+    "score1": 2,
+    "score2": 2,
+    "mvp": { "team": "IR Iran", "name": "Ramin Rezaeian" },
+    "appearances": {
+      "IR Iran": [
+        "Alireza Beiranvand", "Milad Mohammadi", "Ali Nemati", "Shoja Khalilzadeh", "Ramin Rezaeian",
+        "Aria Yousefi", "Saeid Ezatolahi", "Saman Ghoddos", "Mohammad Mohebi", "Mehdi Taremi", "Shahriar Moghanlou",
+        "Mehdi Ghaedi", "Ali Alipour", "Ehsan Hajsafi", "Amirhossein Hosseinzadeh"
+      ],
+      "New Zealand": [
+        "Max Crocombe", "Tim Payne", "Finn Surman", "Michael Boxall", "Liberato Cacace",
+        "Joe Bell", "Marko Stamenic", "Callum McCowatt", "Sarpreet Singh", "Eli Just", "Chris Wood",
+        "Ben Old", "Ryan Thomas", "Callan Elliot", "Tyler Bindon", "Jesse Randall"
+      ]
+    }
   }
 ]

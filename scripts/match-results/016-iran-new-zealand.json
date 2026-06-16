@@ -1,0 +1,15 @@
+{
+  "id": 16,
+  "score1": 2,
+  "score2": 2,
+  "mvp": "Ramin Rezaeian",
+  "goals": [
+    { "team": "IR Iran", "name": "Ramin Rezaeian" },
+    { "team": "IR Iran", "name": "Mohammad Mohebi" },
+    { "team": "New Zealand", "name": "Eli Just", "count": 2 }
+  ],
+  "assists": [
+    { "team": "IR Iran", "name": "Ramin Rezaeian" },
+    { "team": "New Zealand", "name": "Chris Wood", "count": 2 }
+  ]
+}
