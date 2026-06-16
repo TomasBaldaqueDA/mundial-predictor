@@ -1,0 +1,13 @@
+{
+  "id": 15,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Federico Valverde",
+  "goals": [
+    { "team": "Saudi Arabia", "name": "Abdulelah Al Amri" },
+    { "team": "Uruguay", "name": "Maxi Araujo" }
+  ],
+  "assists": [
+    { "team": "Uruguay", "name": "Manuel Ugarte" }
+  ]
+}
