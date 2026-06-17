@@ -398,5 +398,25 @@
         "Salim Obaid", "Mahmoud Al-Mardi", "Saed Al-Rosan", "Mohammad Al-Dawoud", "Ali Azaizeh"
       ]
     }
+  },
+  {
+    "matchId": 21,
+    "team1": "Portugal",
+    "team2": "Congo DR",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Portugal", "name": "Joao Neves" },
+    "appearances": {
+      "Portugal": [
+        "Diogo Costa", "Nuno Mendes", "Renato Veiga", "Tomas Araujo", "Joao Cancelo",
+        "Vitinha", "Joao Neves", "Pedro Neto", "Bruno Fernandes", "Bernardo Silva", "Cristiano Ronaldo",
+        "Francisco Conceicao", "Rafael Leao", "Nelson Semedo", "Goncalo Ramos"
+      ],
+      "Congo DR": [
+        "Lionel Mpasi", "Arthur Masuaku", "Steve Kapuadi", "Alex Tuanzebe", "Chancel Mbemba", "Aaron Wan-Bissaka",
+        "Edo Kayembe", "Samuel Moutoussamy", "Ngal'ayel Mukau", "Cedric Bakambu", "Yoane Wissa",
+        "Noah Sadiki", "Joris Kayembe", "Charles Pickel", "Gédéon Kalulu", "Simon Banza"
+      ]
+    }
   }
 ]

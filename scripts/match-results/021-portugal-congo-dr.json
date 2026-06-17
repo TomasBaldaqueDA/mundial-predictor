@@ -1,0 +1,14 @@
+{
+  "id": 21,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Joao Neves",
+  "goals": [
+    { "team": "Portugal", "name": "Joao Neves" },
+    { "team": "Congo DR", "name": "Yoane Wissa" }
+  ],
+  "assists": [
+    { "team": "Portugal", "name": "Pedro Neto" },
+    { "team": "Congo DR", "name": "Arthur Masuaku" }
+  ]
+}
