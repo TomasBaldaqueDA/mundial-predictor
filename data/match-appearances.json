@@ -338,5 +338,25 @@
         "Ibrahim Mbaye", "Habib Diarra", "Iliman Ndiaye", "Bamba Dieng", "Pathe Ciss"
       ]
     }
+  },
+  {
+    "matchId": 18,
+    "team1": "Iraq",
+    "team2": "Norway",
+    "score1": 1,
+    "score2": 4,
+    "mvp": { "team": "Norway", "name": "Erling Haaland" },
+    "appearances": {
+      "Iraq": [
+        "Jalal Hassan", "Merchas Doski", "Akam Hashim", "Zaid Tahseen", "Hussein Ali",
+        "Ali Jassim", "Amir Al-Ammari", "Zaid Ismail", "Ibrahim Bayesh", "Ali Al-Hamadi", "Aymen Hussein",
+        "Marko Farji", "Zidane Iqbal", "Ahmed Qasem", "Mustafa Saadoon", "Mohanad Ali"
+      ],
+      "Norway": [
+        "Orjan Haskjold Nyland", "Julian Ryerson", "Kristoffer Vassbakk Ajer", "Torbjorn Heggem", "David Moller Wolfe",
+        "Martin Odegaard", "Sander Berge", "Fredrik Aursnes", "Antonio Nusa", "Alexander Sorloth", "Erling Haaland",
+        "Leo Ostigard", "Andreas Schjelderup", "Oscar Bobb", "Kristian Thorstvedt", "Patrick Berg"
+      ]
+    }
   }
 ]

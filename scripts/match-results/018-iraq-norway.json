@@ -1,0 +1,16 @@
+{
+  "id": 18,
+  "score1": 1,
+  "score2": 4,
+  "mvp": "Erling Haaland",
+  "goals": [
+    { "team": "Norway", "name": "Erling Haaland", "count": 2 },
+    { "team": "Iraq", "name": "Aymen Hussein" },
+    { "team": "Norway", "name": "Leo Ostigard" }
+  ],
+  "assists": [
+    { "team": "Norway", "name": "David Moller Wolfe" },
+    { "team": "Iraq", "name": "Amir Al-Ammari" },
+    { "team": "Norway", "name": "Martin Odegaard" }
+  ]
+}
