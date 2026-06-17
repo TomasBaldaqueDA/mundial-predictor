@@ -1,0 +1,15 @@
+{
+  "id": 20,
+  "score1": 3,
+  "score2": 1,
+  "mvp": "Ali Olwan",
+  "goals": [
+    { "team": "Austria", "name": "Romano Schmid" },
+    { "team": "Jordan", "name": "Ali Olwan" },
+    { "team": "Austria", "name": "Marko Arnautovic" }
+  ],
+  "assists": [
+    { "team": "Austria", "name": "Xaver Schlager" },
+    { "team": "Jordan", "name": "Noor Al-Rawabdeh" }
+  ]
+}

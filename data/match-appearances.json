@@ -378,5 +378,25 @@
         "Houssem Aouar", "Riyad Mahrez", "Mohamed Amoura", "Adil Boulbina", "Ramiz Zerrouki"
       ]
     }
+  },
+  {
+    "matchId": 20,
+    "team1": "Austria",
+    "team2": "Jordan",
+    "score1": 3,
+    "score2": 1,
+    "mvp": { "team": "Jordan", "name": "Ali Olwan" },
+    "appearances": {
+      "Austria": [
+        "Alexander Schlager", "Philipp Mwene", "Philipp Lienhart", "David Alaba", "Alexander Prass",
+        "Marcel Sabitzer", "Florian Grillitsch", "Romano Schmid", "Konrad Laimer", "Xaver Schlager", "Michael Gregoritsch",
+        "Marko Arnautovic", "Kevin Danso", "Paul Wanner", "Carney Chukwuemeka", "Patrick Wimmer"
+      ],
+      "Jordan": [
+        "Yazeed Abulaila", "Yazan Al-Arab", "Abdallah Nasib", "Ihsan Haddad", "Mohannad Abu Taha",
+        "Odeh Al-Fakhouri", "Rajaei Ayed", "Noor Al-Rawabdeh", "Ibrahim Sadeh", "Musa Al-Taamari", "Ali Olwan",
+        "Salim Obaid", "Mahmoud Al-Mardi", "Saed Al-Rosan", "Mohammad Al-Dawoud", "Ali Azaizeh"
+      ]
+    }
   }
 ]
