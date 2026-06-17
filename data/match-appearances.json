@@ -418,5 +418,25 @@
         "Noah Sadiki", "Joris Kayembe", "Charles Pickel", "Gédéon Kalulu", "Simon Banza"
       ]
     }
+  },
+  {
+    "matchId": 22,
+    "team1": "England",
+    "team2": "Croatia",
+    "score1": 4,
+    "score2": 2,
+    "mvp": { "team": "England", "name": "Harry Kane" },
+    "appearances": {
+      "England": [
+        "Jordan Pickford", "Reece James", "Ezri Konsa", "John Stones", "Nico O'Reilly",
+        "Declan Rice", "Elliott Anderson", "Noni Madueke", "Jude Bellingham", "Anthony Gordon", "Harry Kane",
+        "Morgan Rogers", "Marcus Rashford", "Bukayo Saka", "Djed Spence", "Marc Guehi"
+      ],
+      "Croatia": [
+        "Dominik Livakovic", "Josko Gvardiol", "Luka Vuskovic", "Josip Sutalo", "Ivan Perisic",
+        "Mario Pasalic", "Luka Modric", "Josip Stanisic", "Petar Sucic", "Martin Baturina", "Petar Musa",
+        "Mateo Kovacic", "Marco Pasalic", "Igor Matanovic", "Andrej Kramaric", "Nikola Vlasic"
+      ]
+    }
   }
 ]

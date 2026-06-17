@@ -1,0 +1,20 @@
+{
+  "id": 22,
+  "score1": 4,
+  "score2": 2,
+  "mvp": "Harry Kane",
+  "goals": [
+    { "team": "England", "name": "Harry Kane", "count": 2 },
+    { "team": "England", "name": "Jude Bellingham" },
+    { "team": "England", "name": "Marcus Rashford" },
+    { "team": "Croatia", "name": "Martin Baturina" },
+    { "team": "Croatia", "name": "Petar Musa" }
+  ],
+  "assists": [
+    { "team": "England", "name": "Declan Rice" },
+    { "team": "Croatia", "name": "Petar Sucic" },
+    { "team": "Croatia", "name": "Ivan Perisic" },
+    { "team": "England", "name": "Elliott Anderson" },
+    { "team": "England", "name": "Bukayo Saka" }
+  ]
+}
