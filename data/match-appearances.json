@@ -318,5 +318,25 @@
         "Ben Old", "Ryan Thomas", "Callan Elliot", "Tyler Bindon", "Jesse Randall"
       ]
     }
+  },
+  {
+    "matchId": 17,
+    "team1": "France",
+    "team2": "Senegal",
+    "score1": 3,
+    "score2": 1,
+    "mvp": { "team": "France", "name": "Michael Olise" },
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Jules Kounde", "Dayot Upamecano", "William Saliba", "Theo Hernandez",
+        "Aurelien Tchouameni", "Adrien Rabiot", "Michael Olise", "Ousmane Dembele", "Desire Doue", "Kylian Mbappe",
+        "Bradley Barcola", "Rayan Cherki"
+      ],
+      "Senegal": [
+        "Edouard Mendy", "El Hadji Malick Diouf", "Moussa Niakhate", "Kalidou Koulibaly", "Krepin Diatta",
+        "Pape Gueye", "Idrissa Gana Gueye", "Sadio Mane", "Lamine Camara", "Ismaila Sarr", "Nicolas Jackson",
+        "Ibrahim Mbaye", "Habib Diarra", "Iliman Ndiaye", "Bamba Dieng", "Pathe Ciss"
+      ]
+    }
   }
 ]

@@ -1,0 +1,16 @@
+{
+  "id": 17,
+  "score1": 3,
+  "score2": 1,
+  "mvp": "Michael Olise",
+  "goals": [
+    { "team": "France", "name": "Kylian Mbappe", "count": 2 },
+    { "team": "France", "name": "Bradley Barcola" },
+    { "team": "Senegal", "name": "Ibrahim Mbaye" }
+  ],
+  "assists": [
+    { "team": "France", "name": "Michael Olise" },
+    { "team": "France", "name": "Adrien Rabiot" },
+    { "team": "Senegal", "name": "Iliman Ndiaye" }
+  ]
+}
