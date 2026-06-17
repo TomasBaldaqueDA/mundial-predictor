@@ -358,5 +358,25 @@
         "Leo Ostigard", "Andreas Schjelderup", "Oscar Bobb", "Kristian Thorstvedt", "Patrick Berg"
       ]
     }
+  },
+  {
+    "matchId": 19,
+    "team1": "Argentina",
+    "team2": "Algeria",
+    "score1": 3,
+    "score2": 0,
+    "mvp": { "team": "Argentina", "name": "Lionel Messi" },
+    "appearances": {
+      "Argentina": [
+        "Emiliano Martinez", "Cristian Romero", "Facundo Medina", "Lisandro Martinez", "Gonzalo Montiel",
+        "Alexis Mac Allister", "Enzo Fernandez", "Thiago Almada", "Rodrigo De Paul", "Lautaro Martinez", "Lionel Messi",
+        "Nahuel Molina", "Nicolas Gonzalez", "Julian Alvarez", "Nicolas Otamendi", "Nicolas Paz"
+      ],
+      "Algeria": [
+        "Luca Zidane", "Rafik Belghali", "Aissa Mandi", "Ramy Bensebaini", "Rayan Ait-Nouri",
+        "Nabil Bentaleb", "Hicham Boudaoui", "Fares Chaibi", "Ibrahim Maza", "Anis Hadj Moussa", "Amine Gouiri",
+        "Houssem Aouar", "Riyad Mahrez", "Mohamed Amoura", "Adil Boulbina", "Ramiz Zerrouki"
+      ]
+    }
   }
 ]

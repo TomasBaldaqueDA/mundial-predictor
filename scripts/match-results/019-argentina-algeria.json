@@ -1,0 +1,13 @@
+{
+  "id": 19,
+  "score1": 3,
+  "score2": 0,
+  "mvp": "Lionel Messi",
+  "goals": [
+    { "team": "Argentina", "name": "Lionel Messi", "count": 3 }
+  ],
+  "assists": [
+    { "team": "Argentina", "name": "Rodrigo De Paul" },
+    { "team": "Argentina", "name": "Nicolas Gonzalez" }
+  ]
+}
