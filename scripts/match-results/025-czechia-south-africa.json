@@ -1,0 +1,13 @@
+{
+  "id": 25,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Ladislav Krejci",
+  "goals": [
+    { "team": "Czechia", "name": "Michal Sadilek" },
+    { "team": "South Africa", "name": "Teboho Mokoena" }
+  ],
+  "assists": [
+    { "team": "Czechia", "name": "Alexandr Sojka" }
+  ]
+}

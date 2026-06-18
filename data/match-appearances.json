@@ -478,5 +478,25 @@
         "Jaminton Campaz", "Richard Rios", "Juan Camilo Hernandez", "Kevin Castano", "Carlos Gomez"
       ]
     }
+  },
+  {
+    "matchId": 25,
+    "team1": "Czechia",
+    "team2": "South Africa",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Czechia", "name": "Ladislav Krejci" },
+    "appearances": {
+      "Czechia": [
+        "Matej Kovar", "Robin Hranac", "David Zima", "Tomas Holes", "Vladimir Coufal", "Ladislav Krejci",
+        "Alexandr Sojka", "Michal Sadilek", "Vladimir Darida", "Adam Hlozek", "Patrik Schick",
+        "Jaroslav Zeleny", "Pavel Sulc", "Tomas Soucek", "Lukas Provod", "Lukas Cerv"
+      ],
+      "South Africa": [
+        "Ronwen Williams", "Khuliso Mudau", "Ime Okon", "Mbekezeli Mbokazi", "Aubrey Modiba",
+        "Thalente Mbatha", "Teboho Mokoena", "Jayden Adams", "Thapelo Maseko", "Iqraam Rayners", "Oswin Appollis",
+        "Relebohile Mofokeng", "Evidence Makgopa", "Kamogelo Sebelebele"
+      ]
+    }
   }
 ]
