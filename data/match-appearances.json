@@ -458,5 +458,25 @@
         "Jose Fajardo", "Azarias Londono", "Ismael Diaz", "Anibal Godoy"
       ]
     }
+  },
+  {
+    "matchId": 24,
+    "team1": "Uzbekistan",
+    "team2": "Colombia",
+    "score1": 1,
+    "score2": 3,
+    "mvp": { "team": "Colombia", "name": "Luis Diaz" },
+    "appearances": {
+      "Uzbekistan": [
+        "Utkir Yusupov", "Abdukodir Khusanov", "Rustam Ashurmatov", "Sherzod Nasrullaev", "Otabek Shukurov",
+        "Abdulla Abdullaev", "Odiljon Hamrobekov", "Oston Urunov", "Abbosbek Fayzullaev", "Eldor Shomurodov",
+        "Farrukh Sayfiev", "Dostonbek Khamdamov", "Jakhongir Urozov", "Azizbek Amonov", "Igor Sergeev"
+      ],
+      "Colombia": [
+        "Camilo Vargas", "Daniel Munoz", "Davinson Sanchez", "Johan Mojica", "Santiago Arias",
+        "Jefferson Lerma", "James Rodriguez", "Gustavo Puerta", "Jhon Arias", "Luis Suarez", "Luis Diaz",
+        "Jaminton Campaz", "Richard Rios", "Juan Camilo Hernandez", "Kevin Castano", "Carlos Gomez"
+      ]
+    }
   }
 ]

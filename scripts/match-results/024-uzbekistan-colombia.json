@@ -1,0 +1,17 @@
+{
+  "id": 24,
+  "score1": 1,
+  "score2": 3,
+  "mvp": "Luis Diaz",
+  "goals": [
+    { "team": "Colombia", "name": "Daniel Munoz" },
+    { "team": "Uzbekistan", "name": "Abbosbek Fayzullaev" },
+    { "team": "Colombia", "name": "Luis Diaz" },
+    { "team": "Colombia", "name": "Jaminton Campaz" }
+  ],
+  "assists": [
+    { "team": "Colombia", "name": "Luis Diaz" },
+    { "team": "Colombia", "name": "Gustavo Puerta" },
+    { "team": "Colombia", "name": "Juan Camilo Hernandez" }
+  ]
+}
