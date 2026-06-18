@@ -498,5 +498,25 @@
         "Relebohile Mofokeng", "Evidence Makgopa", "Kamogelo Sebelebele"
       ]
     }
+  },
+  {
+    "matchId": 26,
+    "team1": "Switzerland",
+    "team2": "Bosnia and Herzegovina",
+    "score1": 4,
+    "score2": 1,
+    "mvp": { "team": "Switzerland", "name": "Johan Manzambi" },
+    "appearances": {
+      "Switzerland": [
+        "Gregor Kobel", "Nico Elvedi", "Manuel Akanji", "Ricardo Rodriguez", "Silvan Widmer",
+        "Michel Aebischer", "Granit Xhaka", "Remo Freuler", "Fabian Rieder", "Breel Embolo", "Dan Ndoye",
+        "Djibril Sow", "Johan Manzambi", "Ruben Vargas", "Luca Jaquez", "Cedric Itten"
+      ],
+      "Bosnia and Herzegovina": [
+        "Nikola Vasilj", "Amar Dedić", "Nikola Katić", "Tarik Muharemović", "Sead Kolašinac",
+        "Ivan Sunjic", "Benjamin Tahirovic", "Amar Memic", "Ermedin Demirovic", "Edin Dzeko", "Kerim Alajbegovic",
+        "Ivan Basic", "Esmir Bajraktarevic", "Amir Hadziahmetovic", "Jovo Lukic", "Ermin Mahmic"
+      ]
+    }
   }
 ]

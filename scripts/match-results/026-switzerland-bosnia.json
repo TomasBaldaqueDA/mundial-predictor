@@ -1,0 +1,17 @@
+{
+  "id": 26,
+  "score1": 4,
+  "score2": 1,
+  "mvp": "Johan Manzambi",
+  "goals": [
+    { "team": "Switzerland", "name": "Johan Manzambi" },
+    { "team": "Switzerland", "name": "Johan Manzambi" },
+    { "team": "Switzerland", "name": "Ruben Vargas" },
+    { "team": "Switzerland", "name": "Granit Xhaka" },
+    { "team": "Bosnia and Herzegovina", "name": "Ermin Mahmic" }
+  ],
+  "assists": [
+    { "team": "Switzerland", "name": "Breel Embolo" },
+    { "team": "Switzerland", "name": "Ruben Vargas" }
+  ]
+}
