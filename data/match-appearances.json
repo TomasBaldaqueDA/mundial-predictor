@@ -438,5 +438,25 @@
         "Mateo Kovacic", "Marco Pasalic", "Igor Matanovic", "Andrej Kramaric", "Nikola Vlasic"
       ]
     }
+  },
+  {
+    "matchId": 23,
+    "team1": "Ghana",
+    "team2": "Panama",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "Ghana", "name": "Antoine Semenyo" },
+    "appearances": {
+      "Ghana": [
+        "Lawrence Ati-Zigi", "Jonas Adjetey", "Caleb Yirenkyi", "Marvin Senaya", "Jerome Opoku",
+        "Elisha Owusu", "Ernest Nuamah", "Kamaldeen Sulemana", "Jordan Ayew", "Gideon Mensah", "Antoine Semenyo",
+        "Benjamin Asare", "Brandon Thomas-Asante", "Abdul Fatawu Issahaku", "Kwasi Sibo", "Prince Kwabena Adu"
+      ],
+      "Panama": [
+        "Orlando Mosquera", "Jose Cordoba", "Andres Andrade", "Cesar Blackman", "Yoel Barcenas",
+        "Carlos Harvey", "Amir Murillo", "Jiovany Ramos", "Jose Luis Rodriguez", "Cecilio Waterman", "Cristian Martinez",
+        "Jose Fajardo", "Azarias Londono", "Ismael Diaz", "Anibal Godoy"
+      ]
+    }
   }
 ]
