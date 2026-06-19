@@ -518,5 +518,25 @@
         "Ivan Basic", "Esmir Bajraktarevic", "Amir Hadziahmetovic", "Jovo Lukic", "Ermin Mahmic"
       ]
     }
+  },
+  {
+    "matchId": 27,
+    "team1": "Canada",
+    "team2": "Qatar",
+    "score1": 6,
+    "score2": 0,
+    "mvp": { "team": "Canada", "name": "Jonathan David" },
+    "appearances": {
+      "Canada": [
+        "Maxime Crepeau", "Richie Laryea", "Derek Cornelius", "Luc de Fougerolles", "Alistair Johnston",
+        "Ali Ahmed", "Stephen Eustaquio", "Ismael Kone", "Tajon Buchanan", "Cyle Larin", "Jonathan David",
+        "Moise Bombito", "Nathan-Dylan Saliba", "Jacob Shaffelburg", "Tani Oluwaseyi", "Niko Sigur"
+      ],
+      "Qatar": [
+        "Mahmoud Abunada", "Ahmed Alaa", "Pedro Miguel", "Boualem Khoukhi", "Homam Al-Amin",
+        "Edmilson Junior", "Jassem Jaber", "Assim Madibo", "Youssef Abdulrazzaq", "Akram Afif", "Issa Laaye",
+        "Sultan Al-Brake", "Ahmed Fathi", "Mohammed Al-Manai", "Hashmi Hussein", "Lucas Mendes"
+      ]
+    }
   }
 ]

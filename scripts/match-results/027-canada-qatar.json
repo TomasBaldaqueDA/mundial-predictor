@@ -1,0 +1,16 @@
+{
+  "id": 27,
+  "score1": 6,
+  "score2": 0,
+  "mvp": "Jonathan David",
+  "goals": [
+    { "team": "Canada", "name": "Cyle Larin" },
+    { "team": "Canada", "name": "Jonathan David" },
+    { "team": "Canada", "name": "Jonathan David" },
+    { "team": "Canada", "name": "Jonathan David" },
+    { "team": "Canada", "name": "Nathan-Dylan Saliba" }
+  ],
+  "assists": [
+    { "team": "Canada", "name": "Nathan-Dylan Saliba" }
+  ]
+}
