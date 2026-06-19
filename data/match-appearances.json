@@ -538,5 +538,25 @@
         "Sultan Al-Brake", "Ahmed Fathi", "Mohammed Al-Manai", "Hashmi Hussein", "Lucas Mendes"
       ]
     }
+  },
+  {
+    "matchId": 28,
+    "team1": "Mexico",
+    "team2": "Korea Republic",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "Mexico", "name": "Luis Romo" },
+    "appearances": {
+      "Mexico": [
+        "Raul Rangel", "Jorge Sanchez", "Edson Alvarez", "Johan Vasquez", "Jesus Gallardo",
+        "Brian Gutierrez", "Erik Lira", "Luis Romo", "Roberto Alvarado", "Raul Jimenez", "Julian Quinones",
+        "Orbelin Pineda", "Obed Vargas", "Israel Reyes", "Santiago Gimenez", "Cesar Huerta"
+      ],
+      "Korea Republic": [
+        "Kim Seung-gyu", "Lee Han-beom", "Kim Min-jae", "Lee Ki-hyuk", "Seol Young-woo",
+        "Paik Seung-ho", "Hwang In-beom", "Kim Jin-gyu", "Lee Jae-sung", "Lee Kan-gin", "Son Heung-min",
+        "Hwang Hee-chan", "Oh Hyeong-yu", "Eom Ji-sung", "Yang Hyun-jun", "Cho Gue-sung"
+      ]
+    }
   }
 ]
