@@ -638,5 +638,25 @@
         "Damian Bobadilla", "Gustavo Velazquez", "Alexandro Maidana", "Gabriel Avalos", "Jose Canale"
       ]
     }
+  },
+  {
+    "matchId": 33,
+    "team1": "Netherlands",
+    "team2": "Sweden",
+    "score1": 5,
+    "score2": 1,
+    "mvp": { "team": "Netherlands", "name": "Cody Gakpo" },
+    "appearances": {
+      "Netherlands": [
+        "Bart Verbruggen", "Denzel Dumfries", "Jan Paul van Hecke", "Virgil van Dijk", "Micky van de Ven",
+        "Frenkie de Jong", "Ryan Gravenberch", "Tijjani Reijnders", "Donyell Malen", "Brian Brobbey", "Cody Gakpo",
+        "Crysencio Summerville", "Guus Til", "Teun Koopmeiners", "Memphis Depay", "Noa Lang"
+      ],
+      "Sweden": [
+        "Kristoffer Nordfeldt", "Victor Lindelof", "Isak Hien", "Gustaf Lagerbielke", "Jesper Karlstrom",
+        "Gabriel Gudmundsson", "Yasin Ayari", "Benjamin Nygren", "Alexander Bernhardsson", "Alexander Isak", "Viktor Gyokeres",
+        "Anthony Elanga", "Besfort Zeneli", "Lucas Bergvall", "Taha Ali", "Elliot Stroud"
+      ]
+    }
   }
 ]

@@ -1,0 +1,22 @@
+{
+  "id": 33,
+  "score1": 5,
+  "score2": 1,
+  "mvp": "Cody Gakpo",
+  "goals": [
+    { "team": "Netherlands", "name": "Brian Brobbey" },
+    { "team": "Netherlands", "name": "Brian Brobbey" },
+    { "team": "Netherlands", "name": "Cody Gakpo" },
+    { "team": "Netherlands", "name": "Cody Gakpo" },
+    { "team": "Netherlands", "name": "Crysencio Summerville" },
+    { "team": "Sweden", "name": "Anthony Elanga" }
+  ],
+  "assists": [
+    { "team": "Netherlands", "name": "Cody Gakpo" },
+    { "team": "Netherlands", "name": "Denzel Dumfries" },
+    { "team": "Netherlands", "name": "Denzel Dumfries" },
+    { "team": "Netherlands", "name": "Crysencio Summerville" },
+    { "team": "Netherlands", "name": "Memphis Depay" },
+    { "team": "Sweden", "name": "Alexander Isak" }
+  ]
+}
