@@ -618,5 +618,25 @@
         "Dominique Simon", "Wilson Isidor", "Louicius Deedson", "Lenny Joseph", "Derrick Etienne"
       ]
     }
+  },
+  {
+    "matchId": 32,
+    "team1": "Türkiye",
+    "team2": "Paraguay",
+    "score1": 0,
+    "score2": 1,
+    "mvp": { "team": "Paraguay", "name": "Matias Galarza" },
+    "appearances": {
+      "Türkiye": [
+        "Ugurcan Cakir", "Ferdi Kadioglu", "Abdulkerim Bardakci", "Merih Demiral", "Mert Muldur",
+        "Ismail Yuksek", "Hakan Calhanoglu", "Kenan Yildiz", "Arda Guler", "Yunus Akgun", "Kerem Akturkoglu",
+        "Baris Alper Yilmaz", "Can Uzun", "Deniz Gul", "Eren Elmali", "Orkun Kokcu"
+      ],
+      "Paraguay": [
+        "Orlando Gill", "Juan Jose Caceres", "Gustavo Gomez", "Omar Alderete", "Junior Alonso",
+        "Miguel Almiron", "Andres Cubas", "Diego Gomez", "Matias Galarza", "Isidro Pitta", "Julio Enciso",
+        "Damian Bobadilla", "Gustavo Velazquez", "Alexandro Maidana", "Gabriel Avalos", "Jose Canale"
+      ]
+    }
   }
 ]
