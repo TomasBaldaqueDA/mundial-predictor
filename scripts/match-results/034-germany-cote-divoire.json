@@ -1,0 +1,15 @@
+{
+  "id": 34,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Deniz Undav",
+  "goals": [
+    { "team": "Germany", "name": "Deniz Undav" },
+    { "team": "Germany", "name": "Deniz Undav" },
+    { "team": "Côte d'Ivoire", "name": "Franck Kessie" }
+  ],
+  "assists": [
+    { "team": "Germany", "name": "Nadiem Amiri" },
+    { "team": "Germany", "name": "Felix Nmecha" }
+  ]
+}

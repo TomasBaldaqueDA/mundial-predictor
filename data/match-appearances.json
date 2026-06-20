@@ -658,5 +658,25 @@
         "Anthony Elanga", "Besfort Zeneli", "Lucas Bergvall", "Taha Ali", "Elliot Stroud"
       ]
     }
+  },
+  {
+    "matchId": 34,
+    "team1": "Germany",
+    "team2": "Côte d'Ivoire",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Germany", "name": "Deniz Undav" },
+    "appearances": {
+      "Germany": [
+        "Manuel Neuer", "Nathaniel Brown", "Nico Schlotterbeck", "Jonathan Tah", "Joshua Kimmich",
+        "Aleksandar Pavlovic", "Felix Nmecha", "Florian Wirtz", "Jamal Musiala", "Leroy Sané", "Kai Havertz",
+        "Antonio Rüdiger", "Nadiem Amiri", "Deniz Undav", "Jamie Leweling", "Leon Goretzka"
+      ],
+      "Côte d'Ivoire": [
+        "Yahia Fofana", "Wilfried Singo", "Odilon Kossounou", "Emmanuel Agbadou", "Ghislain Konan",
+        "Franck Kessie", "Seko Fofana", "Christ Inao Oulai", "Nicolas Pepe", "Simon Adingra", "Evann Guessand",
+        "Ibrahim Sangare", "Amad Diallo", "Ange-Yoan Bonny", "Guela Doué", "Yan Diomande"
+      ]
+    }
   }
 ]
