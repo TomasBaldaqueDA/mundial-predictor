@@ -1,0 +1,15 @@
+{
+  "id": 31,
+  "score1": 3,
+  "score2": 0,
+  "mvp": "Vinicius Jr",
+  "goals": [
+    { "team": "Brazil", "name": "Matheus Cunha" },
+    { "team": "Brazil", "name": "Matheus Cunha" },
+    { "team": "Brazil", "name": "Vinicius Jr" }
+  ],
+  "assists": [
+    { "team": "Brazil", "name": "Vinicius Jr" },
+    { "team": "Brazil", "name": "Lucas Paqueta" }
+  ]
+}

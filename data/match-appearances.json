@@ -598,5 +598,25 @@
         "Ayoube Amaimouni", "Chemsdine Talbi", "Soufiane Rahimi", "Samir El Mourabet"
       ]
     }
+  },
+  {
+    "matchId": 31,
+    "team1": "Brazil",
+    "team2": "Haiti",
+    "score1": 3,
+    "score2": 0,
+    "mvp": { "team": "Brazil", "name": "Vinicius Jr" },
+    "appearances": {
+      "Brazil": [
+        "Alisson", "Douglas Santos", "Gabriel Magalhaes", "Marquinhos", "Danilo",
+        "Lucas Paqueta", "Casemiro", "Bruno Guimaraes", "Vinicius Jr", "Matheus Cunha", "Raphinha",
+        "Rayan", "Gabriel Martinelli", "Endrick", "Danilo Santos", "Ederson"
+      ],
+      "Haiti": [
+        "Johnny Placide", "Carlens Arcus", "JK Duverne", "Ricardo Ade", "Hannes Delcroix", "Martin Experience",
+        "Josué Casimir", "Jean-Jacques Danley", "Jeanricner Bellegarde", "Ruben Providence", "Frantzdy Pierrot",
+        "Dominique Simon", "Wilson Isidor", "Louicius Deedson", "Lenny Joseph", "Derrick Etienne"
+      ]
+    }
   }
 ]
