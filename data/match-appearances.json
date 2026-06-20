@@ -558,5 +558,25 @@
         "Hwang Hee-chan", "Oh Hyeong-yu", "Eom Ji-sung", "Yang Hyun-jun", "Cho Gue-sung"
       ]
     }
+  },
+  {
+    "matchId": 29,
+    "team1": "USA",
+    "team2": "Australia",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "USA", "name": "Folarin Balogun" },
+    "appearances": {
+      "USA": [
+        "Matt Freese", "Tim Ream", "Chris Richards", "Alex Freeman", "Antonee Robinson",
+        "Malik Tillman", "Tyler Adams", "Weston McKennie", "Sergiño Dest", "Ricardo Pepi", "Folarin Balogun",
+        "Sebastian Berhalter", "Joe Scally", "Auston Trusty", "Haji Wright", "Gio Reyna"
+      ],
+      "Australia": [
+        "Patrick Beach", "Jacob Italiano", "Alessandro Circati", "Harry Souttar", "Cameron Burgess", "Jordan Bos",
+        "Mathew Leckie", "Aiden O'Neill", "Paul Okon-Engstler", "Nishan Velupillay", "Mohamed Toure",
+        "Jason Geria", "Connor Metcalfe", "Nestory Irankunda", "Cristian Volpato", "Jackson Irvine"
+      ]
+    }
   }
 ]
