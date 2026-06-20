@@ -578,5 +578,25 @@
         "Jason Geria", "Connor Metcalfe", "Nestory Irankunda", "Cristian Volpato", "Jackson Irvine"
       ]
     }
+  },
+  {
+    "matchId": 30,
+    "team1": "Scotland",
+    "team2": "Morocco",
+    "score1": 0,
+    "score2": 1,
+    "mvp": { "team": "Morocco", "name": "Ismael Saibari" },
+    "appearances": {
+      "Scotland": [
+        "Angus Gunn", "Andy Robertson", "Jack Hendry", "Grant Hanley", "Nathan Patterson",
+        "Kieran Tierney", "Lewis Ferguson", "Ryan Christie", "John McGinn", "Scott McTominay", "Che Adams",
+        "Ben Gannon-Doak", "Kenny McLean", "Lyndon Dykes", "Ross Stewart", "Anthony Ralston"
+      ],
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Issa Diop", "Chadi Riad", "Noussair Mazraoui",
+        "Ayyoub Bouaddi", "Neil El Aynaoui", "Brahim Diaz", "Azzedine Ounahi", "Bilal El Khannouss", "Ismael Saibari",
+        "Ayoube Amaimouni", "Chemsdine Talbi", "Soufiane Rahimi", "Samir El Mourabet"
+      ]
+    }
   }
 ]
