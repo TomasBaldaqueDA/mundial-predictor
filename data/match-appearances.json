@@ -778,5 +778,25 @@
         "Deroy Duarte", "Nuno Da Costa", "Helio Varela", "Laros Duarte", "Yannick Semedo"
       ]
     }
+  },
+  {
+    "matchId": 40,
+    "team1": "New Zealand",
+    "team2": "Egypt",
+    "score1": 1,
+    "score2": 3,
+    "mvp": { "team": "Egypt", "name": "Mohamed Salah" },
+    "appearances": {
+      "New Zealand": [
+        "Max Crocombe", "Tim Payne", "Finn Surman", "Michael Boxall", "Liberato Cacace",
+        "Joe Bell", "Marko Stamenic", "Callum McCowatt", "Sarpreet Singh", "Eli Just", "Chris Wood",
+        "Ben Old", "Jesse Randall", "Ryan Thomas", "Tyler Bindon", "Francis de Vries"
+      ],
+      "Egypt": [
+        "Mostafa Shobeir", "Mohamed Hany", "Yasser Ibrahim", "Hamdi Fathy", "Ahmed Fatouh",
+        "Marwan Attia", "Mohannad Lasheen", "Mostafa Ziko", "Mohamed Salah", "Emam Ashour", "Omar Marmoush",
+        "Ramy Rabia", "Mahmoud Trezeguet", "Hamza Abdel Karim", "Ahmed Sayed Zizo", "Hossam Abdelmaguid", "Mohamed Abdelmonem"
+      ]
+    }
   }
 ]

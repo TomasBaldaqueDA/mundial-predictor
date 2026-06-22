@@ -1,0 +1,18 @@
+{
+  "id": 40,
+  "score1": 1,
+  "score2": 3,
+  "mvp": "Mohamed Salah",
+  "goals": [
+    { "team": "New Zealand", "name": "Finn Surman" },
+    { "team": "Egypt", "name": "Mostafa Ziko" },
+    { "team": "Egypt", "name": "Mohamed Salah" },
+    { "team": "Egypt", "name": "Mahmoud Trezeguet" }
+  ],
+  "assists": [
+    { "team": "New Zealand", "name": "Tim Payne" },
+    { "team": "Egypt", "name": "Mohamed Hany" },
+    { "team": "Egypt", "name": "Mostafa Ziko" },
+    { "team": "Egypt", "name": "Mohamed Salah" }
+  ]
+}
