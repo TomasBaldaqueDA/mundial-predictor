@@ -1,0 +1,18 @@
+{
+  "id": 36,
+  "score1": 0,
+  "score2": 4,
+  "mvp": "Ayase Ueda",
+  "goals": [
+    { "team": "Japan", "name": "Daichi Kamada" },
+    { "team": "Japan", "name": "Ayase Ueda" },
+    { "team": "Japan", "name": "Ayase Ueda" },
+    { "team": "Japan", "name": "Junya Ito" }
+  ],
+  "assists": [
+    { "team": "Japan", "name": "Keito Nakamura" },
+    { "team": "Japan", "name": "Ko Itakura" },
+    { "team": "Japan", "name": "Ayase Ueda" },
+    { "team": "Japan", "name": "Kaishu Sano" }
+  ]
+}

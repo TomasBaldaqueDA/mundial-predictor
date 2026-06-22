@@ -698,5 +698,25 @@
         "Juninho Bacuna", "Deveron Fonville", "Jearl Margaritha", "Gervane Kastaneer", "Godfried Roemeratoe"
       ]
     }
+  },
+  {
+    "matchId": 36,
+    "team1": "Tunisia",
+    "team2": "Japan",
+    "score1": 0,
+    "score2": 4,
+    "mvp": { "team": "Japan", "name": "Ayase Ueda" },
+    "appearances": {
+      "Tunisia": [
+        "Aymen Dahmene", "Omar Rekik", "Montassar Talbi", "Dylan Bronn", "Ali Abdi",
+        "Ellyes Skhiri", "Anis Ben Slimane", "Yan Valery", "Hannibal Mejbri", "Elias Saad", "Sebastian Tounekti",
+        "Mohamed Amine Ben Hamida", "Ismael Gharbi", "Firas Chaouat", "Elias Achouri", "Rani Khedira"
+      ],
+      "Japan": [
+        "Zion Suzuki", "Takehiro Tomiyasu", "Ko Itakura", "Hiroki Ito", "Ritsu Doan",
+        "Kaishu Sano", "Ao Tanaka", "Keito Nakamura", "Junya Ito", "Daichi Kamada", "Ayase Ueda",
+        "Junosuke Suzuki", "Yukinari Sugawara", "Ayumu Seko", "Yuito Suzuki", "Keisuke Goto"
+      ]
+    }
   }
 ]
