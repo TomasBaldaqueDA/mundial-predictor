@@ -738,5 +738,25 @@
         "Mohammed Kanno", "Abdullah Al Hamdan", "Mohammed Abu Al Shamat", "Alaa Al Hajji", "Khalid Al Ghannam"
       ]
     }
+  },
+  {
+    "matchId": 38,
+    "team1": "Belgium",
+    "team2": "IR Iran",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "IR Iran", "name": "Alireza Beiranvand" },
+    "appearances": {
+      "Belgium": [
+        "Thibaut Courtois", "Maxim De Cuyper", "Brandon Mechele", "Nathan Ngoy", "Thomas Meunier",
+        "Youri Tielemans", "Nicolas Raskin", "Leandro Trossard", "Kevin De Bruyne", "Alexis Saelemaekers", "Romelu Lukaku",
+        "Timothy Castagne", "Hans Vanaken", "Dodi Lukebakio", "Arthur Theate", "Matias Fernandez-Pardo"
+      ],
+      "IR Iran": [
+        "Alireza Beiranvand", "Ehsan Hajsafi", "Ali Nemati", "Shoja Khalilzadeh", "Hossein Kanaani", "Saleh Hardani",
+        "Mohammad Mohebi", "Saeid Ezatolahi", "Saman Ghoddos", "Ramin Rezaeian", "Mehdi Taremi",
+        "Alireza Jahanbakhsh", "Milad Mohammadi", "Mehdi Torabi", "Shahriar Moghanlou", "Amirhossein Hosseinzadeh"
+      ]
+    }
   }
 ]
