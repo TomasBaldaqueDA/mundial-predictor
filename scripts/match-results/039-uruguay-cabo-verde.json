@@ -1,0 +1,15 @@
+{
+  "id": 39,
+  "score1": 2,
+  "score2": 2,
+  "mvp": "Kevin Pina",
+  "goals": [
+    { "team": "Cabo Verde", "name": "Kevin Pina" },
+    { "team": "Uruguay", "name": "Maxi Araujo" },
+    { "team": "Uruguay", "name": "Agustin Canobbio" },
+    { "team": "Cabo Verde", "name": "Helio Varela" }
+  ],
+  "assists": [
+    { "team": "Uruguay", "name": "Maxi Araujo" }
+  ]
+}

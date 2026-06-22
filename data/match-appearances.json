@@ -758,5 +758,25 @@
         "Alireza Jahanbakhsh", "Milad Mohammadi", "Mehdi Torabi", "Shahriar Moghanlou", "Amirhossein Hosseinzadeh"
       ]
     }
+  },
+  {
+    "matchId": 39,
+    "team1": "Uruguay",
+    "team2": "Cabo Verde",
+    "score1": 2,
+    "score2": 2,
+    "mvp": { "team": "Cabo Verde", "name": "Kevin Pina" },
+    "appearances": {
+      "Uruguay": [
+        "Fernando Muslera", "Guillermo Varela", "Sebastian Caceres", "Mathias Olivera", "Matias Vina",
+        "Nicolas de la Cruz", "Rodrigo Bentancur", "Federico Valverde", "Agustin Canobbio", "Maxi Araujo", "Darwin Nunez",
+        "Manuel Ugarte", "Federico Vinas", "Juan Manuel Sanabria", "Brian Rodriguez", "Rodrigo Aguirre"
+      ],
+      "Cabo Verde": [
+        "Vozinha", "Steven Moreira", "Sidny Cabral", "Diney Borges", "Roberto Lopes", "Jamiro Monteiro",
+        "Kevin Pina", "Telmo Arcanjo", "Garry Rodrigues", "Ianique Dos Santos Tavares", "Ryan Mendes",
+        "Deroy Duarte", "Nuno Da Costa", "Helio Varela", "Laros Duarte", "Yannick Semedo"
+      ]
+    }
   }
 ]
