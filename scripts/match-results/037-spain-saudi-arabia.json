@@ -1,0 +1,16 @@
+{
+  "id": 37,
+  "score1": 4,
+  "score2": 0,
+  "mvp": "Mikel Oyarzabal",
+  "goals": [
+    { "team": "Spain", "name": "Lamine Yamal" },
+    { "team": "Spain", "name": "Mikel Oyarzabal" },
+    { "team": "Spain", "name": "Mikel Oyarzabal" }
+  ],
+  "assists": [
+    { "team": "Spain", "name": "Mikel Oyarzabal" },
+    { "team": "Spain", "name": "Aymeric Laporte" },
+    { "team": "Spain", "name": "Dani Olmo" }
+  ]
+}

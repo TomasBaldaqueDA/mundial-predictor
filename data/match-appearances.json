@@ -718,5 +718,25 @@
         "Junosuke Suzuki", "Yukinari Sugawara", "Ayumu Seko", "Yuito Suzuki", "Keisuke Goto"
       ]
     }
+  },
+  {
+    "matchId": 37,
+    "team1": "Spain",
+    "team2": "Saudi Arabia",
+    "score1": 4,
+    "score2": 0,
+    "mvp": { "team": "Spain", "name": "Mikel Oyarzabal" },
+    "appearances": {
+      "Spain": [
+        "Unai Simón", "Marc Cucurella", "Aymeric Laporte", "Pau Cubarsí", "Pedro Porro",
+        "Pedri", "Rodri", "Dani Olmo", "Álex Baena", "Mikel Oyarzabal", "Lamine Yamal",
+        "Ferran Torres", "Yéremy Pino", "Nico Williams", "Mikel Merino", "Fabián Ruiz"
+      ],
+      "Saudi Arabia": [
+        "Mohammed Al Owais", "Saud Abdulhamid", "Abdulelah Al Amri", "Ali Lajami", "Hassan Tambakti", "Moteb Al Harbi",
+        "Musab Al Juwayr", "Abdullah Al Khaibari", "Nasser Al Dawsari", "Salem Al Dawsari", "Firas Al Buraikan",
+        "Mohammed Kanno", "Abdullah Al Hamdan", "Mohammed Abu Al Shamat", "Alaa Al Hajji", "Khalid Al Ghannam"
+      ]
+    }
   }
 ]
