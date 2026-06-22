@@ -798,5 +798,25 @@
         "Ramy Rabia", "Mahmoud Trezeguet", "Hamza Abdel Karim", "Ahmed Sayed Zizo", "Hossam Abdelmaguid", "Mohamed Abdelmonem"
       ]
     }
+  },
+  {
+    "matchId": 41,
+    "team1": "Argentina",
+    "team2": "Austria",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "Argentina", "name": "Lionel Messi" },
+    "appearances": {
+      "Argentina": [
+        "Emiliano Martinez", "Nicolas Tagliafico", "Nicolas Otamendi", "Lisandro Martinez", "Nahuel Molina",
+        "Leandro Paredes", "Alexis Mac Allister", "Enzo Fernandez", "Nicolas Gonzalez", "Julian Alvarez", "Lionel Messi",
+        "Cristian Romero", "Thiago Almada", "Lautaro Martinez", "Rodrigo De Paul", "Facundo Medina"
+      ],
+      "Austria": [
+        "Alexander Schlager", "Konrad Laimer", "David Alaba", "Kevin Danso", "Stefan Posch",
+        "Xaver Schlager", "Nicolas Seiwald", "Marcel Sabitzer", "Paul Wanner", "Romano Schmid", "Michael Gregoritsch",
+        "Marco Friedl", "Alexander Prass", "Marko Arnautovic", "Patrick Wimmer", "Carney Chukwuemeka"
+      ]
+    }
   }
 ]

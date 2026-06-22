@@ -1,0 +1,13 @@
+{
+  "id": 41,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Lionel Messi",
+  "goals": [
+    { "team": "Argentina", "name": "Lionel Messi" },
+    { "team": "Argentina", "name": "Lionel Messi" }
+  ],
+  "assists": [
+    { "team": "Argentina", "name": "Facundo Medina" }
+  ]
+}
