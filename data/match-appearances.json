@@ -678,5 +678,25 @@
         "Ibrahim Sangare", "Amad Diallo", "Ange-Yoan Bonny", "Guela Doué", "Yan Diomande"
       ]
     }
+  },
+  {
+    "matchId": 35,
+    "team1": "Ecuador",
+    "team2": "Curaçao",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Curaçao", "name": "Eloy Room" },
+    "appearances": {
+      "Ecuador": [
+        "Hernán Galíndez", "William Pacho", "Jordy Alcivar", "Alan Franco", "Moises Caicedo",
+        "Piero Hincapié", "Pervis Estupiñán", "Pedro Vite", "John Yeboah", "Enner Valencia", "Gonzalo Plata",
+        "Kevin Rodríguez", "Nelson Angulo", "Ángelo Preciado", "Jordy Caicedo"
+      ],
+      "Curaçao": [
+        "Eloy Room", "Joshua Brenet", "Jurien Gaari", "Armando Obispo", "Sherel Floranus", "Roshon Van Eijma",
+        "Tahith Chong", "Livano Comenencia", "Leandro Bacuna", "Kenji Gorré", "Jurgen Locadia",
+        "Juninho Bacuna", "Deveron Fonville", "Jearl Margaritha", "Gervane Kastaneer", "Godfried Roemeratoe"
+      ]
+    }
   }
 ]
