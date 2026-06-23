@@ -878,5 +878,25 @@
         "Nabil Bentaleb", "Nadhir Benbouali", "Anis Hadj Moussa", "Jaouen Hadjam", "Zineddine Belaid"
       ]
     }
+  },
+  {
+    "matchId": 45,
+    "team1": "Portugal",
+    "team2": "Uzbekistan",
+    "score1": 5,
+    "score2": 0,
+    "mvp": { "team": "Portugal", "name": "Cristiano Ronaldo" },
+    "appearances": {
+      "Portugal": [
+        "Diogo Costa", "Nuno Mendes", "Renato Veiga", "Ruben Dias", "Joao Cancelo",
+        "Vitinha", "Joao Neves", "Joao Felix", "Bruno Fernandes", "Pedro Neto", "Cristiano Ronaldo",
+        "Nelson Semedo", "Francisco Conceicao", "Francisco Trincao", "Bernardo Silva", "Rafael Leao"
+      ],
+      "Uzbekistan": [
+        "Abduvohid Nematov", "Abdukodir Khusanov", "Abdulla Abdullaev", "Rustam Ashurmatov", "Bekhruz Karimov",
+        "Khojiakbar Alijonov", "Akmal Mozgovoy", "Azizjon Ganiev", "Igor Sergeev", "Eldor Shomurodov", "Otabek Shukurov",
+        "Sherzod Nasrullaev", "Odiljon Hamrobekov", "Abbosbek Fayzullaev", "Sherzod Esanov"
+      ]
+    }
   }
 ]

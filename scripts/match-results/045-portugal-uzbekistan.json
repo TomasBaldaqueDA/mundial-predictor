@@ -1,0 +1,16 @@
+{
+  "id": 45,
+  "score1": 5,
+  "score2": 0,
+  "mvp": "Cristiano Ronaldo",
+  "goals": [
+    { "team": "Portugal", "name": "Cristiano Ronaldo" },
+    { "team": "Portugal", "name": "Nuno Mendes" },
+    { "team": "Portugal", "name": "Cristiano Ronaldo" },
+    { "team": "Portugal", "name": "Rafael Leao" }
+  ],
+  "assists": [
+    { "team": "Portugal", "name": "Joao Cancelo" },
+    { "team": "Portugal", "name": "Bruno Fernandes" }
+  ]
+}
