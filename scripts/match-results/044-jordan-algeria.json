@@ -1,0 +1,15 @@
+{
+  "id": 44,
+  "score1": 1,
+  "score2": 2,
+  "mvp": "Ibrahim Maza",
+  "goals": [
+    { "team": "Jordan", "name": "Nizar Al-Rashdan" },
+    { "team": "Algeria", "name": "Nadhir Benbouali" },
+    { "team": "Algeria", "name": "Amine Gouiri" }
+  ],
+  "assists": [
+    { "team": "Jordan", "name": "Musa Al-Taamari" },
+    { "team": "Algeria", "name": "Riyad Mahrez" }
+  ]
+}

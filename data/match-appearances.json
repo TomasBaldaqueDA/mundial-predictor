@@ -858,5 +858,25 @@
         "Ismail Jakobs", "Ibrahim Mbaye", "Mory Diaw", "Pathe Ciss", "Pape Matar Sarr"
       ]
     }
+  },
+  {
+    "matchId": 44,
+    "team1": "Jordan",
+    "team2": "Algeria",
+    "score1": 1,
+    "score2": 2,
+    "mvp": { "team": "Algeria", "name": "Ibrahim Maza" },
+    "appearances": {
+      "Jordan": [
+        "Yazeed Abulaila", "Husam Abu Dahab", "Yazan Al-Arab", "Abdallah Nasib", "Mohannad Abu Taha",
+        "Noor Al-Rawabdeh", "Nizar Al-Rashdan", "Ihsan Haddad", "Mahmoud Al-Mardi", "Ali Olwan", "Musa Al-Taamari",
+        "Odeh Al-Fakhouri", "Ali Azaizeh", "Mohammad Abu Hashish", "Salim Obaid", "Mohammad Abu Zrayq"
+      ],
+      "Algeria": [
+        "Luca Zidane", "Rafik Belghali", "Aissa Mandi", "Ramy Bensebaini", "Rayan Ait-Nouri",
+        "Hicham Boudaoui", "Ramiz Zerrouki", "Riyad Mahrez", "Ibrahim Maza", "Fares Chaibi", "Amine Gouiri",
+        "Nabil Bentaleb", "Nadhir Benbouali", "Anis Hadj Moussa", "Jaouen Hadjam", "Zineddine Belaid"
+      ]
+    }
   }
 ]
