@@ -1,0 +1,17 @@
+{
+  "id": 43,
+  "score1": 3,
+  "score2": 2,
+  "mvp": "Erling Haaland",
+  "goals": [
+    { "team": "Norway", "name": "Marcus Holmgren Pedersen" },
+    { "team": "Norway", "name": "Erling Haaland" },
+    { "team": "Norway", "name": "Erling Haaland" },
+    { "team": "Senegal", "name": "Ismaila Sarr" },
+    { "team": "Senegal", "name": "Ismaila Sarr" }
+  ],
+  "assists": [
+    { "team": "Norway", "name": "Martin Odegaard" },
+    { "team": "Norway", "name": "Patrick Berg" }
+  ]
+}

@@ -838,5 +838,25 @@
         "Ali Al-Hamadi", "Rebin Sulaka", "Youssef Amyn", "Aimar Sher", "Marko Farji"
       ]
     }
+  },
+  {
+    "matchId": 43,
+    "team1": "Norway",
+    "team2": "Senegal",
+    "score1": 3,
+    "score2": 2,
+    "mvp": { "team": "Norway", "name": "Erling Haaland" },
+    "appearances": {
+      "Norway": [
+        "Orjan Haskjold Nyland", "Julian Ryerson", "Kristoffer Vassbakk Ajer", "Leo Ostigard", "David Moller Wolfe",
+        "Fredrik Aursnes", "Sander Berge", "Martin Odegaard", "Antonio Nusa", "Erling Haaland", "Oscar Bobb",
+        "Marcus Holmgren Pedersen", "Patrick Berg", "Andreas Schjelderup", "Torbjorn Heggem", "Alexander Sorloth"
+      ],
+      "Senegal": [
+        "Edouard Mendy", "Krepin Diatta", "Kalidou Koulibaly", "Moussa Niakhate", "El Hadji Malick Diouf",
+        "Idrissa Gana Gueye", "Pape Gueye", "Ismaila Sarr", "Lamine Camara", "Sadio Mane", "Nicolas Jackson",
+        "Ismail Jakobs", "Ibrahim Mbaye", "Mory Diaw", "Pathe Ciss", "Pape Matar Sarr"
+      ]
+    }
   }
 ]
