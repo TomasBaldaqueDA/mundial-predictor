@@ -818,5 +818,25 @@
         "Marco Friedl", "Alexander Prass", "Marko Arnautovic", "Patrick Wimmer", "Carney Chukwuemeka"
       ]
     }
+  },
+  {
+    "matchId": 42,
+    "team1": "France",
+    "team2": "Iraq",
+    "score1": 3,
+    "score2": 0,
+    "mvp": { "team": "France", "name": "Kylian Mbappe" },
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Lucas Digne", "William Saliba", "Dayot Upamecano", "Jules Kounde",
+        "Adrien Rabiot", "Manu Kone", "Bradley Barcola", "Michael Olise", "Ousmane Dembele", "Kylian Mbappe",
+        "Rayan Cherki", "Desire Doue", "Malo Gusto", "Maghnes Akliouche", "Marcus Thuram"
+      ],
+      "Iraq": [
+        "Ahmed Basil", "Hussein Ali", "Zaid Tahseen", "Akam Hashim", "Merchas Doski",
+        "Amir Al-Ammari", "Ahmed Qasem", "Zaid Ismail", "Zidane Iqbal", "Ibrahim Bayesh", "Aymen Hussein",
+        "Ali Al-Hamadi", "Rebin Sulaka", "Youssef Amyn", "Aimar Sher", "Marko Farji"
+      ]
+    }
   }
 ]
