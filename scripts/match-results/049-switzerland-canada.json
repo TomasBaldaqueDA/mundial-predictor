@@ -1,0 +1,16 @@
+{
+  "id": 49,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Johan Manzambi",
+  "goals": [
+    { "team": "Switzerland", "name": "Ruben Vargas" },
+    { "team": "Switzerland", "name": "Johan Manzambi" },
+    { "team": "Canada", "name": "Promise David" }
+  ],
+  "assists": [
+    { "team": "Switzerland", "name": "Johan Manzambi" },
+    { "team": "Switzerland", "name": "Breel Embolo" },
+    { "team": "Canada", "name": "Nathan-Dylan Saliba" }
+  ]
+}

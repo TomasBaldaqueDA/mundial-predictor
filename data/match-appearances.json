@@ -978,5 +978,25 @@
         "Abdulaziz Hatem", "Ahmed Alaa", "Almoez Ali", "Mohammed Al-Manai"
       ]
     }
+  },
+  {
+    "matchId": 49,
+    "team1": "Switzerland",
+    "team2": "Canada",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Switzerland", "name": "Johan Manzambi" },
+    "appearances": {
+      "Switzerland": [
+        "Gregor Kobel", "Ricardo Rodriguez", "Manuel Akanji", "Nico Elvedi", "Luca Jaquez",
+        "Granit Xhaka", "Remo Freuler", "Ruben Vargas", "Johan Manzambi", "Djibril Sow", "Breel Embolo",
+        "Silvan Widmer", "Michel Aebischer", "Dan Ndoye", "Christian Fassnacht", "Cedric Itten"
+      ],
+      "Canada": [
+        "Maxime Crepeau", "Alistair Johnston", "Luc de Fougerolles", "Derek Cornelius", "Richie Laryea",
+        "Tajon Buchanan", "Nathan-Dylan Saliba", "Mathieu Choiniere", "Ali Ahmed", "Jonathan David", "Cyle Larin",
+        "Stephen Eustaquio", "Liam Millar", "Tani Oluwaseyi", "Promise David", "Jacob Shaffelburg"
+      ]
+    }
   }
 ]
