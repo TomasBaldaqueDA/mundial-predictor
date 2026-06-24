@@ -958,5 +958,25 @@
         "Noah Sadiki", "Simon Banza", "Joris Kayembe", "Charles Pickel", "Nathanael Mbuku"
       ]
     }
+  },
+  {
+    "matchId": 50,
+    "team1": "Bosnia and Herzegovina",
+    "team2": "Qatar",
+    "score1": 3,
+    "score2": 1,
+    "mvp": { "team": "Bosnia and Herzegovina", "name": "Kerim Alajbegovic" },
+    "appearances": {
+      "Bosnia and Herzegovina": [
+        "Nikola Vasilj", "Sead Kolašinac", "Stjepan Radeljić", "Nikola Katić", "Nihad Mujakić",
+        "Kerim Alajbegovic", "Ivan Sunjic", "Ivan Basic", "Esmir Bajraktarevic", "Edin Dzeko", "Ermedin Demirovic",
+        "Benjamin Tahirovic", "Amar Memic", "Dennis Hadzikadunic", "Ermin Mahmic", "Dzenis Burnic"
+      ],
+      "Qatar": [
+        "Mahmoud Abunada", "Pedro Miguel", "Boualem Khoukhi", "Issa Laaye", "Sultan Al-Brake",
+        "Edmilson Junior", "Jassem Jaber", "Ahmed Fathi", "Akram Afif", "Karim Boudiaf", "Hassan Al-Haydos",
+        "Abdulaziz Hatem", "Ahmed Alaa", "Almoez Ali", "Mohammed Al-Manai"
+      ]
+    }
   }
 ]

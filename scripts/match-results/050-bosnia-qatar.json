@@ -1,0 +1,16 @@
+{
+  "id": 50,
+  "score1": 3,
+  "score2": 1,
+  "mvp": "Kerim Alajbegovic",
+  "goals": [
+    { "team": "Bosnia and Herzegovina", "name": "Kerim Alajbegovic" },
+    { "team": "Qatar", "name": "Hassan Al-Haydos" },
+    { "team": "Bosnia and Herzegovina", "name": "Ermin Mahmic" }
+  ],
+  "assists": [
+    { "team": "Bosnia and Herzegovina", "name": "Ivan Basic" },
+    { "team": "Qatar", "name": "Edmilson Junior" },
+    { "team": "Bosnia and Herzegovina", "name": "Dennis Hadzikadunic" }
+  ]
+}
