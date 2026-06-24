@@ -938,5 +938,25 @@
         "Ante Budimir", "Andrej Kramaric", "Luka Sucic", "Petar Sucic"
       ]
     }
+  },
+  {
+    "matchId": 48,
+    "team1": "Colombia",
+    "team2": "Congo DR",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "Colombia", "name": "Daniel Munoz" },
+    "appearances": {
+      "Colombia": [
+        "Camilo Vargas", "Johan Mojica", "Jhon Lucumi", "Davinson Sanchez", "Daniel Munoz",
+        "Jhon Arias", "Jefferson Lerma", "Gustavo Puerta", "Luis Diaz", "Luis Suarez", "James Rodriguez",
+        "Juan Fernando Quintero", "Jhon Cordoba", "Richard Rios"
+      ],
+      "Congo DR": [
+        "Lionel Mpasi", "Aaron Wan-Bissaka", "Chancel Mbemba", "Alex Tuanzebe", "Steve Kapuadi", "Arthur Masuaku",
+        "Ngal'ayel Mukau", "Samuel Moutoussamy", "Edo Kayembe", "Cedric Bakambu", "Yoane Wissa",
+        "Noah Sadiki", "Simon Banza", "Joris Kayembe", "Charles Pickel", "Nathanael Mbuku"
+      ]
+    }
   }
 ]

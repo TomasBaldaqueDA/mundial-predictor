@@ -1,0 +1,12 @@
+{
+  "id": 48,
+  "score1": 1,
+  "score2": 0,
+  "mvp": "Daniel Munoz",
+  "goals": [
+    { "team": "Colombia", "name": "Daniel Munoz" }
+  ],
+  "assists": [
+    { "team": "Colombia", "name": "Juan Fernando Quintero" }
+  ]
+}
