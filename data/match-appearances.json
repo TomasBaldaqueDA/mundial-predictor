@@ -898,5 +898,25 @@
         "Sherzod Nasrullaev", "Odiljon Hamrobekov", "Abbosbek Fayzullaev", "Sherzod Esanov"
       ]
     }
+  },
+  {
+    "matchId": 46,
+    "team1": "England",
+    "team2": "Ghana",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "England", "name": "Jude Bellingham" },
+    "appearances": {
+      "England": [
+        "Jordan Pickford", "Djed Spence", "Marc Guehi", "Ezri Konsa", "Reece James",
+        "Declan Rice", "Elliott Anderson", "Anthony Gordon", "Jude Bellingham", "Noni Madueke", "Harry Kane",
+        "Bukayo Saka", "Nico O'Reilly", "Morgan Rogers", "Eberechi Eze", "Marcus Rashford"
+      ],
+      "Ghana": [
+        "Benjamin Asare", "Marvin Senaya", "Jonas Adjetey", "Jerome Opoku", "Gideon Mensah",
+        "Thomas Partey", "Inaki Williams", "Caleb Yirenkyi", "Kwasi Sibo", "Antoine Semenyo", "Jordan Ayew",
+        "Abdul Fatawu Issahaku", "Prince Kwabena Adu", "Kojo Oppong Peprah", "Baba Abdul Rahman"
+      ]
+    }
   }
 ]
