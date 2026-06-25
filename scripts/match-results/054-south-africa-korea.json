@@ -1,0 +1,12 @@
+{
+  "id": 54,
+  "score1": 1,
+  "score2": 0,
+  "mvp": "Thapelo Maseko",
+  "goals": [
+    { "team": "South Africa", "name": "Thapelo Maseko" }
+  ],
+  "assists": [
+    { "team": "South Africa", "name": "Tshepang Moremi" }
+  ]
+}

@@ -1038,5 +1038,45 @@
         "Louicius Deedson", "Duckens Nazon", "Carlens Arcus", "Dominique Simon", "Frantzdy Pierrot"
       ]
     }
+  },
+  {
+    "matchId": 53,
+    "team1": "Czechia",
+    "team2": "Mexico",
+    "score1": 0,
+    "score2": 3,
+    "mvp": { "team": "Mexico", "name": "Mateo Chavez" },
+    "appearances": {
+      "Czechia": [
+        "Matej Kovar", "Ladislav Krejci", "Robin Hranac", "Tomas Holes", "David Doudera",
+        "Michal Sadilek", "Lukas Cerv", "Vladimir Coufal", "Denis Visinsky", "Pavel Sulc", "Adam Hlozek",
+        "Lukas Provod", "Tomas Soucek", "Patrik Schick", "Tomas Chory", "Alexandr Sojka"
+      ],
+      "Mexico": [
+        "Raul Rangel", "Jorge Sanchez", "Cesar Montes", "Israel Reyes", "Mateo Chavez",
+        "Gilberto Mora", "Edson Alvarez", "Luis Romo", "Roberto Alvarado", "Guillermo Martinez", "Julian Quinones",
+        "Obed Vargas", "Santiago Gimenez", "Alvaro Fidalgo", "Guillermo Ochoa", "Jesus Gallardo"
+      ]
+    }
+  },
+  {
+    "matchId": 54,
+    "team1": "South Africa",
+    "team2": "Korea Republic",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "South Africa", "name": "Thapelo Maseko" },
+    "appearances": {
+      "South Africa": [
+        "Ronwen Williams", "Aubrey Modiba", "Mbekezeli Mbokazi", "Ime Okon", "Khuliso Mudau",
+        "Sphephelo Sithole", "Thalente Mbatha", "Oswin Appollis", "Relebohile Mofokeng", "Thapelo Maseko", "Evidence Makgopa",
+        "Tshepang Moremi", "Iqraam Rayners", "Jayden Adams"
+      ],
+      "Korea Republic": [
+        "Kim Seung-gyu", "Lee Han-beom", "Kim Min-jae", "Lee Ki-hyuk", "Seol Young-woo",
+        "Paik Seung-ho", "Hwang In-beom", "Lee Tae-seok", "Lee Jae-sung", "Hwang Hee-chan", "Oh Hyeong-yu",
+        "Jens Castrop", "Kim Jin-gyu", "Son Heung-min", "Park Jin-seob", "Cho Gue-sung"
+      ]
+    }
   }
 ]
