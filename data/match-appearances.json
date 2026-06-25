@@ -998,5 +998,45 @@
         "Stephen Eustaquio", "Liam Millar", "Tani Oluwaseyi", "Promise David", "Jacob Shaffelburg"
       ]
     }
+  },
+  {
+    "matchId": 51,
+    "team1": "Scotland",
+    "team2": "Brazil",
+    "score1": 0,
+    "score2": 3,
+    "mvp": { "team": "Brazil", "name": "Vinicius Jr" },
+    "appearances": {
+      "Scotland": [
+        "Angus Gunn", "Nathan Patterson", "Jack Hendry", "Scott McKenna", "Andy Robertson",
+        "Lewis Ferguson", "Scott McTominay", "Ben Gannon-Doak", "Kenny McLean", "John McGinn", "Lawrence Shankland",
+        "Kieran Tierney", "Anthony Ralston", "Ryan Christie", "Findlay Curtis", "Che Adams"
+      ],
+      "Brazil": [
+        "Alisson", "Danilo", "Marquinhos", "Gabriel Magalhaes", "Douglas Santos",
+        "Bruno Guimaraes", "Casemiro", "Lucas Paqueta", "Rayan", "Matheus Cunha", "Vinicius Jr",
+        "Fabinho", "Gabriel Martinelli", "Neymar Jr", "Endrick", "Alex Sandro"
+      ]
+    }
+  },
+  {
+    "matchId": 52,
+    "team1": "Morocco",
+    "team2": "Haiti",
+    "score1": 4,
+    "score2": 2,
+    "mvp": { "team": "Morocco", "name": "Achraf Hakimi" },
+    "appearances": {
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Redouane Halhal", "Chadi Riad", "Anass Salah-Eddine",
+        "Neil El Aynaoui", "Sofyan Amrabat", "Brahim Diaz", "Ismael Saibari", "Bilal El Khannouss", "Ayoub El Kaabi",
+        "Soufiane Rahimi", "Azzedine Ounahi", "Gessime Yassine", "Noussair Mazraoui", "Samir El Mourabet"
+      ],
+      "Haiti": [
+        "Johnny Placide", "Ruben Providence", "Jeanricner Bellegarde", "Jean-Jacques Danley", "Josué Casimir",
+        "Martin Experience", "Hannes Delcroix", "Ricardo Ade", "JK Duverne", "Wilson Isidor", "Lenny Joseph",
+        "Louicius Deedson", "Duckens Nazon", "Carlens Arcus", "Dominique Simon", "Frantzdy Pierrot"
+      ]
+    }
   }
 ]

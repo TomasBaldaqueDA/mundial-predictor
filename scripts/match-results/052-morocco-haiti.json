@@ -1,0 +1,19 @@
+{
+  "id": 52,
+  "score1": 4,
+  "score2": 2,
+  "mvp": "Achraf Hakimi",
+  "goals": [
+    { "team": "Morocco", "name": "Achraf Hakimi" },
+    { "team": "Haiti", "name": "Wilson Isidor" },
+    { "team": "Morocco", "name": "Ismael Saibari" },
+    { "team": "Morocco", "name": "Soufiane Rahimi" },
+    { "team": "Morocco", "name": "Gessime Yassine" }
+  ],
+  "assists": [
+    { "team": "Morocco", "name": "Achraf Hakimi" },
+    { "team": "Haiti", "name": "JK Duverne" },
+    { "team": "Morocco", "name": "Chadi Riad" },
+    { "team": "Morocco", "name": "Soufiane Rahimi" }
+  ]
+}
