@@ -82,7 +82,7 @@ function svgToDataUri(svg: string): string {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
-export function getFlagSrc(teamName: string, size: "w40" | "w80" = "w40"): string {
+export function getFlagSrc(teamName: string, size: "w40" | "w80" | "w160" | "w320" = "w80"): string {
   if (teamName === "England") return svgToDataUri(ENGLAND_SVG)
   if (teamName === "Scotland") return svgToDataUri(SCOTLAND_SVG)
   const code = TEAM_FLAG_CODES[teamName] ?? "un"

@@ -472,13 +472,13 @@ function SavedPredictionPanel({
 
         <div className="space-y-2 pt-0.5">
           <div className="flex items-center justify-between gap-2">
-            <TeamWithFlag name={match.team1} size="md" flagSize="w40" className="min-w-0 flex-1" />
+            <TeamWithFlag name={match.team1} size="md" className="min-w-0 flex-1" />
             <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none shrink-0">
               {pred.pred_score1}
             </span>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <TeamWithFlag name={match.team2} size="md" flagSize="w40" className="min-w-0 flex-1" />
+            <TeamWithFlag name={match.team2} size="md" className="min-w-0 flex-1" />
             <span className="text-2xl font-black tabular-nums text-white tracking-tight leading-none shrink-0">
               {pred.pred_score2}
             </span>

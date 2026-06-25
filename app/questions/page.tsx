@@ -242,7 +242,8 @@ export default function PerguntasPage() {
                     <TeamWithFlag
                       name={answers[winnerQuestion.id]}
                       variant="onLight"
-                      className="text-lg font-medium [&_img]:h-8 [&_img]:w-12"
+                      size="xl"
+                      className="font-medium"
                     />
                   ) : (
                     "—"
@@ -254,13 +255,14 @@ export default function PerguntasPage() {
               <button
                 type="button"
                 onClick={!locked ? openWinnerModal : undefined}
-                className="inline-flex items-center gap-3 rounded-xl border-2 border-amber-400/90 bg-gradient-to-b from-amber-50 to-amber-100/95 px-5 py-3 text-amber-950 [&_img]:h-8 [&_img]:w-12 [&_img]:rounded shadow-[0_4px_24px_rgba(180,83,9,0.25)] cursor-pointer hover:border-amber-300 hover:from-amber-100 hover:to-amber-200 transition-all backdrop-blur-sm ring-1 ring-amber-200/60"
+                className="inline-flex items-center gap-3 rounded-xl border-2 border-amber-400/90 bg-gradient-to-b from-amber-50 to-amber-100/95 px-5 py-3 text-amber-950 shadow-[0_4px_24px_rgba(180,83,9,0.25)] cursor-pointer hover:border-amber-300 hover:from-amber-100 hover:to-amber-200 transition-all backdrop-blur-sm ring-1 ring-amber-200/60"
               >
                 {answers[winnerQuestion.id] ? (
                   <TeamWithFlag
                     name={answers[winnerQuestion.id]}
                     variant="onLight"
-                    className="text-lg font-medium [&_img]:h-8 [&_img]:w-12"
+                    size="xl"
+                    className="font-medium"
                   />
                 ) : (
                   <span className="text-amber-800/70 font-semibold text-lg">—</span>
@@ -280,7 +282,7 @@ export default function PerguntasPage() {
                     <>
                       <span className="text-xl font-bold text-red-600">0 pts</span>
                       <span className={locked ? "text-amber-900/85" : "text-amber-100/90"}>
-                        Correct: <TeamWithFlag name={wCorrect} className="[&_img]:h-5 [&_img]:w-8 inline-flex" />
+                        Correct: <TeamWithFlag name={wCorrect} flagSize="w160" className="inline-flex" />
                       </span>
                     </>
                   )}
