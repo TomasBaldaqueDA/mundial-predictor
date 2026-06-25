@@ -1,0 +1,14 @@
+{
+  "id": 55,
+  "score1": 0,
+  "score2": 2,
+  "mvp": "Nicolas Pepe",
+  "goals": [
+    { "team": "Côte d'Ivoire", "name": "Nicolas Pepe" },
+    { "team": "Côte d'Ivoire", "name": "Nicolas Pepe" }
+  ],
+  "assists": [
+    { "team": "Côte d'Ivoire", "name": "Yan Diomande" },
+    { "team": "Côte d'Ivoire", "name": "Ibrahim Sangare" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": 56,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Nilson Angulo",
+  "goals": [
+    { "team": "Germany", "name": "Leroy Sané" },
+    { "team": "Ecuador", "name": "Nilson Angulo" },
+    { "team": "Ecuador", "name": "Gonzalo Plata" }
+  ],
+  "assists": [
+    { "team": "Germany", "name": "Florian Wirtz" },
+    { "team": "Ecuador", "name": "Pedro Vite" },
+    { "team": "Ecuador", "name": "Kevin Rodríguez" }
+  ]
+}

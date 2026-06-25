@@ -1078,5 +1078,45 @@
         "Jens Castrop", "Kim Jin-gyu", "Son Heung-min", "Park Jin-seob", "Cho Gue-sung"
       ]
     }
+  },
+  {
+    "matchId": 55,
+    "team1": "Curaçao",
+    "team2": "Côte d'Ivoire",
+    "score1": 0,
+    "score2": 2,
+    "mvp": { "team": "Côte d'Ivoire", "name": "Nicolas Pepe" },
+    "appearances": {
+      "Curaçao": [
+        "Eloy Room", "Joshua Brenet", "Jurien Gaari", "Armando Obispo", "Deveron Fonville", "Sherel Floranus",
+        "Tahith Chong", "Livano Comenencia", "Leandro Bacuna", "Juninho Bacuna", "Jurgen Locadia",
+        "Jeremy Antonisse", "Tyrese Noslin", "Gervane Kastaneer", "Shurandy Sambo", "Brandley Kuwas"
+      ],
+      "Côte d'Ivoire": [
+        "Yahia Fofana", "Christopher Operi", "Ousmane Diomande", "Odilon Kossounou", "Guela Doué",
+        "Franck Kessie", "Ibrahim Sangare", "Yan Diomande", "Nicolas Pepe", "Amad Diallo", "Ange-Yoan Bonny",
+        "Christ Inao Oulai", "Bazoumana Toure", "Elye Wahi", "Oumar Diakite", "Jean-Michael Seri"
+      ]
+    }
+  },
+  {
+    "matchId": 56,
+    "team1": "Ecuador",
+    "team2": "Germany",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Ecuador", "name": "Nilson Angulo" },
+    "appearances": {
+      "Ecuador": [
+        "Hernán Galíndez", "Piero Hincapié", "William Pacho", "Joel Ordonez", "Alan Franco",
+        "Nilson Angulo", "Pedro Vite", "Moises Caicedo", "John Yeboah", "Enner Valencia", "Gonzalo Plata",
+        "Ángelo Preciado", "Kevin Rodríguez", "Pervis Estupiñán", "Jordy Caicedo", "Felix Torres"
+      ],
+      "Germany": [
+        "Manuel Neuer", "Jonathan Tah", "Antonio Rüdiger", "Aleksandar Pavlovic", "Joshua Kimmich",
+        "Felix Nmecha", "Florian Wirtz", "David Raum", "Leroy Sané", "Jamal Musiala", "Kai Havertz",
+        "Angelo Stiller", "Malick Thiaw", "Deniz Undav", "Maximilian Beier", "Pascal Groß"
+      ]
+    }
   }
 ]
