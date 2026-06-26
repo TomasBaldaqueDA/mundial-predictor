@@ -1,0 +1,18 @@
+{
+  "id": 59,
+  "score1": 3,
+  "score2": 2,
+  "mvp": "Arda Guler",
+  "goals": [
+    { "team": "USA", "name": "Auston Trusty" },
+    { "team": "Türkiye", "name": "Arda Guler" },
+    { "team": "Türkiye", "name": "Baris Alper Yilmaz" },
+    { "team": "USA", "name": "Sebastian Berhalter" },
+    { "team": "Türkiye", "name": "Kaan Ayhan" }
+  ],
+  "assists": [
+    { "team": "USA", "name": "Sebastian Berhalter" },
+    { "team": "Türkiye", "name": "Baris Alper Yilmaz" },
+    { "team": "Türkiye", "name": "Orkun Kokcu" }
+  ]
+}

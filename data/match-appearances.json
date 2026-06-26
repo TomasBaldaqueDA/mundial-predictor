@@ -1158,5 +1158,45 @@
         "Teun Koopmeiners", "Justin Kluivert", "Crysencio Summerville", "Memphis Depay", "Noa Lang"
       ]
     }
+  },
+  {
+    "matchId": 59,
+    "team1": "Türkiye",
+    "team2": "USA",
+    "score1": 3,
+    "score2": 2,
+    "mvp": { "team": "Türkiye", "name": "Arda Guler" },
+    "appearances": {
+      "Türkiye": [
+        "Ugurcan Cakir", "Abdulkerim Bardakci", "Ozan Kabak", "Zeki Celik", "Eren Elmali",
+        "Orkun Kokcu", "Salih Ozcan", "Oguz Aydin", "Kenan Yildiz", "Arda Guler", "Baris Alper Yilmaz",
+        "Caglar Soyuncu", "Can Uzun", "Kaan Ayhan", "Mert Muldur", "Irfan Can Kahveci"
+      ],
+      "USA": [
+        "Matt Turner", "Joe Scally", "Miles Robinson", "Mark McKenzie", "Auston Trusty",
+        "Brenden Aaronson", "Weston McKennie", "Gio Reyna", "Ricardo Pepi", "Sebastian Berhalter", "Timothy Weah",
+        "Christian Pulisic", "Sergiño Dest", "Alejandro Zendejas", "Alex Freeman", "Malik Tillman"
+      ]
+    }
+  },
+  {
+    "matchId": 60,
+    "team1": "Paraguay",
+    "team2": "Australia",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Australia", "name": "Aiden O'Neill" },
+    "appearances": {
+      "Paraguay": [
+        "Orlando Gill", "Alexandro Maidana", "Omar Alderete", "Gustavo Gomez", "Gustavo Velazquez", "Juan Jose Caceres",
+        "Matias Galarza", "Andres Cubas", "Diego Gomez", "Julio Enciso", "Gabriel Avalos",
+        "Mauricio Magalhaes", "Alex Arce", "Jose Canale", "Damian Bobadilla", "Junior Alonso"
+      ],
+      "Australia": [
+        "Patrick Beach", "Alessandro Circati", "Harry Souttar", "Lucas Herrington", "Jordan Bos",
+        "Aiden O'Neill", "Jackson Irvine", "Aziz Behich", "Cristian Volpato", "Connor Metcalfe", "Nestory Irankunda",
+        "Ajdin Hrustic", "Paul Okon-Engstler", "Tete Yengi"
+      ]
+    }
   }
 ]
