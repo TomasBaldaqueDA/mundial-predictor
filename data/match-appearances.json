@@ -1118,5 +1118,45 @@
         "Angelo Stiller", "Malick Thiaw", "Deniz Undav", "Maximilian Beier", "Pascal Groß"
       ]
     }
+  },
+  {
+    "matchId": 57,
+    "team1": "Japan",
+    "team2": "Sweden",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Sweden", "name": "Anthony Elanga" },
+    "appearances": {
+      "Japan": [
+        "Zion Suzuki", "Hiroki Ito", "Ko Itakura", "Ayumu Seko", "Keito Nakamura",
+        "Daichi Kamada", "Ao Tanaka", "Yukinari Sugawara", "Daizen Maeda", "Ritsu Doan", "Ayase Ueda",
+        "Shogo Taniguchi", "Koki Ogawa", "Junya Ito", "Tsuyoshi Watanabe", "Yuto Nagatomo"
+      ],
+      "Sweden": [
+        "Jacob Widell Zetterstrom", "Gustaf Lagerbielke", "Isak Hien", "Gabriel Gudmundsson", "Alexander Bernhardsson",
+        "Victor Lindelof", "Yasin Ayari", "Elliot Stroud", "Anthony Elanga", "Viktor Gyokeres", "Alexander Isak",
+        "Lucas Bergvall", "Daniel Svensson", "Ken Sema", "Carl Starfelt", "Benjamin Nygren"
+      ]
+    }
+  },
+  {
+    "matchId": 58,
+    "team1": "Tunisia",
+    "team2": "Netherlands",
+    "score1": 1,
+    "score2": 3,
+    "mvp": { "team": "Netherlands", "name": "Brian Brobbey" },
+    "appearances": {
+      "Tunisia": [
+        "Aymen Dahmene", "Ali Abdi", "Mohamed Amine Ben Hamida", "Ellyes Skhiri", "Montassar Talbi", "Yan Valery",
+        "Hannibal Mejbri", "Rani Khedira", "Ismael Gharbi", "Anis Ben Slimane", "Hazem Mastouri",
+        "Hadj Mahmoud", "Mortadha Ben Ouanes", "Elias Achouri", "Firas Chaouat", "Sebastian Tounekti"
+      ],
+      "Netherlands": [
+        "Bart Verbruggen", "Denzel Dumfries", "Jan Paul van Hecke", "Virgil van Dijk", "Nathan Aké",
+        "Ryan Gravenberch", "Frenkie de Jong", "Tijjani Reijnders", "Donyell Malen", "Brian Brobbey", "Cody Gakpo",
+        "Teun Koopmeiners", "Justin Kluivert", "Crysencio Summerville", "Memphis Depay", "Noa Lang"
+      ]
+    }
   }
 ]

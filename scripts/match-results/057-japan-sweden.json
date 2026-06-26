@@ -1,0 +1,14 @@
+{
+  "id": 57,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Anthony Elanga",
+  "goals": [
+    { "team": "Japan", "name": "Daizen Maeda" },
+    { "team": "Sweden", "name": "Anthony Elanga" }
+  ],
+  "assists": [
+    { "team": "Japan", "name": "Ritsu Doan" },
+    { "team": "Sweden", "name": "Viktor Gyokeres" }
+  ]
+}

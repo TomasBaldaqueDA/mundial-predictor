@@ -1,0 +1,16 @@
+{
+  "id": 58,
+  "score1": 1,
+  "score2": 3,
+  "mvp": "Brian Brobbey",
+  "goals": [
+    { "team": "Netherlands", "name": "Brian Brobbey" },
+    { "team": "Tunisia", "name": "Hazem Mastouri" },
+    { "team": "Netherlands", "name": "Jan Paul van Hecke" }
+  ],
+  "assists": [
+    { "team": "Netherlands", "name": "Virgil van Dijk" },
+    { "team": "Tunisia", "name": "Hannibal Mejbri" },
+    { "team": "Netherlands", "name": "Tijjani Reijnders" }
+  ]
+}
