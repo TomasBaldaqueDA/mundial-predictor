@@ -1198,5 +1198,45 @@
         "Ajdin Hrustic", "Paul Okon-Engstler", "Tete Yengi"
       ]
     }
+  },
+  {
+    "matchId": 61,
+    "team1": "Norway",
+    "team2": "France",
+    "score1": 1,
+    "score2": 4,
+    "mvp": { "team": "France", "name": "Ousmane Dembele" },
+    "appearances": {
+      "Norway": [
+        "Egil Selvik", "Fredrik Bjorkan", "Leo Ostigard", "Henrik Falchener", "Fredrik Aursnes",
+        "Patrick Berg", "Jorgen Strand Larsen", "Kristian Thorstvedt", "Thelonious Aasgaard", "Andreas Schjelderup", "Oscar Bobb",
+        "Marcus Holmgren Pedersen", "Morten Thorsby", "Sondre Langas", "Jens Petter Hauge", "Antonio Nusa"
+      ],
+      "France": [
+        "Mike Maignan", "Jules Kounde", "Dayot Upamecano", "Maxence Lacroix", "Theo Hernandez",
+        "Aurelien Tchouameni", "Manu Kone", "Ousmane Dembele", "Michael Olise", "Desire Doue", "Kylian Mbappe",
+        "Ibrahima Konate", "Rayan Cherki", "Bradley Barcola", "Jean-Philippe Mateta", "Malo Gusto"
+      ]
+    }
+  },
+  {
+    "matchId": 62,
+    "team1": "Senegal",
+    "team2": "Iraq",
+    "score1": 5,
+    "score2": 0,
+    "mvp": { "team": "Senegal", "name": "Pape Gueye" },
+    "appearances": {
+      "Senegal": [
+        "Mory Diaw", "Ismail Jakobs", "Moussa Niakhate", "Abdoulaye Seck", "Krepin Diatta",
+        "Lamine Camara", "Idrissa Gana Gueye", "Habib Diarra", "Sadio Mane", "Ismaila Sarr", "Ibrahim Mbaye",
+        "Pape Gueye", "Pathe Ciss", "Nicolas Jackson", "Iliman Ndiaye", "Assane Diao"
+      ],
+      "Iraq": [
+        "Ahmed Basil", "Frans Putros", "Rebin Sulaka", "Akam Hashim", "Merchas Doski",
+        "Amir Al-Ammari", "Ibrahim Bayesh", "Ahmed Qasem", "Zidane Iqbal", "Ali Jassim", "Ali Al-Hamadi",
+        "Manaf Younis", "Jalal Hassan", "Ali Yousef", "Kevin Yakob"
+      ]
+    }
   }
 ]

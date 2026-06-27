@@ -1,0 +1,20 @@
+{
+  "id": 61,
+  "score1": 1,
+  "score2": 4,
+  "mvp": "Ousmane Dembele",
+  "goals": [
+    { "team": "France", "name": "Ousmane Dembele" },
+    { "team": "France", "name": "Ousmane Dembele" },
+    { "team": "France", "name": "Ousmane Dembele" },
+    { "team": "Norway", "name": "Thelonious Aasgaard" },
+    { "team": "France", "name": "Desire Doue" }
+  ],
+  "assists": [
+    { "team": "France", "name": "Kylian Mbappe" },
+    { "team": "France", "name": "Kylian Mbappe" },
+    { "team": "Norway", "name": "Andreas Schjelderup" },
+    { "team": "France", "name": "Aurelien Tchouameni" },
+    { "team": "France", "name": "Bradley Barcola" }
+  ]
+}

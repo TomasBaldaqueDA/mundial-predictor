@@ -1,0 +1,20 @@
+{
+  "id": 62,
+  "score1": 5,
+  "score2": 0,
+  "mvp": "Pape Gueye",
+  "goals": [
+    { "team": "Senegal", "name": "Habib Diarra" },
+    { "team": "Senegal", "name": "Ismaila Sarr" },
+    { "team": "Senegal", "name": "Pape Gueye" },
+    { "team": "Senegal", "name": "Pape Gueye" },
+    { "team": "Senegal", "name": "Iliman Ndiaye" }
+  ],
+  "assists": [
+    { "team": "Senegal", "name": "Abdoulaye Seck" },
+    { "team": "Senegal", "name": "Lamine Camara" },
+    { "team": "Senegal", "name": "Ismaila Sarr" },
+    { "team": "Senegal", "name": "Iliman Ndiaye" },
+    { "team": "Senegal", "name": "Pape Gueye" }
+  ]
+}
