@@ -1238,5 +1238,45 @@
         "Manaf Younis", "Jalal Hassan", "Ali Yousef", "Kevin Yakob"
       ]
     }
+  },
+  {
+    "matchId": 63,
+    "team1": "Cabo Verde",
+    "team2": "Saudi Arabia",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Cabo Verde", "name": "Deroy Duarte" },
+    "appearances": {
+      "Cabo Verde": [
+        "Vozinha", "Joao Paulo Fernandes", "Diney Borges", "Roberto Lopes", "Wagner Pina",
+        "Kevin Pina", "Willy Semedo", "Jamiro Monteiro", "Deroy Duarte", "Ryan Mendes", "Dailon Livramento",
+        "Helio Varela", "Nuno Da Costa", "Garry Rodrigues", "Laros Duarte", "Steven Moreira"
+      ],
+      "Saudi Arabia": [
+        "Mohammed Al Owais", "Saud Abdulhamid", "Abdulelah Al Amri", "Hassan Tambakti", "Nawaf Boushal",
+        "Sultan Mandash", "Abdullah Al Khaibari", "Nasser Al Dawsari", "Salem Al Dawsari", "Firas Al Buraikan", "Mohammed Kanno",
+        "Ali Lajami", "Musab Al Juwayr", "Abdullah Al Hamdan", "Mohammed Abu Al Shamat", "Moteb Al Harbi"
+      ]
+    }
+  },
+  {
+    "matchId": 64,
+    "team1": "Uruguay",
+    "team2": "Spain",
+    "score1": 0,
+    "score2": 1,
+    "mvp": { "team": "Spain", "name": "Álex Baena" },
+    "appearances": {
+      "Uruguay": [
+        "Fernando Muslera", "Mathias Olivera", "Maxi Araujo", "Sebastian Caceres", "Guillermo Varela",
+        "Manuel Ugarte", "Rodrigo Bentancur", "Agustin Canobbio", "Federico Valverde", "Juan Manuel Sanabria", "Darwin Nunez",
+        "Nicolas de la Cruz", "Sergio Rochet", "Federico Vinas", "Brian Rodriguez"
+      ],
+      "Spain": [
+        "Unai Simón", "Marcos Llorente", "Aymeric Laporte", "Pau Cubarsí", "Marc Cucurella",
+        "Rodri", "Pedri", "Álex Baena", "Mikel Merino", "Lamine Yamal", "Mikel Oyarzabal",
+        "Fabián Ruiz", "Dani Olmo", "Yéremy Pino", "Nico Williams", "Ferran Torres"
+      ]
+    }
   }
 ]
