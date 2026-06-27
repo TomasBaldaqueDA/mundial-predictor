@@ -1278,5 +1278,45 @@
         "Fabián Ruiz", "Dani Olmo", "Yéremy Pino", "Nico Williams", "Ferran Torres"
       ]
     }
+  },
+  {
+    "matchId": 65,
+    "team1": "Egypt",
+    "team2": "IR Iran",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "IR Iran", "name": "Ramin Rezaeian" },
+    "appearances": {
+      "Egypt": [
+        "Mostafa Shobeir", "Ahmed Fatouh", "Mohamed Abdelmonem", "Ramy Rabia", "Mohamed Hany",
+        "Mahmoud Saber", "Mohannad Lasheen", "Mahmoud Trezeguet", "Mohamed Salah", "Emam Ashour", "Mostafa Ziko",
+        "Yasser Ibrahim", "Omar Marmoush", "Marwan Attia", "Ahmed Sayed Zizo", "Hamza Abdel Karim"
+      ],
+      "IR Iran": [
+        "Alireza Beiranvand", "Ramin Rezaeian", "Hossein Kanaani", "Shoja Khalilzadeh", "Ali Nemati", "Milad Mohammadi",
+        "Saman Ghoddos", "Mohammad Ghorbani", "Saeid Ezatolahi", "Mohammad Mohebi", "Mehdi Taremi",
+        "Saleh Hardani", "Shahriar Moghanlou", "Alireza Jahanbakhsh"
+      ]
+    }
+  },
+  {
+    "matchId": 66,
+    "team1": "New Zealand",
+    "team2": "Belgium",
+    "score1": 1,
+    "score2": 5,
+    "mvp": { "team": "Belgium", "name": "Leandro Trossard" },
+    "appearances": {
+      "New Zealand": [
+        "Max Crocombe", "Tim Payne", "Finn Surman", "Tyler Bindon", "Liberato Cacace",
+        "Joe Bell", "Marko Stamenic", "Sarpreet Singh", "Ryan Thomas", "Eli Just", "Chris Wood",
+        "Ben Old", "Jesse Randall", "Michael Boxall", "Callum McCowatt", "Francis de Vries"
+      ],
+      "Belgium": [
+        "Thibaut Courtois", "Timothy Castagne", "Brandon Mechele", "Arthur Theate", "Maxim De Cuyper",
+        "Youri Tielemans", "Hans Vanaken", "Jeremy Doku", "Kevin De Bruyne", "Leandro Trossard", "Charles De Ketelaere",
+        "Matias Fernandez-Pardo", "Alexis Saelemaekers", "Amadou Onana", "Romelu Lukaku", "Nicolas Raskin"
+      ]
+    }
   }
 ]

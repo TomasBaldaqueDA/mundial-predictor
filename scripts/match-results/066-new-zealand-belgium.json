@@ -1,0 +1,19 @@
+{
+  "id": 66,
+  "score1": 1,
+  "score2": 5,
+  "mvp": "Leandro Trossard",
+  "goals": [
+    { "team": "Belgium", "name": "Leandro Trossard" },
+    { "team": "Belgium", "name": "Leandro Trossard" },
+    { "team": "Belgium", "name": "Kevin De Bruyne" },
+    { "team": "New Zealand", "name": "Eli Just" },
+    { "team": "Belgium", "name": "Romelu Lukaku" },
+    { "team": "Belgium", "name": "Alexis Saelemaekers" }
+  ],
+  "assists": [
+    { "team": "Belgium", "name": "Hans Vanaken" },
+    { "team": "Belgium", "name": "Nicolas Raskin" },
+    { "team": "Belgium", "name": "Romelu Lukaku" }
+  ]
+}

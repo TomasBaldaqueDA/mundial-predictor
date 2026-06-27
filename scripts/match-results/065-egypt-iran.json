@@ -1,0 +1,13 @@
+{
+  "id": 65,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Ramin Rezaeian",
+  "goals": [
+    { "team": "Egypt", "name": "Mahmoud Saber" },
+    { "team": "IR Iran", "name": "Ramin Rezaeian" }
+  ],
+  "assists": [
+    { "team": "Egypt", "name": "Mahmoud Trezeguet" }
+  ]
+}
