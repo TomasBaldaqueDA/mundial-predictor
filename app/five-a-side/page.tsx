@@ -116,6 +116,7 @@ export default function FiveASidePage() {
   const [supersubModalSlot, setSupersubModalSlot] = useState<SlotKey | null>(null)
   const [supersubSlotPickerOpen, setSupersubSlotPickerOpen] = useState(false)
   const [supersubPendingInId, setSupersubPendingInId] = useState<string | null>(null)
+  const [supersubCancelConfirmOpen, setSupersubCancelConfirmOpen] = useState(false)
 
   const hasAnyPick = (row: Picks | null): boolean => {
     if (!row) return false
@@ -471,11 +472,8 @@ export default function FiveASidePage() {
     setSaving(false)
   }
 
-  async function cancelSupersub() {
+  async function confirmCancelSupersub() {
     if (!user || !supersubWindowOpen || !picks?.supersub_applied_at) return
-    const outId = picks.supersub_out_player_id
-    const outName = outId ? (playersById.get(outId)?.name ?? "your original player") : "your original player"
-    if (!window.confirm(`Cancel supersub and restore ${outName} to your lineup?`)) return
 
     const lineupIds = revertSupersubLineupIds(picks)
     if (!lineupIds) return
@@ -523,6 +521,7 @@ export default function FiveASidePage() {
             }
           : null
       )
+      setSupersubCancelConfirmOpen(false)
       closeSupersubPlayerModal()
       setSupersubSlotPickerOpen(false)
       setMessage({
@@ -661,7 +660,7 @@ export default function FiveASidePage() {
                   <button
                     type="button"
                     disabled={saving}
-                    onClick={cancelSupersub}
+                    onClick={() => setSupersubCancelConfirmOpen(true)}
                     className="rounded-xl border border-red-400/40 bg-red-500/10 px-5 py-2 text-sm font-bold uppercase tracking-wide text-red-100 hover:bg-red-500/20"
                   >
                     Cancel supersub
@@ -829,6 +828,55 @@ export default function FiveASidePage() {
           slot must be a different national team.
         </p>
       </div>
+
+      {/* Cancel supersub confirm */}
+      {supersubCancelConfirmOpen && picks?.supersub_out_player_id && picks?.supersub_in_player_id && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={() => !saving && setSupersubCancelConfirmOpen(false)}
+        >
+          <div
+            className="glass rounded-2xl w-full max-w-sm border border-red-400/30 shadow-xl p-5"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cancel-supersub-title"
+          >
+            <h2 id="cancel-supersub-title" className="font-bold text-lg text-wc-green-dark">
+              Cancel supersub?
+            </h2>
+            <p className="mt-3 text-sm text-stone-500 leading-relaxed">
+              Restore{" "}
+              <span className="font-semibold text-wc-green-dark">
+                {playersById.get(picks.supersub_out_player_id)?.name ?? "your original player"}
+              </span>{" "}
+              to your lineup and remove{" "}
+              <span className="font-semibold text-wc-green-dark">
+                {playersById.get(picks.supersub_in_player_id)?.name ?? "the substitute"}
+              </span>
+              . Your team will go back to how it was before the supersub.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => setSupersubCancelConfirmOpen(false)}
+                className="flex-1 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/15"
+              >
+                Keep supersub
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={confirmCancelSupersub}
+                className="flex-1 rounded-xl border border-red-400/50 bg-red-500/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-red-100 hover:bg-red-500/30 disabled:opacity-40"
+              >
+                {saving ? "Saving…" : "Yes, cancel"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Supersub — pick which lineup slot to replace */}
       {supersubSlotPickerOpen && supersubWindowOpen && (
