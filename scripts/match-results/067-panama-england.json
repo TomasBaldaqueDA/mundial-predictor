@@ -1,0 +1,14 @@
+{
+  "id": 67,
+  "score1": 0,
+  "score2": 2,
+  "mvp": "Jude Bellingham",
+  "goals": [
+    { "team": "England", "name": "Jude Bellingham" },
+    { "team": "England", "name": "Jude Bellingham" }
+  ],
+  "assists": [
+    { "team": "England", "name": "Bukayo Saka" },
+    { "team": "England", "name": "Harry Kane" }
+  ]
+}

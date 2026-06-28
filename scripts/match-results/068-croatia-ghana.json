@@ -1,0 +1,16 @@
+{
+  "id": 68,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Petar Sucic",
+  "goals": [
+    { "team": "Croatia", "name": "Petar Sucic" },
+    { "team": "Ghana", "name": "Derrick Luckassen" },
+    { "team": "Croatia", "name": "Nikola Vlasic" }
+  ],
+  "assists": [
+    { "team": "Croatia", "name": "Mateo Kovacic" },
+    { "team": "Ghana", "name": "Ernest Nuamah" },
+    { "team": "Croatia", "name": "Luka Modric" }
+  ]
+}
