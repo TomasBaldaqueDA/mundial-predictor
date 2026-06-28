@@ -16,7 +16,6 @@ import {
   isCaptainLocked,
   resolveSupersubOutPlayerId,
   slotFantasyPoints,
-  statsFromPlayer,
   supersubInDeltaDisplay,
   supersubOutFrozenDisplay,
   teamFantasyPoints,
