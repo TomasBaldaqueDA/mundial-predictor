@@ -1,16 +1,21 @@
 {
   "id": 71,
-  "score1": 2,
-  "score2": 1,
+  "score1": 3,
+  "score2": 3,
   "mvp": "Riyad Mahrez",
   "goals": [
     { "team": "Austria", "name": "Marko Arnautovic" },
+    { "team": "Algeria", "name": "Rafik Belghali" },
+    { "team": "Austria", "name": "Marcel Sabitzer" },
     { "team": "Algeria", "name": "Riyad Mahrez" },
-    { "team": "Algeria", "name": "Riyad Mahrez" }
+    { "team": "Algeria", "name": "Riyad Mahrez" },
+    { "team": "Austria", "name": "Sasa Kalajdzic" }
   ],
   "assists": [
     { "team": "Austria", "name": "David Alaba" },
+    { "team": "Austria", "name": "Konrad Laimer" },
     { "team": "Algeria", "name": "Houssem Aouar" },
-    { "team": "Algeria", "name": "Houssem Aouar" }
+    { "team": "Algeria", "name": "Houssem Aouar" },
+    { "team": "Austria", "name": "Michael Gregoritsch" }
   ]
 }
