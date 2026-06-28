@@ -126,6 +126,34 @@ export function buildSupersubLineupIds(
   return lineup
 }
 
+/** Keep frozen out stats / in baseline when re-editing legacy or unchanged players. */
+export function buildSupersubSnapshots(
+  picks: FiveASidePicks | null,
+  outPlayerId: string,
+  inPlayerId: string,
+  outPlayer: FiveASidePlayer,
+  inPlayer: FiveASidePlayer
+): { outStats: PlayerStats; inBaseline: PlayerStats } {
+  const prevOutStats = parsePlayerStats(picks?.supersub_out_stats)
+  const prevInBaseline = parsePlayerStats(picks?.supersub_in_baseline)
+
+  const outStats =
+    picks?.supersub_applied_at &&
+    picks.supersub_out_player_id === outPlayerId &&
+    prevOutStats
+      ? prevOutStats
+      : statsFromPlayer(outPlayer)
+
+  const inBaseline =
+    picks?.supersub_applied_at &&
+    picks.supersub_in_player_id === inPlayerId &&
+    prevInBaseline
+      ? prevInBaseline
+      : statsFromPlayer(inPlayer)
+
+  return { outStats, inBaseline }
+}
+
 export function statsFromPlayer(p: Pick<FiveASidePlayer, "goals" | "assists" | "mvp" | "wins" | "clean_sheets">): PlayerStats {
   return {
     goals: Number(p.goals) || 0,

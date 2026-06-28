@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   buildSupersubLineupIds,
+  buildSupersubSnapshots,
   playerFantasyPoints,
   resolveSupersubOutPlayerId,
   slotFantasyPoints,
@@ -191,6 +192,20 @@ describe("supersub lineup helpers", () => {
       md2_player_id: "md2",
       st_player_id: "st",
     })
+  })
+
+  it("preserves frozen snapshots when re-editing unchanged legacy supersub", () => {
+    const out = mkPlayer("st", { goals: 5, position: "st" })
+    const inP = mkPlayer("kane", { goals: 2, position: "st" })
+    const picks: FiveASidePicks = {
+      ...basePicks,
+      st_player_id: "kane",
+      supersub_out_stats: statsFromPlayer(mkPlayer("st", { goals: 2, position: "st" })),
+      supersub_in_baseline: statsFromPlayer(mkPlayer("kane", { goals: 1, position: "st" })),
+    }
+    const snaps = buildSupersubSnapshots(picks, "st", "kane", out, inP)
+    expect(snaps.outStats.goals).toBe(2)
+    expect(snaps.inBaseline.goals).toBe(1)
   })
 })
 

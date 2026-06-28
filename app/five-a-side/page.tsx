@@ -11,6 +11,7 @@ import { hasFiveASideCard } from "@/lib/five-a-side-images"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
 import {
   buildSupersubLineupIds,
+  buildSupersubSnapshots,
   fetchAllFiveASidePlayers,
   isCaptainLocked,
   resolveSupersubOutPlayerId,
@@ -419,8 +420,13 @@ export default function FiveASidePage() {
     setMessage(null)
     const supabase = createClient()
     const now = new Date().toISOString()
-    const outStats = statsFromPlayer(outPlayer)
-    const inBaseline = statsFromPlayer(inPlayer)
+    const { outStats, inBaseline } = buildSupersubSnapshots(
+      picks,
+      outPlayerId,
+      inPlayerId,
+      outPlayer,
+      inPlayer
+    )
     const lineupIds = buildSupersubLineupIds(picks, slot, inPlayerId)
 
     const { error } = await supabase.from("five_a_side_picks").upsert(
