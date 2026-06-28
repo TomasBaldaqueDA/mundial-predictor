@@ -1,0 +1,16 @@
+{
+  "id": 71,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Riyad Mahrez",
+  "goals": [
+    { "team": "Austria", "name": "Marko Arnautovic" },
+    { "team": "Algeria", "name": "Riyad Mahrez" },
+    { "team": "Algeria", "name": "Riyad Mahrez" }
+  ],
+  "assists": [
+    { "team": "Austria", "name": "David Alaba" },
+    { "team": "Algeria", "name": "Houssem Aouar" },
+    { "team": "Algeria", "name": "Houssem Aouar" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": 72,
+  "score1": 1,
+  "score2": 3,
+  "mvp": "Giovani Lo Celso",
+  "goals": [
+    { "team": "Argentina", "name": "Giovani Lo Celso" },
+    { "team": "Argentina", "name": "Lautaro Martinez" },
+    { "team": "Jordan", "name": "Musa Al-Taamari" },
+    { "team": "Argentina", "name": "Lionel Messi" }
+  ],
+  "assists": [
+    { "team": "Jordan", "name": "Ihsan Haddad" }
+  ]
+}

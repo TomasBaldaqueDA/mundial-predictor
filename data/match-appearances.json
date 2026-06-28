@@ -1398,5 +1398,45 @@
         "Azizjon Ganiev", "Odiljon Hamrobekov", "Oston Urunov", "Jamshid Iskanderov", "Igor Sergeev"
       ]
     }
+  },
+  {
+    "matchId": 71,
+    "team1": "Algeria",
+    "team2": "Austria",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Algeria", "name": "Riyad Mahrez" },
+    "appearances": {
+      "Algeria": [
+        "Oussama Benbot", "Rafik Belghali", "Jaouen Hadjam", "Ramy Bensebaini", "Rayan Ait-Nouri",
+        "Nabil Bentaleb", "Hicham Boudaoui", "Fares Chaibi", "Houssem Aouar", "Riyad Mahrez", "Amine Gouiri",
+        "Samir Chergui", "Zineddine Belaid", "Fares Ghedjemis", "Aissa Mandi", "Ramiz Zerrouki"
+      ],
+      "Austria": [
+        "Alexander Schlager", "Konrad Laimer", "David Alaba", "Phillipp Mwene", "Stefan Posch",
+        "Xaver Schlager", "Marcel Sabitzer", "Romano Schmid", "Marko Arnautovic", "Michael Gregoritsch", "Paul Wanner",
+        "Florian Grillitsch", "Kevin Danso", "Sasa Kalajdzic", "Alexander Prass", "Marco Friedl"
+      ]
+    }
+  },
+  {
+    "matchId": 72,
+    "team1": "Jordan",
+    "team2": "Argentina",
+    "score1": 1,
+    "score2": 3,
+    "mvp": { "team": "Argentina", "name": "Giovani Lo Celso" },
+    "appearances": {
+      "Jordan": [
+        "Yazeed Abulaila", "Abdallah Nasib", "Yazan Al-Arab", "Husam Abu Dahab", "Ihsan Haddad",
+        "Nizar Al-Rashdan", "Noor Al-Rawabdeh", "Mohannad Abu Taha", "Ali Azaizeh", "Odeh Al-Fakhouri", "Ali Olwan",
+        "Musa Al-Taamari", "Mahmoud Al-Mardi", "Amer Jamous", "Salim Obaid", "Ibrahim Sabra"
+      ],
+      "Argentina": [
+        "Emiliano Martinez", "Nicolas Tagliafico", "Lisandro Martinez", "Nicolas Otamendi", "Exequiel Palacios",
+        "Giovani Lo Celso", "Nicolas Paz", "Leandro Paredes", "Giuliano Simeone", "Julian Alvarez", "Lautaro Martinez",
+        "Thiago Almada", "Lionel Messi", "Alexis Mac Allister", "Valentin Barco", "Jose Manuel Lopez"
+      ]
+    }
   }
 ]
