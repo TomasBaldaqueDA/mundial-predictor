@@ -43,6 +43,13 @@ export type FiveASidePicks = {
 export const SLOT_KEYS = ["gk", "df", "md1", "md2", "st"] as const
 export type SlotKey = (typeof SLOT_KEYS)[number]
 
+export type LineupPlayerKey =
+  | "gk_player_id"
+  | "df_player_id"
+  | "md1_player_id"
+  | "md2_player_id"
+  | "st_player_id"
+
 export const LINEUP_SLOTS: { slot: SlotKey; badge: string; label: string }[] = [
   { slot: "gk", badge: "GK", label: "Goalkeeper" },
   { slot: "df", badge: "DF", label: "Defender" },
@@ -85,10 +92,10 @@ export function pickIdForSlot(picks: FiveASidePicks | null, slot: SlotKey): stri
   }
 }
 
-export function slotPlayerKey(slot: SlotKey): keyof FiveASidePicks {
+export function slotPlayerKey(slot: SlotKey): LineupPlayerKey {
   if (slot === "md1") return "md1_player_id"
   if (slot === "md2") return "md2_player_id"
-  return `${slot}_player_id` as keyof FiveASidePicks
+  return `${slot}_player_id` as LineupPlayerKey
 }
 
 /** Original outgoing player for a supersub slot (handles re-edits on the same slot). */
@@ -104,7 +111,7 @@ export function buildSupersubLineupIds(
   picks: FiveASidePicks,
   slot: SlotKey,
   inPlayerId: string
-): Pick<FiveASidePicks, "gk_player_id" | "df_player_id" | "md1_player_id" | "md2_player_id" | "st_player_id"> {
+): Pick<FiveASidePicks, LineupPlayerKey> {
   const lineup = {
     gk_player_id: picks.gk_player_id,
     df_player_id: picks.df_player_id,
