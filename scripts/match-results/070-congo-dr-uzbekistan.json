@@ -1,0 +1,16 @@
+{
+  "id": 70,
+  "score1": 3,
+  "score2": 1,
+  "mvp": "Yoane Wissa",
+  "goals": [
+    { "team": "Uzbekistan", "name": "Eldor Shomurodov" },
+    { "team": "Congo DR", "name": "Yoane Wissa" },
+    { "team": "Congo DR", "name": "Fiston Mayele" },
+    { "team": "Congo DR", "name": "Yoane Wissa" }
+  ],
+  "assists": [
+    { "team": "Uzbekistan", "name": "Akmal Mozgovoy" },
+    { "team": "Congo DR", "name": "Meschack Elia" }
+  ]
+}

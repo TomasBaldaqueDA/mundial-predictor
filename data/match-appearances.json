@@ -1358,5 +1358,45 @@
         "Kojo Oppong Peprah", "Abdul Fatawu Issahaku", "Brandon Thomas-Asante", "Ernest Nuamah", "Caleb Yirenkyi"
       ]
     }
+  },
+  {
+    "matchId": 69,
+    "team1": "Colombia",
+    "team2": "Portugal",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Portugal", "name": "Diogo Costa" },
+    "appearances": {
+      "Colombia": [
+        "Camilo Vargas", "Deiver Machado", "Jhon Lucumi", "Davinson Sanchez", "Santiago Arias",
+        "Gustavo Puerta", "Jefferson Lerma", "Jhon Arias", "Luis Diaz", "Jhon Cordoba", "James Rodriguez",
+        "Richard Rios", "Luis Suarez", "Juan Fernando Quintero", "Kevin Castano", "Daniel Munoz"
+      ],
+      "Portugal": [
+        "Diogo Costa", "Joao Cancelo", "Ruben Dias", "Renato Veiga", "Nuno Mendes",
+        "Ruben Neves", "Vitinha", "Pedro Neto", "Bruno Fernandes", "Joao Felix", "Cristiano Ronaldo",
+        "Diogo Dalot", "Joao Neves", "Samuel Costa", "Rafael Leao", "Matheus Nunes"
+      ]
+    }
+  },
+  {
+    "matchId": 70,
+    "team1": "Congo DR",
+    "team2": "Uzbekistan",
+    "score1": 3,
+    "score2": 1,
+    "mvp": { "team": "Congo DR", "name": "Yoane Wissa" },
+    "appearances": {
+      "Congo DR": [
+        "Lionel Mpasi", "Arthur Masuaku", "Alex Tuanzebe", "Chancel Mbemba", "Aaron Wan-Bissaka",
+        "Brian Cipenga", "Noah Sadiki", "Samuel Moutoussamy", "Nathanael Mbuku", "Yoane Wissa", "Cedric Bakambu",
+        "Fiston Mayele", "Theo Bongonda", "Ngal'ayel Mukau", "Meschack Elia", "Joris Kayembe"
+      ],
+      "Uzbekistan": [
+        "Abduvohid Nematov", "Khojiakbar Alijonov", "Rustam Ashurmatov", "Abdukodir Khusanov", "Jakhongir Urozov", "Sherzod Nasrullaev",
+        "Dostonbek Khamdamov", "Akmal Mozgovoy", "Otabek Shukurov", "Abbosbek Fayzullaev", "Eldor Shomurodov",
+        "Azizjon Ganiev", "Odiljon Hamrobekov", "Oston Urunov", "Jamshid Iskanderov", "Igor Sergeev"
+      ]
+    }
   }
 ]
