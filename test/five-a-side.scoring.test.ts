@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest"
 import {
+  buildSupersubLineupIds,
   playerFantasyPoints,
+  resolveSupersubOutPlayerId,
   slotFantasyPoints,
   statsFromPlayer,
   supersubOutFrozenDisplay,
@@ -134,7 +136,7 @@ describe("getSupersubButtonState", () => {
     )
     const state = getSupersubButtonState(
       matches,
-      { teamComplete: true, supersubApplied: false },
+      { teamComplete: true },
       new Date("2026-06-20T00:00:00.000Z")
     )
     expect(state.canUse).toBe(false)
@@ -144,7 +146,7 @@ describe("getSupersubButtonState", () => {
   it("opens between round 3 end and R32", () => {
     const state = getSupersubButtonState(
       finishedThirdRoundMatches,
-      { teamComplete: true, supersubApplied: false },
+      { teamComplete: true },
       new Date("2026-06-20T00:00:00.000Z")
     )
     expect(state.canUse).toBe(true)
@@ -154,11 +156,41 @@ describe("getSupersubButtonState", () => {
   it("locks after round of 32 starts", () => {
     const state = getSupersubButtonState(
       finishedThirdRoundMatches,
-      { teamComplete: true, supersubApplied: false },
+      { teamComplete: true },
       new Date("2026-07-02T00:00:00.000Z")
     )
     expect(state.canUse).toBe(false)
     expect(state.lockCode).toBe("after_round_of_32")
+  })
+})
+
+describe("supersub lineup helpers", () => {
+  const basePicks: FiveASidePicks = {
+    gk_player_id: "gk",
+    df_player_id: "df",
+    md1_player_id: "md1",
+    md2_player_id: "md2",
+    st_player_id: "st",
+    supersub_slot: "st",
+    supersub_out_player_id: "st",
+    supersub_in_player_id: "kane",
+    supersub_applied_at: "2026-06-28T00:00:00.000Z",
+  }
+
+  it("keeps original out player when re-editing the same slot", () => {
+    const updated = { ...basePicks, st_player_id: "kane" }
+    expect(resolveSupersubOutPlayerId(updated, "st")).toBe("st")
+  })
+
+  it("reverts previous slot when changing supersub position", () => {
+    const updated = { ...basePicks, st_player_id: "kane" }
+    expect(buildSupersubLineupIds(updated, "md1", "modric")).toEqual({
+      gk_player_id: "gk",
+      df_player_id: "df",
+      md1_player_id: "modric",
+      md2_player_id: "md2",
+      st_player_id: "st",
+    })
   })
 })
 

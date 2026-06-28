@@ -9,7 +9,6 @@ export type SupersubLockCode =
   | "team_incomplete"
   | "before_third_round"
   | "after_round_of_32"
-  | "already_applied"
   | "no_schedule"
 
 export type SupersubButtonState = {
@@ -21,20 +20,16 @@ export type SupersubButtonState = {
 const LOCK_MESSAGES: Record<Exclude<SupersubLockCode, "open">, string> = {
   team_incomplete: "Complete your 5-player team first.",
   before_third_round: "Unlocks after all group stage round 3 matches finish.",
-  after_round_of_32: "Round of 32 has started — supersub is locked.",
-  already_applied: "You already used your supersub for this tournament.",
+  after_round_of_32: "The first Round of 32 match has started — supersub is locked.",
   no_schedule: "Tournament schedule not loaded yet.",
 }
 
 /** UI + actions: when the supersub button is enabled and why it is locked otherwise. */
 export function getSupersubButtonState(
   matches: MatchForSupersubWindow[],
-  options: { teamComplete: boolean; supersubApplied: boolean },
+  options: { teamComplete: boolean },
   now: Date = new Date()
 ): SupersubButtonState {
-  if (options.supersubApplied) {
-    return { canUse: false, lockCode: "already_applied", lockReason: LOCK_MESSAGES.already_applied }
-  }
   if (!options.teamComplete) {
     return { canUse: false, lockCode: "team_incomplete", lockReason: LOCK_MESSAGES.team_incomplete }
   }
@@ -61,9 +56,5 @@ export function getSupersubButtonState(
 
 /** True after every group-stage 3rd-round match is finished and before Round of 32 kickoff. */
 export function isSupersubWindowOpen(matches: MatchForSupersubWindow[], now: Date = new Date()): boolean {
-  return getSupersubButtonState(
-    matches,
-    { teamComplete: true, supersubApplied: false },
-    now
-  ).canUse
+  return getSupersubButtonState(matches, { teamComplete: true }, now).canUse
 }

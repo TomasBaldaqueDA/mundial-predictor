@@ -85,6 +85,47 @@ export function pickIdForSlot(picks: FiveASidePicks | null, slot: SlotKey): stri
   }
 }
 
+export function slotPlayerKey(slot: SlotKey): keyof FiveASidePicks {
+  if (slot === "md1") return "md1_player_id"
+  if (slot === "md2") return "md2_player_id"
+  return `${slot}_player_id` as keyof FiveASidePicks
+}
+
+/** Original outgoing player for a supersub slot (handles re-edits on the same slot). */
+export function resolveSupersubOutPlayerId(picks: FiveASidePicks, slot: SlotKey): string | null {
+  if (picks.supersub_applied_at && picks.supersub_slot === slot && picks.supersub_out_player_id) {
+    return picks.supersub_out_player_id
+  }
+  return pickIdForSlot(picks, slot)
+}
+
+/** Lineup ids after applying a supersub; reverts the previous slot when the position changes. */
+export function buildSupersubLineupIds(
+  picks: FiveASidePicks,
+  slot: SlotKey,
+  inPlayerId: string
+): Pick<FiveASidePicks, "gk_player_id" | "df_player_id" | "md1_player_id" | "md2_player_id" | "st_player_id"> {
+  const lineup = {
+    gk_player_id: picks.gk_player_id,
+    df_player_id: picks.df_player_id,
+    md1_player_id: picks.md1_player_id,
+    md2_player_id: picks.md2_player_id,
+    st_player_id: picks.st_player_id,
+  }
+
+  if (
+    picks.supersub_applied_at &&
+    picks.supersub_slot &&
+    picks.supersub_slot !== slot &&
+    picks.supersub_out_player_id
+  ) {
+    lineup[slotPlayerKey(picks.supersub_slot)] = picks.supersub_out_player_id
+  }
+
+  lineup[slotPlayerKey(slot)] = inPlayerId
+  return lineup
+}
+
 export function statsFromPlayer(p: Pick<FiveASidePlayer, "goals" | "assists" | "mvp" | "wins" | "clean_sheets">): PlayerStats {
   return {
     goals: Number(p.goals) || 0,

@@ -10,8 +10,10 @@ import { FlagImage } from "@/app/components/FlagImage"
 import { hasFiveASideCard } from "@/lib/five-a-side-images"
 import { getKitForTeam, kitShirtBackground, squadShirtNumbers, type KitStyle } from "@/lib/team-kit"
 import {
+  buildSupersubLineupIds,
   fetchAllFiveASidePlayers,
   isCaptainLocked,
+  resolveSupersubOutPlayerId,
   slotFantasyPoints,
   statsFromPlayer,
   supersubInDeltaDisplay,
@@ -112,6 +114,7 @@ export default function FiveASidePage() {
   const [tournamentMatches, setTournamentMatches] = useState<MatchForSupersubWindow[]>([])
   const [supersubModalSlot, setSupersubModalSlot] = useState<SlotKey | null>(null)
   const [supersubSlotPickerOpen, setSupersubSlotPickerOpen] = useState(false)
+  const [supersubPendingInId, setSupersubPendingInId] = useState<string | null>(null)
 
   const hasAnyPick = (row: Picks | null): boolean => {
     if (!row) return false
@@ -211,10 +214,7 @@ export default function FiveASidePage() {
   const slotsLocked = tournamentStarted || !isEditing
   const captainLocked = isCaptainLocked(tournamentStarted)
   const supersubApplied = !!picks?.supersub_applied_at
-  const supersubState = getSupersubButtonState(tournamentMatches, {
-    teamComplete,
-    supersubApplied,
-  })
+  const supersubState = getSupersubButtonState(tournamentMatches, { teamComplete })
   const supersubWindowOpen = supersubState.canUse
   const canPickCaptain = teamComplete && !tournamentStarted
   const showCaptainButtons = canPickCaptain && isEditing
@@ -383,9 +383,24 @@ export default function FiveASidePage() {
     setSaving(false)
   }
 
-  async function applySupersub(slot: SlotKey, inPlayerId: string) {
-    if (!user || !supersubWindowOpen) return
-    const outPlayerId = getPlayerId(slot)
+  function openSupersubPlayerModal(slot: SlotKey) {
+    const preselect =
+      picks?.supersub_applied_at && picks.supersub_slot === slot ? (picks.supersub_in_player_id ?? null) : null
+    setSupersubPendingInId(preselect)
+    setSupersubModalSlot(slot)
+  }
+
+  function closeSupersubPlayerModal() {
+    if (saving) return
+    setSupersubModalSlot(null)
+    setSupersubPendingInId(null)
+  }
+
+  async function confirmSupersub() {
+    if (!user || !supersubWindowOpen || !picks || !supersubModalSlot || !supersubPendingInId) return
+    const slot = supersubModalSlot
+    const inPlayerId = supersubPendingInId
+    const outPlayerId = resolveSupersubOutPlayerId(picks, slot)
     if (!outPlayerId || outPlayerId === inPlayerId) return
     const outPlayer = players.find((p) => p.id === outPlayerId)
     const inPlayer = players.find((p) => p.id === inPlayerId)
@@ -406,18 +421,12 @@ export default function FiveASidePage() {
     const now = new Date().toISOString()
     const outStats = statsFromPlayer(outPlayer)
     const inBaseline = statsFromPlayer(inPlayer)
-    const slotKey =
-      slot === "md1" ? "md1_player_id" : slot === "md2" ? "md2_player_id" : `${slot}_player_id`
+    const lineupIds = buildSupersubLineupIds(picks, slot, inPlayerId)
 
     const { error } = await supabase.from("five_a_side_picks").upsert(
       {
         user_id: user.id,
-        gk_player_id: getPlayerId("gk"),
-        df_player_id: getPlayerId("df"),
-        md1_player_id: getPlayerId("md1"),
-        md2_player_id: getPlayerId("md2"),
-        st_player_id: getPlayerId("st"),
-        [slotKey]: inPlayerId,
+        ...lineupIds,
         supersub_slot: slot,
         supersub_out_player_id: outPlayerId,
         supersub_in_player_id: inPlayerId,
@@ -435,7 +444,7 @@ export default function FiveASidePage() {
         prev
           ? {
               ...prev,
-              [slotKey]: inPlayerId,
+              ...lineupIds,
               supersub_slot: slot,
               supersub_out_player_id: outPlayerId,
               supersub_in_player_id: inPlayerId,
@@ -445,8 +454,13 @@ export default function FiveASidePage() {
             }
           : null
       )
-      setSupersubModalSlot(null)
-      setMessage({ type: "ok", text: "Supersub applied — locked for the rest of the tournament." })
+      closeSupersubPlayerModal()
+      setMessage({
+        type: "ok",
+        text: supersubApplied
+          ? "Supersub updated — you can still change it until the first Round of 32 match."
+          : "Supersub saved — you can edit it until the first Round of 32 match.",
+      })
     }
     setSaving(false)
   }
@@ -554,14 +568,31 @@ export default function FiveASidePage() {
         >
           <p className="text-sm font-semibold text-cyan-100">Supersub</p>
           <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
-            One substitution for the whole tournament — same position, new nation. Available only after group stage
-            round 3 ends and before Round of 32 kicks off.
+            One substitution for the whole tournament — same position, new nation. Available after group stage
+            round 3 ends; confirm to save and edit until the first Round of 32 match (16 avos). Points from the
+            player who leaves are kept.
           </p>
           {supersubApplied && picks?.supersub_out_player_id && picks?.supersub_in_player_id ? (
-            <p className="mt-3 text-sm font-medium text-emerald-200">
-              Used: {playersById.get(picks.supersub_out_player_id)?.name ?? "—"} →{" "}
-              {playersById.get(picks.supersub_in_player_id)?.name ?? "—"}
-            </p>
+            <div className="mt-3 space-y-2">
+              <p className="text-sm font-medium text-emerald-200">
+                Saved: {playersById.get(picks.supersub_out_player_id)?.name ?? "—"} →{" "}
+                {playersById.get(picks.supersub_in_player_id)?.name ?? "—"}
+              </p>
+              {supersubWindowOpen ? (
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => setSupersubSlotPickerOpen(true)}
+                  className="rounded-xl border border-cyan-400/50 bg-cyan-500/15 px-5 py-2 text-sm font-bold uppercase tracking-wide text-cyan-100 hover:bg-cyan-500/25"
+                >
+                  Edit supersub
+                </button>
+              ) : (
+                supersubState.lockReason && (
+                  <p className="text-xs text-amber-200/90">{supersubState.lockReason}</p>
+                )
+              )}
+            </div>
           ) : (
             <>
               {supersubState.lockReason && (
@@ -748,7 +779,7 @@ export default function FiveASidePage() {
                   disabled={saving || !getPlayer(slot)}
                   onClick={() => {
                     setSupersubSlotPickerOpen(false)
-                    setSupersubModalSlot(slot)
+                    openSupersubPlayerModal(slot)
                   }}
                   className="rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-3 py-2.5 text-sm font-semibold text-cyan-900 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-cyan-500/20"
                 >
@@ -771,7 +802,7 @@ export default function FiveASidePage() {
       {supersubModalSlot && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-          onClick={() => !saving && setSupersubModalSlot(null)}
+          onClick={closeSupersubPlayerModal}
         >
           <div
             className="glass rounded-2xl max-h-[80vh] w-full max-w-md flex flex-col border border-cyan-400/30 shadow-xl"
@@ -781,26 +812,39 @@ export default function FiveASidePage() {
               <h2 className="font-bold text-wc-green-dark">
                 Supersub — replace {POSITION_LABELS[SLOT_POSITION[supersubModalSlot]]}
               </h2>
-              <button type="button" onClick={() => setSupersubModalSlot(null)} className="text-stone-500 hover:text-stone-700">
+              <button type="button" onClick={closeSupersubPlayerModal} className="text-stone-500 hover:text-stone-700">
                 ×
               </button>
             </div>
             <p className="px-4 py-2 text-xs text-stone-500">
-              Out: {getPlayer(supersubModalSlot)?.name ?? "—"}. Pick a replacement (same position, new nation).
+              Out:{" "}
+              {picks
+                ? (playersById.get(resolveSupersubOutPlayerId(picks, supersubModalSlot) ?? "")?.name ?? "—")
+                : "—"}
+              . Pick a replacement (same position, new nation), then confirm.
             </p>
             <ul className="overflow-y-auto flex-1 p-2 space-y-1">
               {(playersByPosition[SLOT_POSITION[supersubModalSlot]] ?? [])
-                .filter((p) => p.id !== getPlayerId(supersubModalSlot))
+                .filter((p) => {
+                  if (!picks) return true
+                  const outId = resolveSupersubOutPlayerId(picks, supersubModalSlot)
+                  return p.id !== outId
+                })
                 .map((p) => {
                   const nationBlocked = teamsUsedExceptSlot(supersubModalSlot, picks, players).has(p.team)
+                  const selected = supersubPendingInId === p.id
                   return (
                     <li key={p.id}>
                       <button
                         type="button"
-                        onClick={() => applySupersub(supersubModalSlot, p.id)}
-                        disabled={saving || nationBlocked}
+                        onClick={() => !nationBlocked && setSupersubPendingInId(p.id)}
+                        disabled={nationBlocked}
                         className={`w-full flex items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-colors ${
-                          nationBlocked ? "cursor-not-allowed opacity-45" : "hover:bg-cyan-500/15"
+                          nationBlocked
+                            ? "cursor-not-allowed opacity-45"
+                            : selected
+                              ? "bg-cyan-500/25 ring-2 ring-cyan-400/60"
+                              : "hover:bg-cyan-500/15"
                         }`}
                       >
                         <FlagImage src={getFlagSrc(p.team)} alt="" className="h-4 w-6 rounded object-cover shrink-0" />
@@ -811,6 +855,24 @@ export default function FiveASidePage() {
                   )
                 })}
             </ul>
+            <div className="flex gap-2 border-t border-stone-200 p-4">
+              <button
+                type="button"
+                onClick={closeSupersubPlayerModal}
+                disabled={saving}
+                className="flex-1 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/15"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmSupersub}
+                disabled={saving || !supersubPendingInId}
+                className="flex-1 rounded-xl bg-gradient-to-b from-cyan-400 to-cyan-600 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-slate-950 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {saving ? "Saving…" : "Confirm supersub"}
+              </button>
+            </div>
           </div>
         </div>
       )}
