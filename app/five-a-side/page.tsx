@@ -861,7 +861,7 @@ export default function FiveASidePage() {
                 type="button"
                 disabled={saving}
                 onClick={() => setSupersubCancelConfirmOpen(false)}
-                className="flex-1 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/15"
+                className="flex-1 rounded-xl border border-stone-300 bg-white/80 px-4 py-2.5 text-sm font-semibold text-stone-700 hover:bg-white"
               >
                 Keep supersub
               </button>
@@ -869,7 +869,7 @@ export default function FiveASidePage() {
                 type="button"
                 disabled={saving}
                 onClick={confirmCancelSupersub}
-                className="flex-1 rounded-xl border border-red-400/50 bg-red-500/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-red-100 hover:bg-red-500/30 disabled:opacity-40"
+                className="flex-1 rounded-xl border border-red-400/60 bg-red-500/15 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-red-800 hover:bg-red-500/25 disabled:opacity-40"
               >
                 {saving ? "Saving…" : "Yes, cancel"}
               </button>
