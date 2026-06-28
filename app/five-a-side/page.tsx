@@ -473,7 +473,6 @@ export default function FiveASidePage() {
 
   async function cancelSupersub() {
     if (!user || !supersubWindowOpen || !picks?.supersub_applied_at) return
-    const slot = picks.supersub_slot
     const outId = picks.supersub_out_player_id
     const outName = outId ? (playersById.get(outId)?.name ?? "your original player") : "your original player"
     if (!window.confirm(`Cancel supersub and restore ${outName} to your lineup?`)) return
