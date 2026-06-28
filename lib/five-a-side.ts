@@ -133,6 +133,25 @@ export function buildSupersubLineupIds(
   return lineup
 }
 
+/** Restore the pre-supersub lineup (out player back in their slot). */
+export function revertSupersubLineupIds(
+  picks: FiveASidePicks
+): Pick<FiveASidePicks, LineupPlayerKey> | null {
+  const slot = picks.supersub_slot
+  const outId = picks.supersub_out_player_id
+  if (!slot || !outId) return null
+
+  const lineup = {
+    gk_player_id: picks.gk_player_id,
+    df_player_id: picks.df_player_id,
+    md1_player_id: picks.md1_player_id,
+    md2_player_id: picks.md2_player_id,
+    st_player_id: picks.st_player_id,
+  }
+  lineup[slotPlayerKey(slot)] = outId
+  return lineup
+}
+
 /** Keep frozen out stats / in baseline when re-editing legacy or unchanged players. */
 export function buildSupersubSnapshots(
   picks: FiveASidePicks | null,

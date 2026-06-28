@@ -4,6 +4,7 @@ import {
   buildSupersubSnapshots,
   playerFantasyPoints,
   resolveSupersubOutPlayerId,
+  revertSupersubLineupIds,
   slotFantasyPoints,
   statsFromPlayer,
   supersubOutFrozenDisplay,
@@ -206,6 +207,17 @@ describe("supersub lineup helpers", () => {
     const snaps = buildSupersubSnapshots(picks, "st", "kane", out, inP)
     expect(snaps.outStats.goals).toBe(2)
     expect(snaps.inBaseline.goals).toBe(1)
+  })
+
+  it("restores original player when cancelling supersub", () => {
+    const updated = { ...basePicks, st_player_id: "kane" }
+    expect(revertSupersubLineupIds(updated)).toEqual({
+      gk_player_id: "gk",
+      df_player_id: "df",
+      md1_player_id: "md1",
+      md2_player_id: "md2",
+      st_player_id: "st",
+    })
   })
 })
 

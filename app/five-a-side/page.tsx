@@ -15,6 +15,7 @@ import {
   fetchAllFiveASidePlayers,
   isCaptainLocked,
   resolveSupersubOutPlayerId,
+  revertSupersubLineupIds,
   slotFantasyPoints,
   supersubInDeltaDisplay,
   supersubOutFrozenDisplay,
@@ -470,6 +471,71 @@ export default function FiveASidePage() {
     setSaving(false)
   }
 
+  async function cancelSupersub() {
+    if (!user || !supersubWindowOpen || !picks?.supersub_applied_at) return
+    const slot = picks.supersub_slot
+    const outId = picks.supersub_out_player_id
+    const outName = outId ? (playersById.get(outId)?.name ?? "your original player") : "your original player"
+    if (!window.confirm(`Cancel supersub and restore ${outName} to your lineup?`)) return
+
+    const lineupIds = revertSupersubLineupIds(picks)
+    if (!lineupIds) return
+
+    setSaving(true)
+    setMessage(null)
+    const supabase = createClient()
+    const now = new Date().toISOString()
+    const removedCaptain =
+      !!picks.captain_player_id &&
+      !!picks.supersub_in_player_id &&
+      picks.captain_player_id === picks.supersub_in_player_id
+    const clearCaptain = removedCaptain ? { captain_player_id: null, captain_set_at: null } : {}
+
+    const { error } = await supabase.from("five_a_side_picks").upsert(
+      {
+        user_id: user.id,
+        ...lineupIds,
+        supersub_slot: null,
+        supersub_out_player_id: null,
+        supersub_in_player_id: null,
+        supersub_applied_at: null,
+        supersub_out_stats: null,
+        supersub_in_baseline: null,
+        ...clearCaptain,
+        updated_at: now,
+      },
+      { onConflict: "user_id" }
+    )
+    if (error) {
+      setMessage({ type: "error", text: error.message })
+    } else {
+      setPicks((prev) =>
+        prev
+          ? {
+              ...prev,
+              ...lineupIds,
+              supersub_slot: null,
+              supersub_out_player_id: null,
+              supersub_in_player_id: null,
+              supersub_applied_at: null,
+              supersub_out_stats: null,
+              supersub_in_baseline: null,
+              ...clearCaptain,
+            }
+          : null
+      )
+      closeSupersubPlayerModal()
+      setSupersubSlotPickerOpen(false)
+      setMessage({
+        type: "ok",
+        text: removedCaptain
+          ? "Supersub cancelled — your original lineup is restored. Set a new captain if needed."
+          : "Supersub cancelled — your original lineup is restored.",
+      })
+    }
+    setSaving(false)
+  }
+
   const modalPlayers = modalSlot ? playersByPosition[SLOT_POSITION[modalSlot]] ?? [] : []
   const filteredModalPlayers = teamFilter
     ? modalPlayers.filter((p) => p.team.toLowerCase().includes(teamFilter.toLowerCase()))
@@ -574,8 +640,8 @@ export default function FiveASidePage() {
           <p className="text-sm font-semibold text-cyan-100">Supersub</p>
           <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
             One substitution for the whole tournament — same position, new nation. Available after group stage
-            round 3 ends; confirm to save and edit until the first Round of 32 match (16 avos). Points from the
-            player who leaves are kept.
+            round 3 ends; confirm to save, edit, or cancel until the first Round of 32 match (16 avos). Points from
+            the player who leaves are kept while the supersub is active.
           </p>
           {supersubApplied && picks?.supersub_out_player_id && picks?.supersub_in_player_id ? (
             <div className="mt-3 space-y-2">
@@ -584,14 +650,24 @@ export default function FiveASidePage() {
                 {playersById.get(picks.supersub_in_player_id)?.name ?? "—"}
               </p>
               {supersubWindowOpen ? (
-                <button
-                  type="button"
-                  disabled={saving}
-                  onClick={() => setSupersubSlotPickerOpen(true)}
-                  className="rounded-xl border border-cyan-400/50 bg-cyan-500/15 px-5 py-2 text-sm font-bold uppercase tracking-wide text-cyan-100 hover:bg-cyan-500/25"
-                >
-                  Edit supersub
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={() => setSupersubSlotPickerOpen(true)}
+                    className="rounded-xl border border-cyan-400/50 bg-cyan-500/15 px-5 py-2 text-sm font-bold uppercase tracking-wide text-cyan-100 hover:bg-cyan-500/25"
+                  >
+                    Edit supersub
+                  </button>
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={cancelSupersub}
+                    className="rounded-xl border border-red-400/40 bg-red-500/10 px-5 py-2 text-sm font-bold uppercase tracking-wide text-red-100 hover:bg-red-500/20"
+                  >
+                    Cancel supersub
+                  </button>
+                </div>
               ) : (
                 supersubState.lockReason && (
                   <p className="text-xs text-amber-200/90">{supersubState.lockReason}</p>

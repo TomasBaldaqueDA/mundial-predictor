@@ -184,9 +184,9 @@ export default function RulesPage() {
             <span className="font-semibold">Supersub</span>: one substitution for the whole tournament, available only
             between the end of the group stage (3rd round) and the first Round of 32 match (16 avos — not the Round
             of 16). Replace one player with another from the same position (still max one player per nation). Confirm
-            to save; you can change your choice until that first Round of 32 kickoff. Points from the player who
-            leaves only count up to the moment of the swap; the incoming player&apos;s points count from that moment
-            onward.
+            to save; you can change or cancel your choice until that first Round of 32 kickoff. Cancel restores your
+            original lineup. Points from the player who leaves only count up to the moment of the swap; the incoming
+            player&apos;s points count from that moment onward.
           </li>
         </ul>
       </section>
