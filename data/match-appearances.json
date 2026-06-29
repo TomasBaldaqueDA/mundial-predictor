@@ -1458,5 +1458,25 @@
         "Luc de Fougerolles", "Niko Sigur", "Jacob Shaffelburg", "Promise David", "Alphonso Davies"
       ]
     }
+  },
+  {
+    "matchId": 74,
+    "team1": "Brazil",
+    "team2": "Japan",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Brazil", "name": "Casemiro" },
+    "appearances": {
+      "Brazil": [
+        "Alisson", "Douglas Santos", "Gabriel Magalhaes", "Marquinhos", "Danilo",
+        "Lucas Paqueta", "Casemiro", "Bruno Guimaraes", "Vinicius Jr", "Matheus Cunha", "Rayan",
+        "Endrick", "Gabriel Martinelli", "Fabinho", "Danilo Santos"
+      ],
+      "Japan": [
+        "Zion Suzuki", "Takehiro Tomiyasu", "Shogo Taniguchi", "Hiroki Ito", "Ritsu Doan",
+        "Kaishu Sano", "Daichi Kamada", "Keito Nakamura", "Junya Ito", "Daizen Maeda", "Ayase Ueda",
+        "Yukinari Sugawara", "Junosuke Suzuki", "Ao Tanaka", "Koki Ogawa"
+      ]
+    }
   }
 ]

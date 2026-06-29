@@ -1,0 +1,15 @@
+{
+  "id": 74,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Casemiro",
+  "goals": [
+    { "team": "Japan", "name": "Kaishu Sano" },
+    { "team": "Brazil", "name": "Casemiro" },
+    { "team": "Brazil", "name": "Gabriel Martinelli" }
+  ],
+  "assists": [
+    { "team": "Brazil", "name": "Gabriel Magalhaes" },
+    { "team": "Brazil", "name": "Bruno Guimaraes" }
+  ]
+}
