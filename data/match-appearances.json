@@ -1478,5 +1478,26 @@
         "Yukinari Sugawara", "Junosuke Suzuki", "Ao Tanaka", "Koki Ogawa"
       ]
     }
+  },
+  {
+    "matchId": 75,
+    "team1": "Germany",
+    "team2": "Paraguay",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Paraguay", "name": "Orlando Gill" },
+    "qualifier": "Paraguay",
+    "appearances": {
+      "Germany": [
+        "Manuel Neuer", "Joshua Kimmich", "Jonathan Tah", "Antonio Rüdiger", "Nathaniel Brown",
+        "Aleksandar Pavlovic", "Felix Nmecha", "Leroy Sané", "Florian Wirtz", "Kai Havertz", "Deniz Undav",
+        "Leon Goretzka", "Jamal Musiala", "Waldemar Anton", "Nick Woltemade", "Malick Thiaw", "Nadiem Amiri"
+      ],
+      "Paraguay": [
+        "Orlando Gill", "Junior Alonso", "Jose Canale", "Gustavo Gomez", "Juan Jose Caceres",
+        "Matias Galarza", "Andres Cubas", "Damian Bobadilla", "Miguel Almiron", "Julio Enciso", "Gabriel Avalos",
+        "Gustavo Caballero", "Mauricio Magalhaes", "Gustavo Velazquez", "Briaian Ojeda", "Antonio Sanabria", "Fabian Balbuena"
+      ]
+    }
   }
 ]

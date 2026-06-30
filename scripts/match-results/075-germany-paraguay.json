@@ -1,0 +1,15 @@
+{
+  "id": 75,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Orlando Gill",
+  "qualifier": "Paraguay",
+  "goals": [
+    { "team": "Paraguay", "name": "Julio Enciso" },
+    { "team": "Germany", "name": "Kai Havertz" }
+  ],
+  "assists": [
+    { "team": "Paraguay", "name": "Matias Galarza" },
+    { "team": "Germany", "name": "Florian Wirtz" }
+  ]
+}
