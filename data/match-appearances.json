@@ -1499,5 +1499,26 @@
         "Gustavo Caballero", "Mauricio Magalhaes", "Gustavo Velazquez", "Briaian Ojeda", "Antonio Sanabria", "Fabian Balbuena"
       ]
     }
+  },
+  {
+    "matchId": 76,
+    "team1": "Netherlands",
+    "team2": "Morocco",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Morocco", "name": "Issa Diop" },
+    "qualifier": "Morocco",
+    "appearances": {
+      "Netherlands": [
+        "Bart Verbruggen", "Nathan Aké", "Virgil van Dijk", "Jan Paul van Hecke", "Micky van de Ven",
+        "Frenkie de Jong", "Ryan Gravenberch", "Denzel Dumfries", "Cody Gakpo", "Crysencio Summerville", "Brian Brobbey",
+        "Teun Koopmeiners", "Wout Weghorst", "Jorrel Hato", "Quinten Timber", "Marten de Roon", "Justin Kluivert"
+      ],
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Issa Diop", "Chadi Riad", "Noussair Mazraoui",
+        "Ayyoub Bouaddi", "Neil El Aynaoui", "Brahim Diaz", "Azzedine Ounahi", "Bilal El Khannouss", "Ismael Saibari",
+        "Anass Salah-Eddine", "Gessime Yassine", "Samir El Mourabet", "Soufiane Rahimi", "Chemsdine Talbi"
+      ]
+    }
   }
 ]

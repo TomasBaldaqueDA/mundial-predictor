@@ -1,0 +1,15 @@
+{
+  "id": 76,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Issa Diop",
+  "qualifier": "Morocco",
+  "goals": [
+    { "team": "Netherlands", "name": "Cody Gakpo" },
+    { "team": "Morocco", "name": "Issa Diop" }
+  ],
+  "assists": [
+    { "team": "Netherlands", "name": "Crysencio Summerville" },
+    { "team": "Morocco", "name": "Chemsdine Talbi" }
+  ]
+}
