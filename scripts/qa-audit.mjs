@@ -196,6 +196,8 @@ async function main() {
     p_score2: 1,
     p_mvp: "A",
     p_qualifier: "Team A",
+    p_team1: "Team A",
+    p_team2: "Team B",
     pred_score1: 2,
     pred_score2: 1,
     pred_mvp: "A",

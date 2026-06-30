@@ -64,6 +64,34 @@ describe("calculateMatchPoints", () => {
     ).toBe(1)
   })
 
+  it("awards +1 for correct qualifier when winner has no explicit qualifier field", () => {
+    expect(
+      calculateMatchPoints(
+        { score1: 2, score2: 1, mvp: "Player A", qualifier: null, team1: "Brazil", team2: "Japan" },
+        {
+          pred_score1: 2,
+          pred_score2: 1,
+          pred_mvp: "Wrong",
+          pred_qualifier: "Brazil",
+        }
+      )
+    ).toBe(4)
+  })
+
+  it("awards +1 for correct qualifier on PSO draw via explicit qualifier", () => {
+    expect(
+      calculateMatchPoints(
+        { score1: 1, score2: 1, mvp: "Player A", qualifier: "Paraguay", team1: "Germany", team2: "Paraguay" },
+        {
+          pred_score1: 2,
+          pred_score2: 1,
+          pred_mvp: "Wrong",
+          pred_qualifier: "Paraguay",
+        }
+      )
+    ).toBe(1)
+  })
+
   it("doubles total with ×2 multiplier", () => {
     expect(
       calculateMatchPoints(

@@ -3,6 +3,8 @@ export type MatchLike = {
   score2: number | null
   mvp: string | null
   qualifier?: string | null
+  team1?: string | null
+  team2?: string | null
 }
 
 export type PredictionLike = {
@@ -19,6 +21,19 @@ export type PointsOptions = {
 
 export function normalizePointsMultiplier(value: unknown): 1 | 2 {
   return Number(value) === 2 ? 2 : 1
+}
+
+/** Advancing team: explicit qualifier (PSO) or winner by score in knockout. */
+export function resolveMatchQualifier(match: MatchLike): string | null {
+  if (match.score1 === null || match.score2 === null) return null
+
+  const explicit = match.qualifier?.trim()
+  if (explicit) return explicit
+
+  if (!match.team1?.trim() || !match.team2?.trim()) return null
+  if (match.score1 > match.score2) return match.team1.trim()
+  if (match.score2 > match.score1) return match.team2.trim()
+  return null
 }
 
 export function calculateMatchPoints(
@@ -48,10 +63,11 @@ export function calculateMatchPoints(
     Boolean(match.mvp) &&
     match.mvp!.trim().toLowerCase() === prediction.pred_mvp.trim().toLowerCase()
 
+  const actualQualifier = resolveMatchQualifier(match)
   const qualifierCorrect =
-    Boolean(match.qualifier) &&
+    Boolean(actualQualifier) &&
     Boolean(prediction.pred_qualifier) &&
-    match.qualifier!.trim().toLowerCase() === prediction.pred_qualifier!.trim().toLowerCase()
+    actualQualifier!.trim().toLowerCase() === prediction.pred_qualifier!.trim().toLowerCase()
 
   const exactPts = exact ? 3 : 0
   const winnerPts = correctWinner ? 1 : 0

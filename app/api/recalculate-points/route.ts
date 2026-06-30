@@ -32,12 +32,14 @@ export async function POST(request: NextRequest) {
       score2: number | null
       mvp: string | null
       qualifier: string | null
+      team1: string
+      team2: string
     }[]
 
     if (matchIdParam) {
       const { data, error } = await db
         .from("matches")
-        .select("id, score1, score2, mvp, qualifier")
+        .select("id, score1, score2, mvp, qualifier, team1, team2")
         .eq("id", matchIdParam)
         .single()
 
@@ -51,7 +53,7 @@ export async function POST(request: NextRequest) {
     } else {
       const { data, error } = await db
         .from("matches")
-        .select("id, score1, score2, mvp, qualifier")
+        .select("id, score1, score2, mvp, qualifier, team1, team2")
         .not("score1", "is", null)
         .not("score2", "is", null)
 
@@ -83,6 +85,8 @@ export async function POST(request: NextRequest) {
             score2: Number(match.score2),
             mvp: match.mvp,
             qualifier: match.qualifier,
+            team1: match.team1,
+            team2: match.team2,
           },
           {
             pred_score1: Number(pred.pred_score1),

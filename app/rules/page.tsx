@@ -70,7 +70,7 @@ export default function RulesPage() {
           </li>
           <li>
             <span className="font-semibold">Correct qualifier</span> (knockout matches only): +1 pt if you correctly
-            pick which team advances after 90 minutes.
+            pick which team advances — whether you predict a winner or a draw (penalties).
           </li>
         </ul>
         <p className="text-xs text-slate-400">
