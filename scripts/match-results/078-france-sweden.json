@@ -1,0 +1,17 @@
+{
+  "id": 78,
+  "score1": 3,
+  "score2": 0,
+  "mvp": "Kylian Mbappe",
+  "qualifier": "France",
+  "goals": [
+    { "team": "France", "name": "Kylian Mbappe" },
+    { "team": "France", "name": "Bradley Barcola" },
+    { "team": "France", "name": "Kylian Mbappe" }
+  ],
+  "assists": [
+    { "team": "France", "name": "Ousmane Dembele" },
+    { "team": "France", "name": "Michael Olise" },
+    { "team": "France", "name": "Michael Olise" }
+  ]
+}

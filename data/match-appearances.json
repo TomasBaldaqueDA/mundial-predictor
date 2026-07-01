@@ -1541,5 +1541,26 @@
         "Andreas Schjelderup", "Oscar Bobb", "Fredrik Aursnes"
       ]
     }
+  },
+  {
+    "matchId": 78,
+    "team1": "France",
+    "team2": "Sweden",
+    "score1": 3,
+    "score2": 0,
+    "mvp": { "team": "France", "name": "Kylian Mbappe" },
+    "qualifier": "France",
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Lucas Digne", "William Saliba", "Dayot Upamecano", "Jules Kounde",
+        "Adrien Rabiot", "Aurelien Tchouameni", "Bradley Barcola", "Michael Olise", "Ousmane Dembele", "Kylian Mbappe",
+        "Desire Doue", "Malo Gusto", "Theo Hernandez", "Jean-Philippe Mateta", "Rayan Cherki"
+      ],
+      "Sweden": [
+        "Jacob Widell Zetterstrom", "Daniel Svensson", "Gustaf Lagerbielke", "Victor Lindelof", "Gabriel Gudmundsson",
+        "Anthony Elanga", "Lucas Bergvall", "Yasin Ayari", "Elliot Stroud", "Viktor Gyokeres", "Alexander Isak",
+        "Taha Ali", "Besfort Zeneli", "Mattias Svanberg", "Benjamin Nygren", "Gustaf Nilsson"
+      ]
+    }
   }
 ]
