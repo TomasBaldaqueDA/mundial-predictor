@@ -1562,5 +1562,26 @@
         "Taha Ali", "Besfort Zeneli", "Mattias Svanberg", "Benjamin Nygren", "Gustaf Nilsson"
       ]
     }
+  },
+  {
+    "matchId": 79,
+    "team1": "Mexico",
+    "team2": "Ecuador",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "Mexico", "name": "Julian Quinones" },
+    "qualifier": "Mexico",
+    "appearances": {
+      "Mexico": [
+        "Raul Rangel", "Jorge Sanchez", "Cesar Montes", "Johan Vasquez", "Jesus Gallardo",
+        "Gilberto Mora", "Erik Lira", "Luis Romo", "Roberto Alvarado", "Raul Jimenez", "Julian Quinones",
+        "Brian Gutierrez", "Obed Vargas", "Santiago Gimenez", "Israel Reyes", "Orbelin Pineda"
+      ],
+      "Ecuador": [
+        "Hernán Galíndez", "Piero Hincapié", "William Pacho", "Yaimar Medina", "Ángelo Preciado",
+        "Nilson Angulo", "Pedro Vite", "Moises Caicedo", "John Yeboah", "Enner Valencia", "Gonzalo Plata",
+        "Alan Franco", "Joel Ordonez", "Kevin Rodríguez", "Kendry Páez", "Jordy Caicedo"
+      ]
+    }
   }
 ]

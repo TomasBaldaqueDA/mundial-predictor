@@ -1,0 +1,15 @@
+{
+  "id": 79,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Julian Quinones",
+  "qualifier": "Mexico",
+  "goals": [
+    { "team": "Mexico", "name": "Julian Quinones" },
+    { "team": "Mexico", "name": "Raul Jimenez" }
+  ],
+  "assists": [
+    { "team": "Mexico", "name": "Roberto Alvarado" },
+    { "team": "Mexico", "name": "Julian Quinones" }
+  ]
+}
