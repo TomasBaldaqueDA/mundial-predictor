@@ -1,0 +1,17 @@
+{
+  "id": 77,
+  "score1": 1,
+  "score2": 2,
+  "mvp": "Antonio Nusa",
+  "qualifier": "Norway",
+  "goals": [
+    { "team": "Norway", "name": "Antonio Nusa" },
+    { "team": "Côte d'Ivoire", "name": "Amad Diallo" },
+    { "team": "Norway", "name": "Erling Haaland" }
+  ],
+  "assists": [
+    { "team": "Norway", "name": "Martin Odegaard" },
+    { "team": "Côte d'Ivoire", "name": "Nicolas Pepe" },
+    { "team": "Norway", "name": "Patrick Berg" }
+  ]
+}

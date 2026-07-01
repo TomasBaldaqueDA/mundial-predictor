@@ -1520,5 +1520,26 @@
         "Anass Salah-Eddine", "Gessime Yassine", "Samir El Mourabet", "Soufiane Rahimi", "Chemsdine Talbi"
       ]
     }
+  },
+  {
+    "matchId": 77,
+    "team1": "Côte d'Ivoire",
+    "team2": "Norway",
+    "score1": 1,
+    "score2": 2,
+    "mvp": { "team": "Norway", "name": "Antonio Nusa" },
+    "qualifier": "Norway",
+    "appearances": {
+      "Côte d'Ivoire": [
+        "Yahia Fofana", "Christopher Operi", "Ousmane Diomande", "Emmanuel Agbadou", "Odilon Kossounou", "Guela Doué",
+        "Franck Kessie", "Ibrahim Sangare", "Yan Diomande", "Nicolas Pepe", "Ange-Yoan Bonny",
+        "Amad Diallo", "Elye Wahi", "Oumar Diakite", "Bazoumana Toure", "Evann Guessand"
+      ],
+      "Norway": [
+        "Orjan Haskjold Nyland", "Julian Ryerson", "Kristoffer Vassbakk Ajer", "Leo Ostigard", "David Moller Wolfe",
+        "Patrick Berg", "Sander Berge", "Martin Odegaard", "Antonio Nusa", "Erling Haaland", "Alexander Sorloth",
+        "Andreas Schjelderup", "Oscar Bobb", "Fredrik Aursnes"
+      ]
+    }
   }
 ]
