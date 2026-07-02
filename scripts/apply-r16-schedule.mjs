@@ -28,14 +28,14 @@ const env = { ...loadEnvFile(".env.local"), ...process.env }
 const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY)
 
 const schedule = [
-  { id: 89, kickoff_time: "2026-07-04 22:00:00", team1: "Paraguay", team2: "France" },
-  { id: 90, kickoff_time: "2026-07-04 18:00:00", team1: "Canada", team2: "Morocco" },
-  { id: 91, kickoff_time: "2026-07-05 21:00:00", team1: "Brazil", team2: "Norway" },
-  { id: 92, kickoff_time: "2026-07-06 01:00:00", team1: "Mexico", team2: "England" },
-  { id: 93, kickoff_time: "2026-07-06 20:00:00", team1: "W83", team2: "W84" },
-  { id: 94, kickoff_time: "2026-07-07 01:00:00", team1: "USA", team2: "Belgium" },
-  { id: 95, kickoff_time: "2026-07-07 17:00:00", team1: "W86", team2: "W88" },
-  { id: 96, kickoff_time: "2026-07-07 21:00:00", team1: "W85", team2: "W87" },
+  { id: 89, kickoff_time: "2026-07-04 21:00:00", team1: "Paraguay", team2: "France" },
+  { id: 90, kickoff_time: "2026-07-04 17:00:00", team1: "Canada", team2: "Morocco" },
+  { id: 91, kickoff_time: "2026-07-05 20:00:00", team1: "Brazil", team2: "Norway" },
+  { id: 92, kickoff_time: "2026-07-06 00:00:00", team1: "Mexico", team2: "England" },
+  { id: 93, kickoff_time: "2026-07-06 19:00:00", team1: "W83", team2: "W84" },
+  { id: 94, kickoff_time: "2026-07-07 00:00:00", team1: "USA", team2: "Belgium" },
+  { id: 95, kickoff_time: "2026-07-07 16:00:00", team1: "W86", team2: "W88" },
+  { id: 96, kickoff_time: "2026-07-07 20:00:00", team1: "W85", team2: "W87" },
 ]
 
 for (const row of schedule) {
