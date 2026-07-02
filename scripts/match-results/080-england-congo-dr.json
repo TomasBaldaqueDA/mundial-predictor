@@ -1,0 +1,17 @@
+{
+  "id": 80,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Harry Kane",
+  "qualifier": "England",
+  "goals": [
+    { "team": "Congo DR", "name": "Brian Cipenga" },
+    { "team": "England", "name": "Harry Kane" },
+    { "team": "England", "name": "Harry Kane" }
+  ],
+  "assists": [
+    { "team": "Congo DR", "name": "Chancel Mbemba" },
+    { "team": "England", "name": "Anthony Gordon" },
+    { "team": "England", "name": "Anthony Gordon" }
+  ]
+}

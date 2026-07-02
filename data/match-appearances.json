@@ -1583,5 +1583,26 @@
         "Alan Franco", "Joel Ordonez", "Kevin Rodríguez", "Kendry Páez", "Jordy Caicedo"
       ]
     }
+  },
+  {
+    "matchId": 80,
+    "team1": "England",
+    "team2": "Congo DR",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "England", "name": "Harry Kane" },
+    "qualifier": "England",
+    "appearances": {
+      "England": [
+        "Jordan Pickford", "Djed Spence", "Marc Guehi", "Ezri Konsa", "Nico O'Reilly",
+        "Declan Rice", "Elliott Anderson", "Jude Bellingham", "Noni Madueke", "Marcus Rashford", "Harry Kane",
+        "Anthony Gordon", "Bukayo Saka", "Eberechi Eze", "John Stones"
+      ],
+      "Congo DR": [
+        "Lionel Mpasi", "Aaron Wan-Bissaka", "Chancel Mbemba", "Alex Tuanzebe", "Joris Kayembe",
+        "Brian Cipenga", "Noah Sadiki", "Edo Kayembe", "Meschack Elia", "Yoane Wissa", "Fiston Mayele",
+        "Nathanael Mbuku", "Theo Bongonda", "Ngal'ayel Mukau", "Arthur Masuaku", "Samuel Moutoussamy"
+      ]
+    }
   }
 ]
