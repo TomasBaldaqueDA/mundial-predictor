@@ -1,0 +1,12 @@
+{
+  "id": 82,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Malik Tillman",
+  "qualifier": "USA",
+  "goals": [
+    { "team": "USA", "name": "Folarin Balogun" },
+    { "team": "USA", "name": "Malik Tillman" }
+  ],
+  "assists": []
+}

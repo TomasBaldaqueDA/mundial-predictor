@@ -1625,5 +1625,26 @@
         "Lamine Camara", "Pape Matar Sarr", "Ibrahim Mbaye", "El Hadji Malick Diouf", "Nicolas Jackson", "Bara Sapoko Ndiaye"
       ]
     }
+  },
+  {
+    "matchId": 82,
+    "team1": "USA",
+    "team2": "Bosnia and Herzegovina",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "USA", "name": "Malik Tillman" },
+    "qualifier": "USA",
+    "appearances": {
+      "USA": [
+        "Matt Freese", "Antonee Robinson", "Tim Ream", "Chris Richards", "Alex Freeman",
+        "Malik Tillman", "Tyler Adams", "Weston McKennie", "Christian Pulisic", "Sergiño Dest", "Folarin Balogun",
+        "Sebastian Berhalter", "Ricardo Pepi", "Gio Reyna"
+      ],
+      "Bosnia and Herzegovina": [
+        "Nikola Vasilj", "Amar Dedić", "Nikola Katić", "Tarik Muharemović", "Stjepan Radeljić", "Sead Kolašinac",
+        "Armin Gigovic", "Ivan Sunjic", "Kerim Alajbegovic", "Edin Dzeko", "Ermedin Demirovic",
+        "Ermin Mahmic", "Benjamin Tahirovic", "Esmir Bajraktarevic", "Amar Memic", "Haris Tabakovic"
+      ]
+    }
   }
 ]
