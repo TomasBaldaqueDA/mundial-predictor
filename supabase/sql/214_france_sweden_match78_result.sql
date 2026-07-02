@@ -1,7 +1,7 @@
 -- Match 78: France 3-0 Sweden (Round of 32, 30 Jun 2026 — 1I vs 3F)
 -- Goals: Mbappe 45', 74' (assist Dembele, Olise) | Barcola 53' (assist Olise)
 -- MVP: Kylian Mbappe
--- France advances to Round of 16 (match 91 team2 = W78)
+-- France advances to Round of 16 (match 89 team2 = W77, FIFA M77)
 -- Lineups: SofaScore (Jun 30 2026)
 
 UPDATE public.matches
@@ -32,7 +32,7 @@ UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'France' AND name = 'Michael Olise';
 
 UPDATE public.matches SET team2 = 'France'
-WHERE id = 91 AND stage = 'Round of 16';
+WHERE id = 89 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(78, 'France', ARRAY[
   'Mike Maignan', 'Lucas Digne', 'William Saliba', 'Dayot Upamecano', 'Jules Kounde',

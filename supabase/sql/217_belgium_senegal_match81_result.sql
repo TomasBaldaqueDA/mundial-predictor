@@ -3,7 +3,7 @@
 -- AET: Tielemans 120'+5 pen
 -- MVP: Youri Tielemans
 -- Games score = 90' (2-2); qualifier = Belgium. Five-a-side goals/assists include ET; no wins (draw at 90').
--- Belgium advances to Round of 16 (match 93 team1 = W81)
+-- Belgium advances to Round of 16 (match 94 team2 = W81)
 -- Lineups: SofaScore (Jul 1 2026)
 
 UPDATE public.matches
@@ -39,8 +39,8 @@ WHERE team = 'Belgium' AND name = 'Leandro Trossard';
 UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'Senegal' AND name = 'Moussa Niakhate';
 
-UPDATE public.matches SET team1 = 'Belgium'
-WHERE id = 93 AND stage = 'Round of 16';
+UPDATE public.matches SET team2 = 'Belgium'
+WHERE id = 94 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(81, 'Belgium', ARRAY[
   'Thibaut Courtois', 'Timothy Castagne', 'Brandon Mechele', 'Arthur Theate', 'Maxim De Cuyper',

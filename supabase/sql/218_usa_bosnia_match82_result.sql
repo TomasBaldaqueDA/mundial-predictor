@@ -1,7 +1,7 @@
 -- Match 82: USA 2-0 Bosnia and Herzegovina (Round of 32, 2 Jul 2026 — 1D vs 3B)
 -- Goals: Balogun 45' | Tillman 82'
 -- MVP: Malik Tillman
--- USA advances to Round of 16 (match 93 team2 = W82)
+-- USA advances to Round of 16 (match 94 team1 = W82)
 -- Lineups: SofaScore (Jul 2 2026)
 
 UPDATE public.matches
@@ -19,8 +19,8 @@ WHERE team = 'USA' AND name = 'Folarin Balogun';
 UPDATE public.five_a_side_players SET goals = goals + 1
 WHERE team = 'USA' AND name = 'Malik Tillman';
 
-UPDATE public.matches SET team2 = 'USA'
-WHERE id = 93 AND stage = 'Round of 16';
+UPDATE public.matches SET team1 = 'USA'
+WHERE id = 94 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(82, 'USA', ARRAY[
   'Matt Freese', 'Antonee Robinson', 'Tim Ream', 'Chris Richards', 'Alex Freeman',

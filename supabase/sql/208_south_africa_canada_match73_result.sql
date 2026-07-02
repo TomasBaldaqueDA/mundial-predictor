@@ -1,7 +1,7 @@
 -- Match 73: South Africa 0-1 Canada (Round of 32, 28 Jun 2026 — 2A vs 2B)
 -- Goal: Stephen Eustaquio 90+2'
 -- MVP: Stephen Eustaquio
--- Canada advances to Round of 16 (match 89 team1 = W73)
+-- Canada advances to Round of 16 (match 90 team1 = W73)
 -- Lineups: SofaScore (Jun 28 2026)
 
 UPDATE public.matches
@@ -16,7 +16,7 @@ UPDATE public.five_a_side_players SET goals = goals + 1
 WHERE team = 'Canada' AND name = 'Stephen Eustaquio';
 
 UPDATE public.matches SET team1 = 'Canada'
-WHERE id = 89 AND stage = 'Round of 16';
+WHERE id = 90 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(73, 'South Africa', ARRAY[
   'Ronwen Williams', 'Aubrey Modiba', 'Teboho Mokoena', 'Nkosinathi Sibisi', 'Mbekezeli Mbokazi',

@@ -1,7 +1,7 @@
 -- Match 75: Germany 1-1 Paraguay, PSO 3-4 (Round of 32, 29 Jun 2026 — 1E vs 3D)
 -- Goals: Enciso 42' (assist Galarza) | Havertz 54' (assist Wirtz)
 -- MVP: Orlando Gill
--- Paraguay advances to Round of 16 (match 89 team2 = W75)
+-- Paraguay advances to Round of 16 (match 89 team1 = W74, FIFA M74)
 -- Lineups: SofaScore (Jun 29 2026)
 
 UPDATE public.matches
@@ -25,7 +25,7 @@ WHERE team = 'Germany' AND name = 'Florian Wirtz';
 UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'Paraguay' AND name = 'Matias Galarza';
 
-UPDATE public.matches SET team2 = 'Paraguay'
+UPDATE public.matches SET team1 = 'Paraguay'
 WHERE id = 89 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(75, 'Germany', ARRAY[

@@ -1,7 +1,7 @@
 -- Match 74: Brazil 2-1 Japan (Round of 32, 29 Jun 2026 — 1C vs 2F)
 -- Goals: Sano 29' | Casemiro 56' (assist Magalhaes) | Martinelli 90+5' (assist Guimaraes)
 -- MVP: Casemiro
--- Brazil advances to Round of 16 (match 90 team1 = W74)
+-- Brazil advances to Round of 16 (match 91 team1 = W76, FIFA M76)
 -- Lineups: SofaScore (Jun 29 2026)
 
 UPDATE public.matches
@@ -28,7 +28,7 @@ UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'Brazil' AND name = 'Bruno Guimaraes';
 
 UPDATE public.matches SET team1 = 'Brazil'
-WHERE id = 90 AND stage = 'Round of 16';
+WHERE id = 91 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(74, 'Brazil', ARRAY[
   'Alisson', 'Douglas Santos', 'Gabriel Magalhaes', 'Marquinhos', 'Danilo',

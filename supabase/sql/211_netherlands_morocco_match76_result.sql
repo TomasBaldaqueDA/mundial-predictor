@@ -1,7 +1,7 @@
 -- Match 76: Netherlands 1-1 Morocco, PSO 2-3 (Round of 32, 30 Jun 2026 — 1F vs 2C)
 -- Goals: Gakpo 72' (assist Summerville) | Diop 90+1' (assist Talbi)
 -- MVP: Issa Diop
--- Morocco advances to Round of 16 (match 91 team1 = W76)
+-- Morocco advances to Round of 16 (match 90 team2 = W75, FIFA M75)
 -- Lineups: SofaScore (Jun 30 2026)
 
 UPDATE public.matches
@@ -25,8 +25,8 @@ WHERE team = 'Netherlands' AND name = 'Crysencio Summerville';
 UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'Morocco' AND name = 'Chemsdine Talbi';
 
-UPDATE public.matches SET team1 = 'Morocco'
-WHERE id = 91 AND stage = 'Round of 16';
+UPDATE public.matches SET team2 = 'Morocco'
+WHERE id = 90 AND stage = 'Round of 16';
 
 SELECT public.add_match_appearances(76, 'Netherlands', ARRAY[
   'Bart Verbruggen', 'Nathan Aké', 'Virgil van Dijk', 'Jan Paul van Hecke', 'Micky van de Ven',

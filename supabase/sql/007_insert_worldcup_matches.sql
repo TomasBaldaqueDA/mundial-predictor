@@ -129,9 +129,9 @@ insert into public.matches (team1, team2, kickoff_time, status, "group", stage) 
   ('1J',       '2H',       '2026-07-03 23:00:00', 'scheduled', null, 'Round of 32'),
   ('1K',       '3DEIJL',   '2026-07-04 02:30:00', 'scheduled', null, 'Round of 32'),
 
-  -- Round of 16
-  ('W73', 'W75', '2026-07-04 18:00:00', 'scheduled', null, 'Round of 16'),
+  -- Round of 16 (FIFA M89–M96; W# = winner of FIFA match #)
   ('W74', 'W77', '2026-07-04 22:00:00', 'scheduled', null, 'Round of 16'),
+  ('W73', 'W75', '2026-07-04 18:00:00', 'scheduled', null, 'Round of 16'),
   ('W76', 'W78', '2026-07-05 21:00:00', 'scheduled', null, 'Round of 16'),
   ('W79', 'W80', '2026-07-06 01:00:00', 'scheduled', null, 'Round of 16'),
   ('W83', 'W84', '2026-07-06 20:00:00', 'scheduled', null, 'Round of 16'),
