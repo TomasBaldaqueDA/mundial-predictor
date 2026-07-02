@@ -1,0 +1,21 @@
+{
+  "id": 81,
+  "score1": 2,
+  "score2": 2,
+  "mvp": "Youri Tielemans",
+  "qualifier": "Belgium",
+  "aetScore1": 3,
+  "aetScore2": 2,
+  "goals": [
+    { "team": "Senegal", "name": "Habib Diarra" },
+    { "team": "Senegal", "name": "Ismaila Sarr" },
+    { "team": "Belgium", "name": "Romelu Lukaku" },
+    { "team": "Belgium", "name": "Youri Tielemans" },
+    { "team": "Belgium", "name": "Youri Tielemans", "extraTime": true }
+  ],
+  "assists": [
+    { "team": "Senegal", "name": "Moussa Niakhate" },
+    { "team": "Belgium", "name": "Thomas Meunier" },
+    { "team": "Belgium", "name": "Leandro Trossard" }
+  ]
+}
