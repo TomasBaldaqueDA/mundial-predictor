@@ -1,0 +1,17 @@
+{
+  "id": 83,
+  "score1": 3,
+  "score2": 0,
+  "mvp": "Lamine Yamal",
+  "qualifier": "Spain",
+  "goals": [
+    { "team": "Spain", "name": "Mikel Oyarzabal" },
+    { "team": "Spain", "name": "Pedro Porro" },
+    { "team": "Spain", "name": "Mikel Oyarzabal" }
+  ],
+  "assists": [
+    { "team": "Spain", "name": "Marc Cucurella" },
+    { "team": "Spain", "name": "Álex Baena" },
+    { "team": "Spain", "name": "Marc Cucurella" }
+  ]
+}

@@ -37,9 +37,11 @@ if (!matchFile) {
 }
 
 const MATCH = JSON.parse(fs.readFileSync(path.resolve(matchFile), "utf8"))
+const eqBracket = process.argv.find((a) => a.startsWith("--bracket="))
+const flagIdx = process.argv.indexOf("--bracket")
 const bracketArg =
-  process.argv.find((a) => a.startsWith("--bracket="))?.slice(10) ??
-  process.argv[process.argv.indexOf("--bracket") + 1] ??
+  eqBracket?.slice("--bracket=".length) ??
+  (flagIdx >= 0 ? process.argv[flagIdx + 1] : null) ??
   (MATCH.qualifier ? formatBracketArg(MATCH.id, MATCH.qualifier) : null)
 
 const APPEARANCES = JSON.parse(

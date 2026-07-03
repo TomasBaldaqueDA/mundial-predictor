@@ -1646,5 +1646,26 @@
         "Ermin Mahmic", "Benjamin Tahirovic", "Esmir Bajraktarevic", "Amar Memic", "Haris Tabakovic"
       ]
     }
+  },
+  {
+    "matchId": 83,
+    "team1": "Spain",
+    "team2": "Austria",
+    "score1": 3,
+    "score2": 0,
+    "mvp": { "team": "Spain", "name": "Lamine Yamal" },
+    "qualifier": "Spain",
+    "appearances": {
+      "Spain": [
+        "Unai Simón", "Marc Cucurella", "Aymeric Laporte", "Pau Cubarsí", "Pedro Porro",
+        "Pedri", "Rodri", "Álex Baena", "Dani Olmo", "Lamine Yamal", "Mikel Oyarzabal",
+        "Mikel Merino", "Ferran Torres", "Gavi", "Marc Pubill", "Fabián Ruiz"
+      ],
+      "Austria": [
+        "Alexander Schlager", "Stefan Posch", "Kevin Danso", "David Alaba", "Konrad Laimer",
+        "Nicolas Seiwald", "Xaver Schlager", "Romano Schmid", "Paul Wanner", "Marcel Sabitzer", "Michael Gregoritsch",
+        "Carney Chukwuemeka", "Florian Grillitsch", "Marko Arnautovic", "Sasa Kalajdzic", "Alexander Prass"
+      ]
+    }
   }
 ]
