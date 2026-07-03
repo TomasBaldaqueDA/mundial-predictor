@@ -1,0 +1,14 @@
+{
+  "id": 85,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Breel Embolo",
+  "qualifier": "Switzerland",
+  "goals": [
+    { "team": "Switzerland", "name": "Breel Embolo" },
+    { "team": "Switzerland", "name": "Dan Ndoye" }
+  ],
+  "assists": [
+    { "team": "Switzerland", "name": "Johan Manzambi" }
+  ]
+}

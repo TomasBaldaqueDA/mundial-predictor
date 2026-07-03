@@ -1688,5 +1688,26 @@
         "Igor Matanovic", "Mario Pasalic", "Josko Gvardiol", "Andrej Kramaric", "Mateo Kovacic"
       ]
     }
+  },
+  {
+    "matchId": 85,
+    "team1": "Switzerland",
+    "team2": "Algeria",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "Switzerland", "name": "Breel Embolo" },
+    "qualifier": "Switzerland",
+    "appearances": {
+      "Switzerland": [
+        "Gregor Kobel", "Ricardo Rodriguez", "Manuel Akanji", "Nico Elvedi", "Denis Zakaria",
+        "Granit Xhaka", "Remo Freuler", "Ruben Vargas", "Johan Manzambi", "Dan Ndoye", "Breel Embolo",
+        "Noah Okafor", "Fabian Rieder", "Zeki Amdouni", "Silvan Widmer", "Michel Aebischer"
+      ],
+      "Algeria": [
+        "Luca Zidane", "Rafik Belghali", "Aissa Mandi", "Ramy Bensebaini", "Rayan Ait-Nouri",
+        "Riyad Mahrez", "Ramiz Zerrouki", "Nabil Bentaleb", "Ibrahim Maza", "Houssem Aouar", "Fares Chaibi",
+        "Jaouen Hadjam", "Amine Gouiri", "Anis Hadj Moussa", "Hicham Boudaoui", "Adil Boulbina"
+      ]
+    }
   }
 ]
