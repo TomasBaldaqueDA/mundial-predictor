@@ -1667,5 +1667,26 @@
         "Carney Chukwuemeka", "Florian Grillitsch", "Marko Arnautovic", "Sasa Kalajdzic", "Alexander Prass"
       ]
     }
+  },
+  {
+    "matchId": 84,
+    "team1": "Portugal",
+    "team2": "Croatia",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Portugal", "name": "Cristiano Ronaldo" },
+    "qualifier": "Portugal",
+    "appearances": {
+      "Portugal": [
+        "Diogo Costa", "Nuno Mendes", "Renato Veiga", "Ruben Dias", "Joao Cancelo",
+        "Vitinha", "Joao Neves", "Rafael Leao", "Bruno Fernandes", "Pedro Neto", "Cristiano Ronaldo",
+        "Bernardo Silva", "Francisco Conceicao", "Nelson Semedo", "Goncalo Ramos", "Ruben Neves"
+      ],
+      "Croatia": [
+        "Dominik Livakovic", "Josip Stanisic", "Josip Sutalo", "Marin Pongracic", "Ivan Perisic",
+        "Nikola Vlasic", "Petar Sucic", "Luka Modric", "Martin Baturina", "Ante Budimir",
+        "Igor Matanovic", "Mario Pasalic", "Josko Gvardiol", "Andrej Kramaric", "Mateo Kovacic"
+      ]
+    }
   }
 ]

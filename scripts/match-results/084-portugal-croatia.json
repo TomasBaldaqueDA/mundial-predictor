@@ -1,0 +1,15 @@
+{
+  "id": 84,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Cristiano Ronaldo",
+  "qualifier": "Portugal",
+  "goals": [
+    { "team": "Croatia", "name": "Ivan Perisic" },
+    { "team": "Portugal", "name": "Cristiano Ronaldo" },
+    { "team": "Portugal", "name": "Goncalo Ramos" }
+  ],
+  "assists": [
+    { "team": "Portugal", "name": "Rafael Leao" }
+  ]
+}
