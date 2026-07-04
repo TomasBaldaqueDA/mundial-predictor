@@ -1,0 +1,14 @@
+{
+  "id": 86,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Mohamed Salah",
+  "qualifier": "Egypt",
+  "goals": [
+    { "team": "Egypt", "name": "Emam Ashour" },
+    { "team": "Egypt", "name": "Mohamed Hany" }
+  ],
+  "assists": [
+    { "team": "Egypt", "name": "Karim Hafez" }
+  ]
+}

@@ -20,9 +20,9 @@ export const INTERNAL_TO_FIFA = {
   83: 84,
   84: 83,
   85: 85,
-  86: 86,
-  87: 87,
-  88: 88,
+  86: 88,
+  87: 86,
+  88: 87,
 }
 
 /** @type {Record<number, { matchId: number, slot: "team1" | "team2" }>} FIFA W# → R16 slot */

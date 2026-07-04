@@ -1709,5 +1709,27 @@
         "Jaouen Hadjam", "Amine Gouiri", "Anis Hadj Moussa", "Hicham Boudaoui", "Adil Boulbina"
       ]
     }
+  },
+  {
+    "matchId": 86,
+    "team1": "Australia",
+    "team2": "Egypt",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Egypt", "name": "Mohamed Salah" },
+    "qualifier": "Egypt",
+    "appearances": {
+      "Australia": [
+        "Patrick Beach", "Harry Souttar", "Alessandro Circati", "Lucas Herrington",
+        "Aziz Behich", "Aiden O'Neill", "Jackson Irvine", "Jordan Bos",
+        "Connor Metcalfe", "Cristian Volpato", "Nestory Irankunda",
+        "Kai Trewin", "Mohamed Toure", "Ajdin Hrustic", "Awer Mabil", "Paul Okon-Engstler", "Maty Ryan"
+      ],
+      "Egypt": [
+        "Mostafa Shobeir", "Mohamed Hany", "Yasser Ibrahim", "Ramy Rabia", "Karim Hafez",
+        "Emam Ashour", "Hamdi Fathy", "Marwan Attia", "Omar Marmoush", "Mohamed Salah", "Mostafa Ziko",
+        "Hossam Abdelmaguid", "Haitham Hassan", "Mahmoud Trezeguet", "Hamza Abdel Karim", "Mahmoud Saber"
+      ]
+    }
   }
 ]
