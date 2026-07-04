@@ -1752,5 +1752,26 @@
         "Jamiro Monteiro", "Dailon Livramento", "Willy Semedo", "Helio Varela", "Yannick Semedo", "Ianique Dos Santos Tavares"
       ]
     }
+  },
+  {
+    "matchId": 88,
+    "team1": "Colombia",
+    "team2": "Ghana",
+    "score1": 1,
+    "score2": 0,
+    "mvp": { "team": "Colombia", "name": "Luis Diaz" },
+    "qualifier": "Colombia",
+    "appearances": {
+      "Colombia": [
+        "Camilo Vargas", "Johan Mojica", "Jhon Lucumi", "Davinson Sanchez", "Daniel Munoz",
+        "Jhon Arias", "Jefferson Lerma", "Gustavo Puerta", "Luis Diaz", "Jhon Cordoba", "James Rodriguez",
+        "Luis Suarez", "Richard Rios", "Juan Fernando Quintero", "Jaminton Campaz"
+      ],
+      "Ghana": [
+        "Lawrence Ati-Zigi", "Marvin Senaya", "Derrick Luckassen", "Jerome Opoku", "Gideon Mensah",
+        "Thomas Partey", "Inaki Williams", "Caleb Yirenkyi", "Kwasi Sibo", "Antoine Semenyo", "Jordan Ayew",
+        "Alidu Seidu", "Elisha Owusu", "Abdul Fatawu Issahaku", "Prince Kwabena Adu", "Ernest Nuamah"
+      ]
+    }
   }
 ]

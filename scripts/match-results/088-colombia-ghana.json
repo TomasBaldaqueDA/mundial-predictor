@@ -1,0 +1,13 @@
+{
+  "id": 88,
+  "score1": 1,
+  "score2": 0,
+  "mvp": "Luis Diaz",
+  "qualifier": "Colombia",
+  "goals": [
+    { "team": "Colombia", "name": "Jhon Arias" }
+  ],
+  "assists": [
+    { "team": "Colombia", "name": "Luis Suarez" }
+  ]
+}
