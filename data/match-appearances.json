@@ -1731,5 +1731,26 @@
         "Hossam Abdelmaguid", "Haitham Hassan", "Mahmoud Trezeguet", "Hamza Abdel Karim", "Mahmoud Saber"
       ]
     }
+  },
+  {
+    "matchId": 87,
+    "team1": "Argentina",
+    "team2": "Cabo Verde",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Argentina", "name": "Lionel Messi" },
+    "qualifier": "Argentina",
+    "appearances": {
+      "Argentina": [
+        "Emiliano Martinez", "Facundo Medina", "Cristian Romero", "Lisandro Martinez", "Nahuel Molina",
+        "Rodrigo De Paul", "Enzo Fernandez", "Alexis Mac Allister", "Thiago Almada", "Lionel Messi", "Lautaro Martinez",
+        "Julian Alvarez", "Nicolas Gonzalez", "Leandro Paredes", "Nicolas Tagliafico", "Gonzalo Montiel"
+      ],
+      "Cabo Verde": [
+        "Vozinha", "Ryan Mendes", "Steven Moreira", "Laros Duarte", "Roberto Lopes", "Diney Borges",
+        "Deroy Duarte", "Jovane Cabral", "Nuno Da Costa", "Sidny Cabral", "Kevin Pina",
+        "Jamiro Monteiro", "Dailon Livramento", "Willy Semedo", "Helio Varela", "Yannick Semedo", "Ianique Dos Santos Tavares"
+      ]
+    }
   }
 ]

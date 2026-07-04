@@ -1,0 +1,20 @@
+{
+  "id": 87,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Lionel Messi",
+  "qualifier": "Argentina",
+  "goals": [
+    { "team": "Argentina", "name": "Lionel Messi" },
+    { "team": "Cabo Verde", "name": "Deroy Duarte" },
+    { "team": "Argentina", "name": "Lisandro Martinez", "extraTime": true },
+    { "team": "Cabo Verde", "name": "Sidny Cabral", "extraTime": true },
+    { "team": "Cabo Verde", "name": "Diney Borges", "extraTime": true }
+  ],
+  "assists": [
+    { "team": "Argentina", "name": "Lisandro Martinez" },
+    { "team": "Cabo Verde", "name": "Ryan Mendes" },
+    { "team": "Argentina", "name": "Alexis Mac Allister", "extraTime": true },
+    { "team": "Cabo Verde", "name": "Yannick Semedo", "extraTime": true }
+  ]
+}
