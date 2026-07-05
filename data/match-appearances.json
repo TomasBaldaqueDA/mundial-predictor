@@ -1775,6 +1775,27 @@
     }
   },
   {
+    "matchId": 89,
+    "team1": "Paraguay",
+    "team2": "France",
+    "score1": 0,
+    "score2": 1,
+    "mvp": { "team": "Paraguay", "name": "Orlando Gill" },
+    "qualifier": "France",
+    "appearances": {
+      "Paraguay": [
+        "Orlando Gill", "Junior Alonso", "Omar Alderete", "Gustavo Gomez", "Gustavo Velazquez", "Juan Jose Caceres",
+        "Matias Galarza", "Andres Cubas", "Diego Gomez", "Miguel Almiron", "Julio Enciso",
+        "Jose Canale", "Gustavo Caballero", "Gabriel Avalos", "Mauricio Magalhaes"
+      ],
+      "France": [
+        "Mike Maignan", "Jules Kounde", "Dayot Upamecano", "William Saliba", "Lucas Digne",
+        "Manu Kone", "Adrien Rabiot", "Ousmane Dembele", "Michael Olise", "Bradley Barcola", "Kylian Mbappe",
+        "Desire Doue", "Rayan Cherki"
+      ]
+    }
+  },
+  {
     "matchId": 90,
     "team1": "Canada",
     "team2": "Morocco",
