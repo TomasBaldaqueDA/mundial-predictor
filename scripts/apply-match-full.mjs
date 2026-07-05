@@ -42,6 +42,7 @@ const flagIdx = process.argv.indexOf("--bracket")
 const bracketArg =
   eqBracket?.slice("--bracket=".length) ??
   (flagIdx >= 0 ? process.argv[flagIdx + 1] : null) ??
+  MATCH.bracket ??
   (MATCH.qualifier ? formatBracketArg(MATCH.id, MATCH.qualifier) : null)
 
 const APPEARANCES = JSON.parse(
@@ -101,7 +102,6 @@ if (bracketArg) {
     .from("matches")
     .update({ [slot]: team })
     .eq("id", Number(bracketMatchId))
-    .eq("stage", "Round of 16")
   if (error) throw error
   console.log(`Bracket: match ${bracketMatchId} ${slot} = ${team}`)
 }

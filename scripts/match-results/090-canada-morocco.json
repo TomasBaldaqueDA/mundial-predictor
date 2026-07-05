@@ -1,0 +1,16 @@
+{
+  "id": 90,
+  "score1": 0,
+  "score2": 3,
+  "mvp": "Azzedine Ounahi",
+  "qualifier": "Morocco",
+  "bracket": "97:team2:Morocco",
+  "goals": [
+    { "team": "Morocco", "name": "Azzedine Ounahi", "count": 2 },
+    { "team": "Morocco", "name": "Soufiane Rahimi" }
+  ],
+  "assists": [
+    { "team": "Morocco", "name": "Achraf Hakimi" },
+    { "team": "Morocco", "name": "Brahim Diaz", "count": 2 }
+  ]
+}

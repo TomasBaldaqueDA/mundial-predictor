@@ -1773,5 +1773,26 @@
         "Alidu Seidu", "Elisha Owusu", "Abdul Fatawu Issahaku", "Prince Kwabena Adu", "Ernest Nuamah"
       ]
     }
+  },
+  {
+    "matchId": 90,
+    "team1": "Canada",
+    "team2": "Morocco",
+    "score1": 0,
+    "score2": 3,
+    "mvp": { "team": "Morocco", "name": "Azzedine Ounahi" },
+    "qualifier": "Morocco",
+    "appearances": {
+      "Canada": [
+        "Maxime Crepeau", "Richie Laryea", "Luc de Fougerolles", "Moise Bombito", "Alistair Johnston",
+        "Ali Ahmed", "Stephen Eustaquio", "Niko Sigur", "Tajon Buchanan", "Tani Oluwaseyi", "Jonathan David",
+        "Cyle Larin", "Jacob Shaffelburg", "Promise David", "Jonathan Osorio", "Jayden Nelson"
+      ],
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Issa Diop", "Redouane Halhal", "Noussair Mazraoui",
+        "Ayyoub Bouaddi", "Neil El Aynaoui", "Brahim Diaz", "Azzedine Ounahi", "Bilal El Khannouss", "Ismael Saibari",
+        "Soufiane Rahimi", "Sofyan Amrabat", "Chemsdine Talbi", "Samir El Mourabet", "Marwane Saadane"
+      ]
+    }
   }
 ]
