@@ -1,0 +1,18 @@
+{
+  "id": 92,
+  "score1": 2,
+  "score2": 3,
+  "mvp": "Jude Bellingham",
+  "qualifier": "England",
+  "bracket": "99:team2:England",
+  "goals": [
+    { "team": "England", "name": "Jude Bellingham", "count": 2 },
+    { "team": "England", "name": "Harry Kane" },
+    { "team": "Mexico", "name": "Julian Quinones" },
+    { "team": "Mexico", "name": "Raul Jimenez" }
+  ],
+  "assists": [
+    { "team": "England", "name": "Bukayo Saka" },
+    { "team": "England", "name": "Harry Kane" }
+  ]
+}

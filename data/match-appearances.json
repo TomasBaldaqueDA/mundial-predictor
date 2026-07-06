@@ -1836,5 +1836,26 @@
         "Andreas Schjelderup", "Oscar Bobb", "Fredrik Aursnes", "Leo Ostigard"
       ]
     }
+  },
+  {
+    "matchId": 92,
+    "team1": "Mexico",
+    "team2": "England",
+    "score1": 2,
+    "score2": 3,
+    "mvp": { "team": "England", "name": "Jude Bellingham" },
+    "qualifier": "England",
+    "appearances": {
+      "Mexico": [
+        "Raul Rangel", "Jesus Gallardo", "Johan Vasquez", "Cesar Montes", "Jorge Sanchez",
+        "Luis Romo", "Erik Lira", "Gilberto Mora", "Julian Quinones", "Raul Jimenez", "Roberto Alvarado",
+        "Edson Alvarez", "Brian Gutierrez", "Santiago Gimenez", "Alvaro Fidalgo", "Guillermo Martinez"
+      ],
+      "England": [
+        "Jordan Pickford", "Jarell Quansah", "Ezri Konsa", "Marc Guehi", "Nico O'Reilly",
+        "Declan Rice", "Elliott Anderson", "Bukayo Saka", "Jude Bellingham", "Anthony Gordon", "Harry Kane",
+        "John Stones", "Djed Spence", "Dan Burn", "Morgan Rogers"
+      ]
+    }
   }
 ]
