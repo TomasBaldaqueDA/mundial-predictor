@@ -1,0 +1,15 @@
+{
+  "id": 91,
+  "score1": 1,
+  "score2": 2,
+  "mvp": "Erling Haaland",
+  "qualifier": "Norway",
+  "bracket": "99:team1:Norway",
+  "goals": [
+    { "team": "Norway", "name": "Erling Haaland", "count": 2 },
+    { "team": "Brazil", "name": "Neymar Jr" }
+  ],
+  "assists": [
+    { "team": "Norway", "name": "Andreas Schjelderup", "count": 2 }
+  ]
+}

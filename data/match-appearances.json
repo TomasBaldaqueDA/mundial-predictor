@@ -1815,5 +1815,26 @@
         "Soufiane Rahimi", "Sofyan Amrabat", "Chemsdine Talbi", "Samir El Mourabet", "Marwane Saadane"
       ]
     }
+  },
+  {
+    "matchId": 91,
+    "team1": "Brazil",
+    "team2": "Norway",
+    "score1": 1,
+    "score2": 2,
+    "mvp": { "team": "Norway", "name": "Erling Haaland" },
+    "qualifier": "Norway",
+    "appearances": {
+      "Brazil": [
+        "Alisson", "Douglas Santos", "Gabriel Magalhaes", "Marquinhos", "Danilo",
+        "Gabriel Martinelli", "Casemiro", "Bruno Guimaraes", "Rayan", "Vinicius Jr", "Matheus Cunha",
+        "Endrick", "Danilo Santos", "Neymar Jr", "Ederson"
+      ],
+      "Norway": [
+        "Orjan Haskjold Nyland", "Julian Ryerson", "Kristoffer Vassbakk Ajer", "Torbjorn Heggem", "David Moller Wolfe",
+        "Martin Odegaard", "Sander Berge", "Patrick Berg", "Alexander Sorloth", "Erling Haaland", "Antonio Nusa",
+        "Andreas Schjelderup", "Oscar Bobb", "Fredrik Aursnes", "Leo Ostigard"
+      ]
+    }
   }
 ]
