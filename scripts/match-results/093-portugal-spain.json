@@ -1,0 +1,14 @@
+{
+  "id": 93,
+  "score1": 0,
+  "score2": 1,
+  "mvp": "Rodri",
+  "qualifier": "Spain",
+  "bracket": "98:team1:Spain",
+  "goals": [
+    { "team": "Spain", "name": "Mikel Merino" }
+  ],
+  "assists": [
+    { "team": "Spain", "name": "Ferran Torres" }
+  ]
+}

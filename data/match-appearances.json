@@ -1857,5 +1857,26 @@
         "John Stones", "Djed Spence", "Dan Burn", "Morgan Rogers"
       ]
     }
+  },
+  {
+    "matchId": 93,
+    "team1": "Portugal",
+    "team2": "Spain",
+    "score1": 0,
+    "score2": 1,
+    "mvp": { "team": "Spain", "name": "Rodri" },
+    "qualifier": "Spain",
+    "appearances": {
+      "Portugal": [
+        "Diogo Costa", "Joao Cancelo", "Ruben Dias", "Renato Veiga", "Nuno Mendes",
+        "Vitinha", "Joao Neves", "Pedro Neto", "Bruno Fernandes", "Joao Felix", "Cristiano Ronaldo",
+        "Nelson Semedo", "Diogo Dalot", "Rafael Leao", "Bernardo Silva", "Francisco Conceicao"
+      ],
+      "Spain": [
+        "Unai Simón", "Marc Cucurella", "Aymeric Laporte", "Pau Cubarsí", "Pedro Porro",
+        "Pedri", "Rodri", "Álex Baena", "Dani Olmo", "Lamine Yamal", "Mikel Oyarzabal",
+        "Ferran Torres", "Fabián Ruiz", "Mikel Merino", "Borja Iglesias"
+      ]
+    }
   }
 ]
