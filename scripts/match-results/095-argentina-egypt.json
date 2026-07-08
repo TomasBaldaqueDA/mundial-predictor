@@ -1,0 +1,22 @@
+{
+  "id": 95,
+  "score1": 3,
+  "score2": 2,
+  "mvp": "Lionel Messi",
+  "qualifier": "Argentina",
+  "bracket": "100:team1:Argentina",
+  "goals": [
+    { "team": "Argentina", "name": "Cristian Romero" },
+    { "team": "Argentina", "name": "Lionel Messi" },
+    { "team": "Argentina", "name": "Enzo Fernandez" },
+    { "team": "Egypt", "name": "Yasser Ibrahim" },
+    { "team": "Egypt", "name": "Mostafa Ziko" }
+  ],
+  "assists": [
+    { "team": "Argentina", "name": "Lionel Messi" },
+    { "team": "Argentina", "name": "Gonzalo Montiel" },
+    { "team": "Argentina", "name": "Lautaro Martinez" },
+    { "team": "Egypt", "name": "Marwan Attia" },
+    { "team": "Egypt", "name": "Haitham Hassan" }
+  ]
+}

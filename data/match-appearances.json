@@ -1899,5 +1899,26 @@
         "Hans Vanaken", "Jeremy Doku", "Romelu Lukaku", "Alexis Saelemaekers", "Axel Witsel"
       ]
     }
+  },
+  {
+    "matchId": 95,
+    "team1": "Argentina",
+    "team2": "Egypt",
+    "score1": 3,
+    "score2": 2,
+    "mvp": { "team": "Argentina", "name": "Lionel Messi" },
+    "qualifier": "Argentina",
+    "appearances": {
+      "Argentina": [
+        "Emiliano Martinez", "Nahuel Molina", "Cristian Romero", "Lisandro Martinez", "Nicolas Tagliafico",
+        "Leandro Paredes", "Rodrigo De Paul", "Alexis Mac Allister", "Lionel Messi", "Julian Alvarez", "Enzo Fernandez",
+        "Lautaro Martinez", "Nicolas Gonzalez", "Gonzalo Montiel", "Facundo Medina", "Nicolas Otamendi"
+      ],
+      "Egypt": [
+        "Mostafa Shobeir", "Mohamed Hany", "Yasser Ibrahim", "Ramy Rabia", "Karim Hafez",
+        "Mohannad Lasheen", "Marwan Attia", "Emam Ashour", "Mohamed Salah", "Haitham Hassan", "Mostafa Ziko",
+        "Hamdi Fathy", "Mahmoud Trezeguet", "Omar Marmoush", "Ahmed Sayed Zizo"
+      ]
+    }
   }
 ]
