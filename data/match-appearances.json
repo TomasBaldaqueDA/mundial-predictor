@@ -1920,5 +1920,26 @@
         "Hamdi Fathy", "Mahmoud Trezeguet", "Omar Marmoush", "Ahmed Sayed Zizo"
       ]
     }
+  },
+  {
+    "matchId": 96,
+    "team1": "Switzerland",
+    "team2": "Colombia",
+    "score1": 0,
+    "score2": 0,
+    "mvp": { "team": "Switzerland", "name": "Gregor Kobel" },
+    "qualifier": "Switzerland",
+    "appearances": {
+      "Switzerland": [
+        "Gregor Kobel", "Ricardo Rodriguez", "Manuel Akanji", "Nico Elvedi", "Denis Zakaria",
+        "Granit Xhaka", "Remo Freuler", "Dan Ndoye", "Ardon Jashari", "Fabian Rieder", "Breel Embolo",
+        "Djibril Sow", "Miro Muheim", "Silvan Widmer", "Cedric Itten", "Ruben Vargas", "Zeki Amdouni"
+      ],
+      "Colombia": [
+        "Camilo Vargas", "Johan Mojica", "Jhon Lucumi", "Davinson Sanchez", "Daniel Munoz",
+        "Luis Diaz", "Gustavo Puerta", "Jefferson Lerma", "Jhon Arias", "James Rodriguez", "Luis Suarez",
+        "Juan Fernando Quintero", "Jaminton Campaz", "Richard Rios", "Juan Camilo Hernandez", "Yerry Mina"
+      ]
+    }
   }
 ]
