@@ -1878,5 +1878,26 @@
         "Ferran Torres", "Fabián Ruiz", "Mikel Merino", "Borja Iglesias"
       ]
     }
+  },
+  {
+    "matchId": 94,
+    "team1": "USA",
+    "team2": "Belgium",
+    "score1": 1,
+    "score2": 4,
+    "mvp": { "team": "Belgium", "name": "Charles De Ketelaere" },
+    "qualifier": "Belgium",
+    "appearances": {
+      "USA": [
+        "Matt Freese", "Antonee Robinson", "Tim Ream", "Chris Richards", "Alex Freeman",
+        "Malik Tillman", "Tyler Adams", "Weston McKennie", "Christian Pulisic", "Folarin Balogun", "Sergiño Dest",
+        "Gio Reyna", "Sebastian Berhalter", "Ricardo Pepi", "Max Arfsten", "Haji Wright"
+      ],
+      "Belgium": [
+        "Thibaut Courtois", "Timothy Castagne", "Nathan Ngoy", "Brandon Mechele", "Maxim De Cuyper",
+        "Amadou Onana", "Nicolas Raskin", "Dodi Lukebakio", "Youri Tielemans", "Leandro Trossard", "Charles De Ketelaere",
+        "Hans Vanaken", "Jeremy Doku", "Romelu Lukaku", "Alexis Saelemaekers", "Axel Witsel"
+      ]
+    }
   }
 ]

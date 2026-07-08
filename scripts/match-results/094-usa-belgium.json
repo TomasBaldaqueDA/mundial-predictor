@@ -1,0 +1,20 @@
+{
+  "id": 94,
+  "score1": 1,
+  "score2": 4,
+  "mvp": "Charles De Ketelaere",
+  "qualifier": "Belgium",
+  "bracket": "98:team2:Belgium",
+  "goals": [
+    { "team": "Belgium", "name": "Charles De Ketelaere", "count": 2 },
+    { "team": "USA", "name": "Malik Tillman" },
+    { "team": "Belgium", "name": "Hans Vanaken" },
+    { "team": "Belgium", "name": "Romelu Lukaku" }
+  ],
+  "assists": [
+    { "team": "Belgium", "name": "Nicolas Raskin" },
+    { "team": "Belgium", "name": "Leandro Trossard" },
+    { "team": "Belgium", "name": "Charles De Ketelaere" },
+    { "team": "Belgium", "name": "Hans Vanaken" }
+  ]
+}
