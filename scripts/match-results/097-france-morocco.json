@@ -1,0 +1,16 @@
+{
+  "id": 97,
+  "score1": 2,
+  "score2": 0,
+  "mvp": "Kylian Mbappe",
+  "qualifier": "France",
+  "bracket": "101:team1:France",
+  "goals": [
+    { "team": "France", "name": "Kylian Mbappe" },
+    { "team": "France", "name": "Ousmane Dembele" }
+  ],
+  "assists": [
+    { "team": "France", "name": "Desire Doue" },
+    { "team": "France", "name": "Kylian Mbappe" }
+  ]
+}

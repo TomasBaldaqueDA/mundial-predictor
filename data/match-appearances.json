@@ -1941,5 +1941,26 @@
         "Juan Fernando Quintero", "Jaminton Campaz", "Richard Rios", "Juan Camilo Hernandez", "Yerry Mina"
       ]
     }
+  },
+  {
+    "matchId": 97,
+    "team1": "France",
+    "team2": "Morocco",
+    "score1": 2,
+    "score2": 0,
+    "mvp": { "team": "France", "name": "Kylian Mbappe" },
+    "qualifier": "France",
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Lucas Digne", "William Saliba", "Dayot Upamecano", "Jules Kounde",
+        "Adrien Rabiot", "Manu Kone", "Desire Doue", "Michael Olise", "Ousmane Dembele", "Kylian Mbappe",
+        "Warren Zaire-Emery", "Jean-Philippe Mateta", "Bradley Barcola", "Malo Gusto"
+      ],
+      "Morocco": [
+        "Yassine Bounou", "Achraf Hakimi", "Issa Diop", "Noussair Mazraoui", "Anass Salah-Eddine",
+        "Ayyoub Bouaddi", "Azzedine Ounahi", "Brahim Diaz", "Bilal El Khannouss", "Neil El Aynaoui", "Chemsdine Talbi",
+        "Sofyan Amrabat", "Soufiane Rahimi", "Zakaria El Ouahdi", "Gessime Yassine"
+      ]
+    }
   }
 ]
