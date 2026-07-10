@@ -39,22 +39,20 @@ export async function computeMemberRanking(
 
   const [
     { data: profiles },
-    { data: preds },
+    { data: matchPointsRows, error: matchPointsError },
     { data: groupPts },
     { data: specialQuestions },
     { data: specialAnswers },
     { data: fiveASidePicks },
     fiveASidePlayers,
-    { data: finishedMatches },
   ] = await Promise.all([
     supabase.from("profiles").select("id, display_name").in("id", userIds),
-    supabase.from("predictions").select("user_id, points, match_id, created_at").in("user_id", userIds),
+    supabase.rpc("get_match_points_by_user"),
     supabase.rpc("get_all_group_points"),
     supabase.from("special_questions").select("id, points, correct_answer").not("correct_answer", "is", null),
     supabase.from("special_answers").select("user_id, question_id, answer").in("user_id", userIds),
     supabase.from("five_a_side_picks").select(FIVE_A_SIDE_PICKS_SELECT).in("user_id", userIds),
     fetchAllFiveASidePlayers(supabase, "id, goals, assists, wins, clean_sheets, mvp"),
-    supabase.from("matches").select("id").eq("status", "finished"),
   ])
 
   const nameById = new Map(
@@ -63,19 +61,29 @@ export async function computeMemberRanking(
       (p.display_name ?? "").trim() || "Player",
     ])
   )
-  const finishedMatchIds = new Set((finishedMatches ?? []).map((m: { id: number }) => m.id))
+  const userIdSet = new Set(userIds)
 
-  const latestByKey = new Map<string, { user_id: string; points: number | null }>()
-  for (const p of preds ?? []) {
-    const row = p as { user_id: string; points: number | null; match_id: number }
-    if (!finishedMatchIds.has(row.match_id)) continue
-    const key = `${row.user_id}::${row.match_id}`
-    if (!latestByKey.has(key)) latestByKey.set(key, row)
-  }
   const matchPtsByUser = new Map<string, number>()
-  for (const [, row] of latestByKey) {
-    const cur = matchPtsByUser.get(row.user_id) ?? 0
-    matchPtsByUser.set(row.user_id, cur + (Number(row.points) || 0))
+  if (matchPointsError?.code === "PGRST202") {
+    const [{ data: finishedMatches }, { data: preds }] = await Promise.all([
+      supabase.from("matches").select("id").eq("status", "finished"),
+      supabase.from("predictions").select("user_id, points, match_id").in("user_id", userIds),
+    ])
+    const finishedMatchIds = new Set((finishedMatches ?? []).map((m: { id: number }) => m.id))
+    for (const p of preds ?? []) {
+      const row = p as { user_id: string; points: number | null; match_id: number }
+      if (!userIdSet.has(row.user_id) || !finishedMatchIds.has(row.match_id)) continue
+      const cur = matchPtsByUser.get(row.user_id) ?? 0
+      matchPtsByUser.set(row.user_id, cur + (Number(row.points) || 0))
+    }
+  } else if (matchPointsError) {
+    throw new Error(matchPointsError.message)
+  } else {
+    for (const row of matchPointsRows ?? []) {
+      const r = row as { user_id: string; match_points: number }
+      if (!r.user_id || !userIdSet.has(r.user_id)) continue
+      matchPtsByUser.set(r.user_id, Number(r.match_points) || 0)
+    }
   }
 
   const groupPtsByUser = new Map<string, number>()
