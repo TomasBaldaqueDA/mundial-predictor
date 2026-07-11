@@ -1,0 +1,16 @@
+{
+  "id": 98,
+  "score1": 2,
+  "score2": 1,
+  "mvp": "Lamine Yamal",
+  "qualifier": "Spain",
+  "bracket": "101:team2:Spain",
+  "goals": [
+    { "team": "Spain", "name": "Fabián Ruiz" },
+    { "team": "Belgium", "name": "Charles De Ketelaere" },
+    { "team": "Spain", "name": "Mikel Merino" }
+  ],
+  "assists": [
+    { "team": "Belgium", "name": "Timothy Castagne" }
+  ]
+}

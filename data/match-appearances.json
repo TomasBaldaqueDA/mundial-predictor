@@ -1962,5 +1962,26 @@
         "Sofyan Amrabat", "Soufiane Rahimi", "Zakaria El Ouahdi", "Gessime Yassine"
       ]
     }
+  },
+  {
+    "matchId": 98,
+    "team1": "Spain",
+    "team2": "Belgium",
+    "score1": 2,
+    "score2": 1,
+    "mvp": { "team": "Spain", "name": "Lamine Yamal" },
+    "qualifier": "Spain",
+    "appearances": {
+      "Spain": [
+        "Unai Simón", "Marc Cucurella", "Aymeric Laporte", "Pau Cubarsí", "Pedro Porro",
+        "Fabián Ruiz", "Rodri", "Álex Baena", "Dani Olmo", "Lamine Yamal", "Mikel Oyarzabal",
+        "Pedri", "Ferran Torres", "Nico Williams", "Mikel Merino"
+      ],
+      "Belgium": [
+        "Thibaut Courtois", "Timothy Castagne", "Nathan Ngoy", "Brandon Mechele", "Maxim De Cuyper",
+        "Hans Vanaken", "Nicolas Raskin", "Leandro Trossard", "Kevin De Bruyne", "Jeremy Doku", "Charles De Ketelaere",
+        "Axel Witsel", "Romelu Lukaku", "Joaquin Seys", "Senne Lammens", "Alexis Saelemaekers"
+      ]
+    }
   }
 ]
