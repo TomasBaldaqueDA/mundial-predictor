@@ -1,0 +1,19 @@
+{
+  "id": 100,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Julian Alvarez",
+  "qualifier": "Argentina",
+  "bracket": "102:team2:Argentina",
+  "goals": [
+    { "team": "Argentina", "name": "Alexis Mac Allister" },
+    { "team": "Switzerland", "name": "Dan Ndoye" },
+    { "team": "Argentina", "name": "Julian Alvarez", "extraTime": true },
+    { "team": "Argentina", "name": "Lautaro Martinez", "extraTime": true }
+  ],
+  "assists": [
+    { "team": "Argentina", "name": "Lionel Messi" },
+    { "team": "Switzerland", "name": "Ricardo Rodriguez" },
+    { "team": "Argentina", "name": "Jose Manuel Lopez", "extraTime": true }
+  ]
+}

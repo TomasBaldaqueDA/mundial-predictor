@@ -2004,5 +2004,26 @@
         "Eberechi Eze", "Bukayo Saka", "Reece James", "Djed Spence", "Morgan Rogers", "Dan Burn"
       ]
     }
+  },
+  {
+    "matchId": 100,
+    "team1": "Argentina",
+    "team2": "Switzerland",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "Argentina", "name": "Julian Alvarez" },
+    "qualifier": "Argentina",
+    "appearances": {
+      "Argentina": [
+        "Emiliano Martinez", "Nicolas Tagliafico", "Lisandro Martinez", "Cristian Romero", "Nahuel Molina",
+        "Leandro Paredes", "Alexis Mac Allister", "Enzo Fernandez", "Rodrigo De Paul", "Julian Alvarez", "Lionel Messi",
+        "Nicolas Gonzalez", "Gonzalo Montiel", "Lautaro Martinez", "Thiago Almada", "Nicolas Otamendi", "Jose Manuel Lopez"
+      ],
+      "Switzerland": [
+        "Gregor Kobel", "Denis Zakaria", "Nico Elvedi", "Manuel Akanji", "Ricardo Rodriguez",
+        "Djibril Sow", "Remo Freuler", "Fabian Rieder", "Granit Xhaka", "Dan Ndoye", "Breel Embolo",
+        "Miro Muheim", "Silvan Widmer", "Zeki Amdouni", "Eray Cömert", "Ardon Jashari", "Ruben Vargas"
+      ]
+    }
   }
 ]
