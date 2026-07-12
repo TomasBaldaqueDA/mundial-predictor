@@ -1,5 +1,5 @@
 -- Match 67: Panama 0-2 England (Group L, 27 Jun 2026)
--- Goals: Bellingham 62' (assist Saka) | Bellingham 67' (assist Kane)
+-- Goals: Bellingham 62' (assist Saka) | Kane 67' (assist Bellingham)
 -- MVP: Jude Bellingham
 -- Lineups: SofaScore (Jun 27 2026)
 
@@ -15,13 +15,13 @@ UPDATE public.five_a_side_players SET goals = goals + 1
 WHERE team = 'England' AND name = 'Jude Bellingham';
 
 UPDATE public.five_a_side_players SET goals = goals + 1
-WHERE team = 'England' AND name = 'Jude Bellingham';
+WHERE team = 'England' AND name = 'Harry Kane';
 
 UPDATE public.five_a_side_players SET assists = assists + 1
 WHERE team = 'England' AND name = 'Bukayo Saka';
 
 UPDATE public.five_a_side_players SET assists = assists + 1
-WHERE team = 'England' AND name = 'Harry Kane';
+WHERE team = 'England' AND name = 'Jude Bellingham';
 
 SELECT public.add_match_appearances(67, 'Panama', ARRAY[
   'Orlando Mosquera', 'Andres Andrade', 'Fidel Escobar', 'Jose Cordoba', 'Amir Murillo',
