@@ -1983,5 +1983,26 @@
         "Axel Witsel", "Romelu Lukaku", "Joaquin Seys", "Senne Lammens", "Alexis Saelemaekers"
       ]
     }
+  },
+  {
+    "matchId": 99,
+    "team1": "Norway",
+    "team2": "England",
+    "score1": 1,
+    "score2": 1,
+    "mvp": { "team": "England", "name": "Jude Bellingham" },
+    "qualifier": "England",
+    "appearances": {
+      "Norway": [
+        "Orjan Haskjold Nyland", "Julian Ryerson", "Kristoffer Vassbakk Ajer", "Torbjorn Heggem", "David Moller Wolfe",
+        "Martin Odegaard", "Sander Berge", "Patrick Berg", "Andreas Schjelderup", "Erling Haaland", "Alexander Sorloth",
+        "Fredrik Aursnes", "Oscar Bobb", "Antonio Nusa", "Marcus Holmgren Pedersen", "Leo Ostigard", "Jorgen Strand Larsen"
+      ],
+      "England": [
+        "Jordan Pickford", "Jarell Quansah", "Ezri Konsa", "Marc Guehi", "Nico O'Reilly",
+        "Declan Rice", "Elliott Anderson", "Noni Madueke", "Jude Bellingham", "Anthony Gordon", "Harry Kane",
+        "Eberechi Eze", "Bukayo Saka", "Reece James", "Djed Spence", "Morgan Rogers", "Dan Burn"
+      ]
+    }
   }
 ]

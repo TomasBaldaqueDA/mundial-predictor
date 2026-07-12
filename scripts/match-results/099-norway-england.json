@@ -1,0 +1,17 @@
+{
+  "id": 99,
+  "score1": 1,
+  "score2": 1,
+  "mvp": "Jude Bellingham",
+  "qualifier": "England",
+  "bracket": "102:team1:England",
+  "goals": [
+    { "team": "Norway", "name": "Andreas Schjelderup" },
+    { "team": "England", "name": "Jude Bellingham" },
+    { "team": "England", "name": "Jude Bellingham", "extraTime": true }
+  ],
+  "assists": [
+    { "team": "Norway", "name": "Martin Odegaard" },
+    { "team": "England", "name": "Anthony Gordon" }
+  ]
+}
