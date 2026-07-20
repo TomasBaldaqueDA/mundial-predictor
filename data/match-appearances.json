@@ -2025,5 +2025,68 @@
         "Miro Muheim", "Silvan Widmer", "Zeki Amdouni", "Eray Cömert", "Ardon Jashari", "Ruben Vargas"
       ]
     }
+  },
+  {
+    "matchId": 101,
+    "team1": "France",
+    "team2": "Spain",
+    "score1": 0,
+    "score2": 2,
+    "mvp": { "team": "Spain", "name": "Pedro Porro" },
+    "qualifier": "Spain",
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Lucas Digne", "William Saliba", "Dayot Upamecano", "Jules Kounde",
+        "Adrien Rabiot", "Aurelien Tchouameni", "Bradley Barcola", "Michael Olise", "Ousmane Dembele", "Kylian Mbappe",
+        "Maxence Lacroix", "Manu Kone", "Desire Doue", "Theo Hernandez", "Rayan Cherki"
+      ],
+      "Spain": [
+        "Unai Simón", "Pedro Porro", "Pau Cubarsí", "Aymeric Laporte", "Marc Cucurella",
+        "Rodri", "Fabián Ruiz", "Lamine Yamal", "Dani Olmo", "Álex Baena", "Mikel Oyarzabal",
+        "Ferran Torres", "Mikel Merino", "Pedri", "Marcos Llorente", "Nico Williams"
+      ]
+    }
+  },
+  {
+    "matchId": 102,
+    "team1": "England",
+    "team2": "Argentina",
+    "score1": 1,
+    "score2": 2,
+    "mvp": { "team": "Argentina", "name": "Lionel Messi" },
+    "qualifier": "Argentina",
+    "appearances": {
+      "England": [
+        "Jordan Pickford", "Djed Spence", "Marc Guehi", "John Stones", "Reece James",
+        "Elliott Anderson", "Declan Rice", "Anthony Gordon", "Jude Bellingham", "Morgan Rogers", "Harry Kane",
+        "Ezri Konsa", "Nico O'Reilly", "Dan Burn", "Marcus Rashford", "Ivan Toney"
+      ],
+      "Argentina": [
+        "Emiliano Martinez", "Gonzalo Montiel", "Cristian Romero", "Nicolas Otamendi", "Nicolas Gonzalez",
+        "Rodrigo De Paul", "Enzo Fernandez", "Alexis Mac Allister", "Julian Alvarez", "Lionel Messi", "Lautaro Martinez",
+        "Leandro Paredes", "Nahuel Molina", "Giuliano Simeone", "Lisandro Martinez", "Nicolas Tagliafico"
+      ]
+    }
+  },
+  {
+    "matchId": 103,
+    "team1": "France",
+    "team2": "England",
+    "score1": 4,
+    "score2": 6,
+    "mvp": { "team": "England", "name": "Bukayo Saka" },
+    "qualifier": "England",
+    "appearances": {
+      "France": [
+        "Mike Maignan", "Malo Gusto", "Ibrahima Konate", "Maxence Lacroix", "Theo Hernandez",
+        "Warren Zaire-Emery", "Adrien Rabiot", "Michael Olise", "Rayan Cherki", "Desire Doue", "Kylian Mbappe",
+        "Dayot Upamecano", "Lucas Digne", "Ousmane Dembele", "Bradley Barcola", "Jules Kounde"
+      ],
+      "England": [
+        "Dean Henderson", "Djed Spence", "Marc Guehi", "Ezri Konsa", "Jarell Quansah",
+        "Declan Rice", "Marcus Rashford", "Eberechi Eze", "Morgan Rogers", "Bukayo Saka", "Ivan Toney",
+        "Ollie Watkins", "Elliott Anderson", "Jude Bellingham", "Reece James"
+      ]
+    }
   }
 ]

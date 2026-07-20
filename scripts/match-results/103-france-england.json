@@ -1,0 +1,24 @@
+{
+  "id": 103,
+  "score1": 4,
+  "score2": 6,
+  "mvp": "Bukayo Saka",
+  "qualifier": "England",
+  "goals": [
+    { "team": "England", "name": "Declan Rice" },
+    { "team": "England", "name": "Ezri Konsa" },
+    { "team": "England", "name": "Bukayo Saka", "count": 3 },
+    { "team": "England", "name": "Jude Bellingham" },
+    { "team": "France", "name": "Kylian Mbappe", "count": 2 },
+    { "team": "France", "name": "Bradley Barcola" },
+    { "team": "France", "name": "Ousmane Dembele" }
+  ],
+  "assists": [
+    { "team": "England", "name": "Declan Rice" },
+    { "team": "England", "name": "Marcus Rashford" },
+    { "team": "England", "name": "Eberechi Eze" },
+    { "team": "France", "name": "Michael Olise", "count": 2 },
+    { "team": "France", "name": "Dayot Upamecano" },
+    { "team": "France", "name": "Kylian Mbappe" }
+  ]
+}
